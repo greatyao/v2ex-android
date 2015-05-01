@@ -52,6 +52,7 @@ public class Application extends android.app.Application{
     private void initAccount(){
         if(AccountUtils.isLogined(this)){
             AccountUtils.refreshFavoriteNodes(this);
+            AccountUtils.refreshNotifications(this);
         }
     }
 

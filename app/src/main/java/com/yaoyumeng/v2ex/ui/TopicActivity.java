@@ -46,9 +46,14 @@ public class TopicActivity extends BaseActivity {
                 mTopicId = Integer.parseInt(topicId);
                 bundle.putInt("topic_id", mTopicId);
             } else {
-                mTopic = (TopicModel) intent.getParcelableExtra("model");
-                mTopicId = mTopic.id;
-                bundle.putParcelable("model", (Parcelable) mTopic);
+                if(intent.hasExtra("model")) {
+                    mTopic = (TopicModel) intent.getParcelableExtra("model");
+                    mTopicId = mTopic.id;
+                    bundle.putParcelable("model", (Parcelable) mTopic);
+                } else{
+                    mTopicId =  intent.getIntExtra("topic_id", 0);
+                    bundle.putInt("topic_id", mTopicId);
+                }
             }
         } else {
             mTopicId = savedInstanceState.getInt("id");

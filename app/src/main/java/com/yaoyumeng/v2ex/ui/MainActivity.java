@@ -14,6 +14,8 @@ import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.ui.fragment.AllNodesFragment;
 import com.yaoyumeng.v2ex.ui.fragment.FavNodesFragment;
 import com.yaoyumeng.v2ex.ui.fragment.NavigationDrawerFragment;
+import com.yaoyumeng.v2ex.ui.fragment.NotificationFragment;
+import com.yaoyumeng.v2ex.ui.fragment.SettingsFragment;
 import com.yaoyumeng.v2ex.ui.fragment.TopicsFragment;
 
 //import com.umeng.update.UmengUpdateAgent;
@@ -29,6 +31,7 @@ public class MainActivity extends BaseActivity
     private TopicsFragment mHotTopicsFragment;
     private AllNodesFragment mAllNodesFragment;
     private FavNodesFragment mFavNodesFragment;
+    private NotificationFragment mNotificationFragment;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -63,13 +66,6 @@ public class MainActivity extends BaseActivity
     @Override
     public void onNavigationDrawerItemSelected(final int position) {
         // update the main content by replacing fragments
-
-        if(position == 4) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return;
-        }
-
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         switch (position){
@@ -107,6 +103,15 @@ public class MainActivity extends BaseActivity
                 }
                 fragmentTransaction.replace(R.id.container, mFavNodesFragment);
                 break;
+            case 4:
+                if(mNotificationFragment == null){
+                    mNotificationFragment = new NotificationFragment();
+                }
+                fragmentTransaction.replace(R.id.container, mNotificationFragment);
+                break;
+            case 5:
+                fragmentTransaction.replace(R.id.container, new SettingsFragment());
+                break;
         }
         fragmentTransaction.commit();
     }
@@ -124,6 +129,12 @@ public class MainActivity extends BaseActivity
                 break;
             case 4:
                 mTitle = getString(R.string.title_main_fav_nodes);
+                break;
+            case 5:
+                mTitle = getString(R.string.title_main_notification);
+                break;
+            case 6:
+                mTitle = getString(R.string.title_main_settings);
                 break;
         }
     }

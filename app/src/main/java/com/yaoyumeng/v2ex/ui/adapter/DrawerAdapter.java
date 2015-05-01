@@ -24,6 +24,7 @@ public class DrawerAdapter extends BaseAdapter {
                 context.getResources().getString(R.string.title_drawer_hot),
                 context.getResources().getString(R.string.title_drawer_all_nodes),
                 context.getResources().getString(R.string.title_drawer_fav_nodes),
+                context.getResources().getString(R.string.title_drawer_notification),
                 context.getResources().getString(R.string.title_drawer_settings)
         };
     }
@@ -54,6 +55,8 @@ public class DrawerAdapter extends BaseAdapter {
             case 3:
                 return R.drawable.ic_favourite;
             case 4:
+                return R.drawable.ic_notify;
+            case 5:
                 return R.drawable.ic_settings;
             default:
                 return 0;

@@ -183,10 +183,7 @@ public class V2EXDataSource {
      * 将某个节点加入收藏或者取消收藏
      */
     public boolean favoriteNode(String nodeName, boolean favor){
-        Log.i(TAG, "favoriteNode"+nodeName);
-
         if(!isNodeExisted(nodeName)){
-            Log.i(TAG, "insertNode"+nodeName);
             insertNode(nodeName, favor);
             return true;
         }

@@ -44,9 +44,14 @@ public class UserActivity extends BaseActivity {
                 mUsername = params.get(1);
                 setTitle(mUsername);
             } else {
-                mMember = (MemberModel) intent.getParcelableExtra("model");
-                mUsername = mMember.username;
-                setTitle(mUsername);
+                if(intent.hasExtra("model")){
+                    mMember = (MemberModel) intent.getParcelableExtra("model");
+                    mUsername = mMember.username;
+                    setTitle(mUsername);
+                } else{
+                    mUsername =  intent.getStringExtra("username");
+                    setTitle(mUsername);
+                }
             }
         } else {
             mUsername = savedInstanceState.getString("username");

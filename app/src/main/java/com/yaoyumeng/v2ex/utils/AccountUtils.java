@@ -34,18 +34,36 @@ public class AccountUtils {
 
     private static HashSet<OAccountListener> listeners = new HashSet<OAccountListener>();
 
+    /**
+     * 注册登录接口
+     * @param listener
+     */
     public static void registerAccountListener(OAccountListener listener){
         listeners.add(listener);
     }
 
+    /**
+     * 取消登录接口的注册
+     * @param listener
+     */
     public static void unregisterAccountListener(OAccountListener listener){
         listeners.remove(listener);
     }
 
+    /**
+     * 用户是否已经登录
+     * @param cxt
+     * @return
+     */
     public static boolean isLogined(Context cxt) {
         return FileUtils.isExistDataCache(cxt, key_login_member);
     }
 
+    /**
+     * 保存登录用户资料
+     * @param cxt
+     * @param profile
+     */
     public static void writeLoginMember(Context cxt, MemberModel profile) {
         PersistenceHelper.saveModel(cxt, profile, key_login_member);
 
@@ -60,15 +78,29 @@ public class AccountUtils {
         }
     }
 
+    /**
+     * 获取登录用户信息
+     * @param cxt
+     * @return
+     */
     public static MemberModel readLoginMember(Context cxt) {
         return PersistenceHelper.loadModel(cxt, key_login_member);
     }
 
+    /**
+     * 删除登录用户资料
+     * @param cxt
+     */
     public static void removeLoginMember(Context cxt) {
         File data = cxt.getFileStreamPath(key_login_member);
         data.delete();
     }
 
+    /**
+     * 保存节点收藏信息
+     * @param cxt
+     * @param nodes
+     */
     public static void writeFavoriteNodes(Context cxt, ArrayList<NodeModel> nodes) {
         PersistenceHelper.saveObject(cxt, nodes, key_fav_nodes);
         for(NodeModel node : nodes){
@@ -76,17 +108,30 @@ public class AccountUtils {
         }
     }
 
+    /**
+     * 获取收藏节点信息
+     * @param cxt
+     * @return
+     */
     public static ArrayList<NodeModel> readFavoriteNodes(Context cxt) {
         return (ArrayList<NodeModel>) PersistenceHelper.loadObject(cxt, key_fav_nodes);
     }
 
 
+    /**
+     * 删除节点信息
+     * @param cxt
+     */
     public static void removeFavNodes(Context cxt) {
         File data = cxt.getFileStreamPath(key_fav_nodes);
         data.delete();
     }
 
-    public static void logout(Context cxt) {
+    /**
+     * 清除所有用户相关资料
+     * @param cxt
+     */
+    public static void removeAll(Context cxt) {
         removeLoginMember(cxt);
         removeFavNodes(cxt);
 
@@ -114,13 +159,30 @@ public class AccountUtils {
         }
     }
 
+    /**
+     * 刷新用户收藏节点
+     * @param cxt
+     * @param handler
+     */
     public static void refreshFavoriteNodes(Context cxt, FavNodesHelper handler){
         if(handler == null)
             handler = new FavNodesHelper(cxt);
         V2EXManager.getFavoriteNodes(cxt, handler);
     }
 
+    /**
+     * 刷新用户收藏节点
+     * @param cxt
+     */
     public static void refreshFavoriteNodes(Context cxt){
         refreshFavoriteNodes(cxt, null);
+    }
+
+    /**
+     * 刷新用户的未读提醒
+     * @param cxt
+     */
+    public static void refreshNotifications(Context cxt){
+        //V2EXManager.getNotifications(cxt);
     }
 }

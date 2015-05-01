@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import android.content.Context;
 import android.os.Environment;
@@ -674,6 +673,9 @@ public class FileUtils {
 
     public static void clearAppCache(Context cxt)
     {
+        //清除帐号信息
+        AccountUtils.removeAll(cxt);
+
         //清除数据缓存
         clearCacheFolder(cxt.getFilesDir(),System.currentTimeMillis());
         clearCacheFolder(cxt.getCacheDir(),System.currentTimeMillis());

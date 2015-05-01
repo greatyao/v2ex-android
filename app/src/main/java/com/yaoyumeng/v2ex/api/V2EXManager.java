@@ -1,34 +1,33 @@
 package com.yaoyumeng.v2ex.api;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NodeModel;
+import com.yaoyumeng.v2ex.model.NotificationModel;
 import com.yaoyumeng.v2ex.model.PersistenceHelper;
 import com.yaoyumeng.v2ex.model.ReplyModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-import com.yaoyumeng.v2ex.utils.MessageUtils;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 public class V2EXManager {
     private static Application mApp = Application.getInstance();
@@ -48,22 +47,22 @@ public class V2EXManager {
     public static final String BASE_URL = "http://www.v2ex.com";
     public static final String BASE_HTTPS_URL = "https://www.v2ex.com";
     public static final String SIGN_UP_URL = BASE_HTTPS_URL + "/signup";
-    public static final String SIGN_IN_URL = BASE_HTTPS_URL +"/signin";
+    public static final String SIGN_IN_URL = BASE_HTTPS_URL + "/signin";
     public static final String MY_NODES_URL = BASE_HTTPS_URL + "/my/nodes";
 
-    public static final int V2ErrorTypeNoOnceAndNext          = 700;
-    public static final int V2ErrorTypeLoginFailure           = 701;
-    public static final int V2ErrorTypeGetTopicTokenFailure  = 702;
-    public static final int V2ErrorTypeCommentFailure         = 703;
-    public static final int V2ErrorTypeGetFeedURLFailure      = 704;
-    public static final int V2ErrorTypeGetTopicListFailure    = 705;
+    public static final int V2ErrorTypeNoOnceAndNext = 700;
+    public static final int V2ErrorTypeLoginFailure = 701;
+    public static final int V2ErrorTypeGetTopicTokenFailure = 702;
+    public static final int V2ErrorTypeCommentFailure = 703;
+    public static final int V2ErrorTypeGetFeedURLFailure = 704;
+    public static final int V2ErrorTypeGetTopicListFailure = 705;
     public static final int V2ErrorTypeGetNotificationFailure = 706;
-    public static final int V2ErrorTypeGetFavUrlFailure        = 707;
-    public static final int V2ErrorTypeGetMemyFailure           = 708;
-    public static final int V2ErrorTypeGetCheckInURLFailure   = 709;
-    public static final int V2ErrorTypeCreateNewFailure         = 710;
-    public static final int V2ErrorTypeFavNodeFailure         = 711;
-    public static final int V2ErrorTypeFavTopicFailure         = 712;
+    public static final int V2ErrorTypeGetFavUrlFailure = 707;
+    public static final int V2ErrorTypeGetMemyFailure = 708;
+    public static final int V2ErrorTypeGetCheckInURLFailure = 709;
+    public static final int V2ErrorTypeCreateNewFailure = 710;
+    public static final int V2ErrorTypeFavNodeFailure = 711;
+    public static final int V2ErrorTypeFavTopicFailure = 712;
 
 
     public static void setHttps(boolean checked) {
@@ -72,19 +71,19 @@ public class V2EXManager {
     }
 
     //获取最热话题
-    public static void getHotTopics(Context cxt,  boolean refresh,
+    public static void getHotTopics(Context cxt, boolean refresh,
                                     HttpRequestHandler<ArrayList<TopicModel>> handler) {
         getTopics(cxt, API_URL + API_HOT, refresh, handler);
     }
 
     //获取最新话题
-    public static void getLatestTopics(Context ctx,  boolean refresh,
+    public static void getLatestTopics(Context ctx, boolean refresh,
                                        HttpRequestHandler<ArrayList<TopicModel>> handler) {
         getTopics(ctx, API_URL + API_LATEST, refresh, handler);
     }
 
     //根据节点ID获取其话题
-    public static void getTopicsByNodeId(Context ctx, final int nodeId,  boolean refresh,
+    public static void getTopicsByNodeId(Context ctx, final int nodeId, boolean refresh,
                                          final HttpRequestHandler<ArrayList<TopicModel>> handler) {
         getTopics(ctx, API_URL + API_TOPIC + "?node_id=" + nodeId, refresh, handler);
     }
@@ -96,7 +95,7 @@ public class V2EXManager {
     }
 
     //根据话题ID获取其内容
-    public static void getTopicByTopicId(Context cxt, int topicId,  boolean refresh,
+    public static void getTopicByTopicId(Context cxt, int topicId, boolean refresh,
                                          final HttpRequestHandler<ArrayList<TopicModel>> handler) {
         getTopics(cxt, API_URL + API_TOPIC + "?id=" + topicId, refresh, handler);
     }
@@ -109,10 +108,11 @@ public class V2EXManager {
 
     /**
      * 获取各类话题列表
+     *
      * @param ctx
      * @param urlString URL地址
-     * @param refresh 是否从缓存中读取
-     * @param handler 结果处理
+     * @param refresh   是否从缓存中读取
+     * @param handler   结果处理
      */
     public static void getTopics(Context ctx, String urlString, boolean refresh,
                                  final HttpRequestHandler<ArrayList<TopicModel>> handler) {
@@ -120,13 +120,13 @@ public class V2EXManager {
         String path = uri.getLastPathSegment();
         String param = uri.getEncodedQuery();
         String key = path;
-        if(param != null)
+        if (param != null)
             key += param;
 
-        if(!refresh){
+        if (!refresh) {
             //尝试从缓存中加载
-            ArrayList<TopicModel> topics = PersistenceHelper.loadModelList(ctx,  key);
-            if(topics != null && topics.size()> 0){
+            ArrayList<TopicModel> topics = PersistenceHelper.loadModelList(ctx, key);
+            if (topics != null && topics.size() > 0) {
                 handler.onSuccess(topics);
                 return;
             }
@@ -140,10 +140,10 @@ public class V2EXManager {
     public static void getAllNodes(Context ctx, boolean refresh,
                                    final HttpRequestHandler<ArrayList<NodeModel>> handler) {
         final String key = "allnodes";
-        if(!refresh){
+        if (!refresh) {
             //尝试从缓存中加载
-            ArrayList<NodeModel> nodes = PersistenceHelper.loadModelList(ctx,  key);
-            if(nodes != null && nodes.size()> 0){
+            ArrayList<NodeModel> nodes = PersistenceHelper.loadModelList(ctx, key);
+            if (nodes != null && nodes.size() > 0) {
                 handler.onSuccess(nodes);
                 return;
             }
@@ -157,10 +157,10 @@ public class V2EXManager {
     public static void getRepliesByTopicId(Context ctx, int topicId, boolean refresh,
                                            final HttpRequestHandler<ArrayList<ReplyModel>> handler) {
         final String key = "replies_id=" + topicId;
-        if(!refresh){
+        if (!refresh) {
             //尝试从缓存中加载
             ArrayList<ReplyModel> replies = PersistenceHelper.loadModelList(ctx, key);
-            if(replies != null && replies.size()> 0){
+            if (replies != null && replies.size() > 0) {
                 handler.onSuccess(replies);
                 return;
             }
@@ -171,13 +171,13 @@ public class V2EXManager {
     }
 
     //获取用户基本信息
-    public static void getMemberInfoByUsername(Context ctx, String username,boolean refresh,
-                                               final HttpRequestHandler<ArrayList<MemberModel>> handler){
+    public static void getMemberInfoByUsername(Context ctx, String username, boolean refresh,
+                                               final HttpRequestHandler<ArrayList<MemberModel>> handler) {
         final String key = "username=" + username;
-        if(!refresh){
+        if (!refresh) {
             //尝试从缓存中加载
             ArrayList<MemberModel> member = PersistenceHelper.loadModelList(ctx, key);
-            if(member != null && member.size()> 0){
+            if (member != null && member.size() > 0) {
                 handler.onSuccess(member);
                 return;
             }
@@ -187,7 +187,7 @@ public class V2EXManager {
                 new WrappedJsonHttpResponseHandler<MemberModel>(ctx, MemberModel.class, key, handler));
     }
 
-    private static AsyncHttpClient getClient(Context context,  boolean mobile){
+    private static AsyncHttpClient getClient(Context context, boolean mobile) {
         if (sClient == null) {
             sClient = new AsyncHttpClient();
             sClient.setEnableRedirects(false);
@@ -200,7 +200,7 @@ public class V2EXManager {
             sClient.addHeader("Host", "www.v2ex.com");
         }
 
-        if(mobile)
+        if (mobile)
             sClient.setUserAgent("Mozilla/5.0 (Linux; U; Android 4.2.1; en-us; M040 Build/JOP40D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
         else
             sClient.setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko");
@@ -212,7 +212,7 @@ public class V2EXManager {
         return getClient(context, true);
     }
 
-    private static String getOnceStringFromHtmlResponseObject(String content){
+    private static String getOnceStringFromHtmlResponseObject(String content) {
         Pattern pattern = Pattern.compile("<input type=\"hidden\" value=\"([0-9]+)\" name=\"once\" />");
         final Matcher matcher = pattern.matcher(content);
         if (matcher.find())
@@ -221,7 +221,7 @@ public class V2EXManager {
     }
 
     private static void requestOnceWithURLString(final Context cxt, String url,
-                                                 final HttpRequestHandler<String> handler){
+                                                 final HttpRequestHandler<String> handler) {
         AsyncHttpClient client = getClient(cxt);
         client.addHeader("Referer", BASE_HTTPS_URL);
         client.get(url, new AsyncHttpResponseHandler() {
@@ -229,7 +229,7 @@ public class V2EXManager {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String content = new String(responseBody);
                 String once = getOnceStringFromHtmlResponseObject(content);
-                if(once !=null)
+                if (once != null)
                     handler.onSuccess(once);
                 else
                     handler.onFailure(V2ErrorTypeNoOnceAndNext,
@@ -243,7 +243,7 @@ public class V2EXManager {
         });
     }
 
-    private static String getProblemFromHtmlResponse(Context cxt, String response){
+    private static String getProblemFromHtmlResponse(Context cxt, String response) {
         Pattern errorPattern = Pattern.compile("<div class=\"problem\">(.*)</div>");
         Matcher errorMatcher = errorPattern.matcher(response);
         String errorContent;
@@ -257,14 +257,15 @@ public class V2EXManager {
 
     /**
      * 使用用户名密码登录
+     *
      * @param cxt
      * @param username 用户名
      * @param password 密码
-     * @param handler 返回结果处理
+     * @param handler  返回结果处理
      */
     public static void loginWithUsername(final Context cxt, final String username, final String password,
-                                         final HttpRequestHandler<Integer> handler){
-        requestOnceWithURLString(cxt, SIGN_IN_URL, new HttpRequestHandler<String>(){
+                                         final HttpRequestHandler<Integer> handler) {
+        requestOnceWithURLString(cxt, SIGN_IN_URL, new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
                 final String once = data;
@@ -302,7 +303,7 @@ public class V2EXManager {
         });
     }
 
-    private static String getUsernameFromResponce(String content){
+    private static String getUsernameFromResponce(String content) {
         Pattern userPattern = Pattern.compile("<a href=\"/member/([^\"]+)\" class=\"top\">");
         Matcher userMatcher = userPattern.matcher(content);
         if (userMatcher.find())
@@ -310,7 +311,7 @@ public class V2EXManager {
         return null;
     }
 
-    private static ArrayList<NodeModel> getNodeModelsFromResponse(String content){
+    private static ArrayList<NodeModel> getNodeModelsFromResponse(String content) {
         Pattern pattern = Pattern.compile("<a class=\"grid_item\" href=\"/go/([^\"]+)\" id=([^>]+)><div([^>]+)><img src=\"([^\"]+)([^>]+)><([^>]+)></div>([^<]+)");
         Matcher matcher = pattern.matcher(content);
         ArrayList<NodeModel> collections = new ArrayList<NodeModel>();
@@ -319,23 +320,23 @@ public class V2EXManager {
             node.name = matcher.group(1);
             node.title = matcher.group(7);
             node.url = matcher.group(4);
-            if(node.url.startsWith("//"))
-                node.url = "http:" +node.url;
+            if (node.url.startsWith("//"))
+                node.url = "http:" + node.url;
             else
                 node.url = "http://www.v2ex.com" + node.url;
             collections.add(node);
-            Log.i(TAG, node.name + node.title + node.url);
         }
         return collections;
     }
 
     /**
      * 获取自己的收藏的节点
+     *
      * @param context
      * @param handler
      */
     public static void getFavoriteNodes(final Context context,
-                                             final HttpRequestHandler<ArrayList<NodeModel>> handler){
+                                        final HttpRequestHandler<ArrayList<NodeModel>> handler) {
         getClient(context).get(MY_NODES_URL, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -350,13 +351,14 @@ public class V2EXManager {
         });
     }
 
-     /**
-      * 获取登陆用户的用户基本资料
-      * @param context
-      * @param profileHandler 用户基本资料的结果处理
-      */
-     public static void getProfile(final Context context,
-                                   final HttpRequestHandler<ArrayList<MemberModel>> profileHandler){
+    /**
+     * 获取登陆用户的用户基本资料
+     *
+     * @param context
+     * @param profileHandler 用户基本资料的结果处理
+     */
+    public static void getProfile(final Context context,
+                                  final HttpRequestHandler<ArrayList<MemberModel>> profileHandler) {
         getClient(context).get(BASE_HTTPS_URL, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -375,15 +377,16 @@ public class V2EXManager {
 
     /**
      * 回复话题
+     *
      * @param cxt
      * @param topicId 话题Id
      * @param content 评论内容
      * @param handler 结果处理事件
      */
     public static void replyCreateWithTopicId(final Context cxt, final int topicId, final String content,
-                                              final HttpRequestHandler<Integer> handler){
-        final String urlString =  BASE_HTTPS_URL + "/t/" + topicId;
-        requestOnceWithURLString(cxt, urlString, new HttpRequestHandler<String>(){
+                                              final HttpRequestHandler<Integer> handler) {
+        final String urlString = BASE_HTTPS_URL + "/t/" + topicId;
+        requestOnceWithURLString(cxt, urlString, new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
                 String once = data;
@@ -394,7 +397,7 @@ public class V2EXManager {
                 RequestParams params = new RequestParams();
                 params.put("content", content);
                 params.put("once", once);
-                client.post(urlString, params, new AsyncHttpResponseHandler(){
+                client.post(urlString, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String errorContent = getProblemFromHtmlResponse(cxt, new String(responseBody));
@@ -422,15 +425,16 @@ public class V2EXManager {
 
     /**
      * 创建新的话题
+     *
      * @param cxt
      * @param nodeName 节点名称
-     * @param title 话题的主标题
-     * @param content 话题的正文内容
-     * @param handler 结果处理事件
+     * @param title    话题的主标题
+     * @param content  话题的正文内容
+     * @param handler  结果处理事件
      */
     public static void topicCreateWithNodeName(final Context cxt, final String nodeName,
-        final String title, final String content,
-        final HttpRequestHandler<Integer> handler) {
+                                               final String title, final String content,
+                                               final HttpRequestHandler<Integer> handler) {
 
         final String urlString = BASE_HTTPS_URL + "/new/" + nodeName;
         requestOnceWithURLString(cxt, urlString, new HttpRequestHandler<String>() {
@@ -471,7 +475,7 @@ public class V2EXManager {
         });
     }
 
-    private static String getFavUrlStringFromResponse(String response){
+    private static String getFavUrlStringFromResponse(String response) {
         Pattern pattern = Pattern.compile("<a href=\"(.*)\">加入收藏</a>");
         Matcher matcher = pattern.matcher(response);
         if (matcher.find())
@@ -487,12 +491,13 @@ public class V2EXManager {
 
     /**
      * 某个节点加入收藏或者取消收藏
+     *
      * @param context
      * @param nodeName 节点名称
-     * @param handler 结果处理事件
+     * @param handler  结果处理事件
      */
     public static void favNodeWithNodeName(final Context context, String nodeName,
-                                           final HttpRequestHandler<Integer> handler){
+                                           final HttpRequestHandler<Integer> handler) {
         String urlString = BASE_HTTPS_URL + "/go/" + nodeName;
         final AsyncHttpClient client = getClient(context, false);
         client.addHeader("Referer", BASE_HTTPS_URL);
@@ -506,7 +511,7 @@ public class V2EXManager {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseBody) {
                 String favUrl = getFavUrlStringFromResponse(responseBody);
-                if(favUrl.isEmpty()){
+                if (favUrl.isEmpty()) {
                     handler.onFailure(V2ErrorTypeFavNodeFailure, context.getString(R.string.error_unknown));
                     return;
                 }
@@ -515,9 +520,9 @@ public class V2EXManager {
                 client.get(context, BASE_HTTPS_URL + favUrl, new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        if(statusCode == 302){
+                        if (statusCode == 302) {
                             handler.onSuccess(fav ? 200 : 201);
-                        } else{
+                        } else {
                             handler.onFailure(V2ErrorTypeFavNodeFailure, throwable.getMessage());
                         }
                     }
@@ -533,12 +538,13 @@ public class V2EXManager {
 
     /**
      * 将某个话题加入收藏或者取消收藏
+     *
      * @param context
      * @param topicId 话题ID号
      * @param handler 结果处理
      */
     public static void favTopicWithTopicId(final Context context, int topicId,
-                                           final HttpRequestHandler<Integer> handler){
+                                           final HttpRequestHandler<Integer> handler) {
         String urlString = BASE_HTTPS_URL + "/t/" + topicId;
         final AsyncHttpClient client = getClient(context, false);
         client.addHeader("Referer", BASE_HTTPS_URL);
@@ -563,9 +569,9 @@ public class V2EXManager {
                 client.get(context, BASE_HTTPS_URL + favUrl, new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        if(statusCode == 302){
+                        if (statusCode == 302) {
                             handler.onSuccess(fav ? 200 : 201);
-                        } else{
+                        } else {
                             handler.onFailure(V2ErrorTypeFavTopicFailure, throwable.getMessage());
                         }
                     }
@@ -576,44 +582,47 @@ public class V2EXManager {
                     }
                 });
             }
-         });
+        });
     }
 
-    public static void getNotificationToken(final Context context, final JsonHttpResponseHandler responseHandler) {
-        AsyncHttpClient client = getClient(context);
-        client.setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36");
-        client.get("https://www.v2ex.com/notifications", new TextHttpResponseHandler() {
+    /**
+     * 获取用户的未读提醒消息
+     * @param context
+     * @param handler
+     */
+    public static void getNotifications(final Context context,
+                                        final HttpRequestHandler<ArrayList<NotificationModel>> handler) {
+        String urlString = BASE_HTTPS_URL + "/notifications";
+        final AsyncHttpClient client = getClient(context, false);
+        client.addHeader("Referer", BASE_HTTPS_URL);
+        client.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        client.get(urlString, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                responseHandler.onFailure(statusCode, headers, responseString, throwable);
+                Log.e(TAG, throwable.getMessage());
+                handler.onFailure(statusCode, throwable.getMessage());
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseBody) {
-                Pattern tokenPattern = Pattern.compile("<input type=\"text\" value=\"https://www\\.v2ex\\.com/n/([^\\.]+)\\.xml\" class=\"sll\" onclick=\"this\\.select\\(\\);\" readonly=\"readonly\" />");
-                Matcher tokenMatcher = tokenPattern.matcher(responseBody);
-                try {
-                    JSONObject result = new JSONObject();
-                    if (tokenMatcher.find()) {
-                        result.put("result", "ok");
-                        result.put("token", tokenMatcher.group(1));
-                    } else {
-                        result.put("result", "fail");
-                    }
-                    responseHandler.onSuccess(statusCode, headers, result);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                ArrayList<NotificationModel> notifications = new ArrayList<NotificationModel>();
+                Document doc = Jsoup.parse(responseBody);
+                Elements elements = doc.body().getElementsByAttributeValue("class", "cell");
+                for (Element el : elements) {
+                    NotificationModel notification = new NotificationModel();
+                    if (notification.parse(el))
+                        notifications.add(notification);
                 }
+
+                handler.onSuccess(notifications);
             }
         });
     }
 
-    public static void getNotification(final Context context, String token, TextHttpResponseHandler responseHandler) {
-        getClient(context).get("https://www.v2ex.com/n/" + token + ".xml", responseHandler);
-    }
 
     /**
      * 退出登录
+     *
      * @param context
      */
     public static void logout(Context context) {
