@@ -1,0 +1,128 @@
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout android:background="#ffffff"
+        android:layout_width="match_parent" android:layout_height="match_parent" >
+
+        <ListView
+            android:id="@+id/list_fragment_user"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:listSelector="@android:color/transparent" />
+
+
+        <LinearLayout android:id="@+id/header_fragment_user"
+            android:layout_width="match_parent" android:layout_height="250dp"
+            android:background="#ffffff" android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent" android:layout_height="80dp" >
+
+                <ImageView android:id="@+id/header_logo_fragment_user"
+                    android:layout_width="64dp" android:layout_height="64dp"
+                    android:layout_marginLeft="12dp" android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_avatar" />
+
+                <LinearLayout
+                    android:layout_width="match_parent" android:layout_height="match_parent"
+                    android:layout_alignBottom="@+id/header_logo_fragment_user"
+                    android:layout_alignTop="@+id/header_logo_fragment_user"
+                    android:layout_marginLeft="12dp"
+                    android:layout_toRightOf="@+id/header_logo_fragment_user"
+                    android:orientation="vertical">
+
+                    <TextView android:id="@+id/txt_fragment_user_name"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Username" android:textColor="@color/colorPrimary" android:textSize="18sp" />
+
+                    <TextView android:id="@+id/txt_fragment_user_tagline"
+                        android:layout_width="wrap_content"  android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true" android:layout_marginTop="2dp"
+                        android:text="简介" />
+
+                    <TextView android:id="@+id/txt_fragment_user_description"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true" android:layout_marginTop="2dp"
+                        android:text="V2EX 第8888号会员" android:textColor="#222222" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <include layout="@layout/divide_15_top_bottom" />
+
+            <LinearLayout android:id="@+id/twitter_layout" android:gravity="center_vertical"
+                android:layout_width="match_parent" android:layout_height="36dp"
+                android:paddingLeft="15sp" android:paddingRight="15sp">
+
+                <View android:layout_width="20dp" android:layout_height="20dp"
+                    android:layout_marginRight="15dp" android:background="@drawable/ic_twitter" />
+
+                <TextView android:id="@+id/title_twitter_account" android:layout_weight="1"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:ellipsize="end" android:singleLine="true"
+                    android:text="greatyao" android:textColor="#222222" android:textSize="16sp" />
+
+                <include layout="@layout/list_item_common_arrow" />
+
+            </LinearLayout>
+
+            <include layout="@layout/divide_1_12" />
+
+            <LinearLayout android:id="@+id/github_layout" android:gravity="center_vertical"
+                android:layout_width="match_parent" android:layout_height="36dp"
+                android:paddingLeft="15sp"    android:paddingRight="15sp">
+
+                <View android:layout_width="20dp" android:layout_height="20dp"
+                    android:layout_marginRight="15dp" android:background="@drawable/ic_github" />
+
+                <TextView android:id="@+id/title_github_account" android:layout_weight="1"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:ellipsize="end" android:singleLine="true"
+                    android:text="greatyao" android:textColor="#222222" android:textSize="16sp" />
+
+                <include layout="@layout/list_item_common_arrow" />
+
+            </LinearLayout>
+
+            <include layout="@layout/divide_1_12" />
+
+            <LinearLayout android:id="@+id/homepage_layout" android:gravity="center_vertical"
+                android:layout_width="match_parent" android:layout_height="36dp"
+                android:paddingLeft="15sp"    android:paddingRight="15sp">
+
+                <View android:layout_width="20dp" android:layout_height="20dp"
+                    android:layout_marginRight="15dp" android:background="@drawable/ic_homepage" />
+
+                <TextView android:id="@+id/title_homepage" android:layout_weight="1"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:ellipsize="end" android:singleLine="true"
+                    android:text="http://blog.yaoyumeng.com" android:textColor="#222222" android:textSize="16sp" />
+
+                <include layout="@layout/list_item_common_arrow" />
+
+            </LinearLayout>
+
+            <include layout="@layout/divide_1_12" />
+
+            <LinearLayout android:id="@+id/location_layout" android:gravity="center_vertical"
+                android:layout_width="match_parent" android:layout_height="36dp"
+                android:paddingLeft="15sp"    android:paddingRight="15sp">
+
+                <View android:layout_width="20dp" android:layout_height="20dp"
+                    android:layout_marginRight="15dp" android:background="@drawable/ic_location" />
+
+                <TextView android:id="@+id/title_location" android:layout_weight="1"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:ellipsize="end" android:singleLine="true"
+                    android:text="CN" android:textColor="#222222" android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <include layout="@layout/divide_15_top_bottom" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

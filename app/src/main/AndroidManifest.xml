@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yaoyumeng.v2ex" >
+    /** permission **/
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:name=".Application"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/V2EX.AppTheme.Base" >
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5538403067e58e38e6001af9" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel1" />
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:theme="@style/V2EX.ActivityTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.LoginActivity"
+            android:parentActivityName=".ui.MainActivity" >
+        </activity>
+        <activity
+            android:name=".ui.NodeActivity"
+            android:parentActivityName=".ui.MainActivity" >
+
+            <!--
+                meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.yaoyumeng.v2ex.ui.MainActivity"
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.v2ex.com"
+                    android:pathPattern="/go/.*"
+                    android:scheme="http" />
+                <data
+                    android:host="www.v2ex.com"
+                    android:pathPattern="/go/.*"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.TopicActivity"
+            android:label="@string/title_activity_topic"
+            android:parentActivityName=".ui.MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.v2ex.com"
+                    android:pathPattern="/t/.*"
+                    android:scheme="http" />
+                <data
+                    android:host="www.v2ex.com"
+                    android:pathPattern="/t/.*"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.yaoyumeng.v2ex.ui.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.MainActivity" />
+        <activity
+            android:name=".ui.UserActivity"
+            android:parentActivityName=".ui.MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.v2ex.com"
+                    android:pathPattern="/member/.*"
+                    android:scheme="http" />
+                <data
+                    android:host="www.v2ex.com"
+                    android:pathPattern="/member/.*"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.yaoyumeng.v2ex.ui.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.TopicAddActivity"
+            android:label="@string/title_activity_topic_add"
+            android:parentActivityName=".ui.NodeActivity" >
+        </activity>
+        <activity
+            android:name=".ui.TopicCommentActivity"
+            android:label="@string/title_activity_topic_comment"
+            android:parentActivityName=".ui.TopicActivity">
+        </activity>
+    </application>
+
+</manifest>

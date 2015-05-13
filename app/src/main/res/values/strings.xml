@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">V2EX</string>
+    <string name="app_sub_name">发掘你的潜能</string>
+    <string name="app_author">njustyw</string>
+
+    <string name="topic">话题</string>
+    <string name="just_now">刚刚</string>
+
+    <string name="login_user_hint">用户名</string>
+    <string name="login_passwd_hint">密码</string>
+    <string name="login_please_login">尚未登录</string>
+    <string name="login_login">登录</string>
+    <string name="login_loging">登录中...</string>
+    <string name="login_obtain_profile">获取用户基本信息...</string>
+    <string name="login_error_empty_user">用户名不能为空</string>
+    <string name="login_error_empty_passwd">密码不能为空</string>
+    <string name="login_signup">没有V2EX帐号，点此注册</string>
+    <string name="login_v2ex_description">V2EX 是创意工作者们的社区。这里目前汇聚了超过 110,000 名主要来自互联网行业、游戏行业和媒体行业的创意工作者。</string>
+
+    <string name="error_title">错误</string>
+    <string name="error_obtain_once">无法获取ONCE</string>
+    <string name="error_network_exception">网络通信异常，请稍后重试</string>
+    <string name="error_network_disconnect">网络不可达,请开启Wifi或者移动数据网络</string>
+    <string name="error_reply">无法回复</string>
+    <string name="error_create_topic">无法创建新话题</string>
+    <string name="error_login">无法登录</string>
+    <string name="error_unknown">未知错误</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="title_drawer_latest">最新</string>
+    <string name="title_drawer_hot">热门</string>
+    <string name="title_drawer_all_nodes">所有</string>
+    <string name="title_drawer_fav_nodes">收藏</string>
+    <string name="title_drawer_settings">设置</string>
+
+    <string name="title_main_latest">最新话题</string>
+    <string name="title_main_hot">热门话题</string>
+    <string name="title_main_all_nodes">所有节点</string>
+    <string name="title_main_fav_nodes">节点收藏</string>
+    <string name="title_main_settings">设置</string>
+
+
+    <string name="fav_nodes_empty">没有收藏的节点,请登录或者到所有节点页面下添加节点</string>
+    <string name="fav_nodes_working">节点收藏中...</string>
+    <string name="fav_nodes_ok">节点加入收藏</string>
+    <string name="unfav_nodes_ok">节点取消收藏</string>
+    <string name="fav_topic_working">话题收藏中...</string>
+    <string name="fav_topic_ok">话题加入收藏</string>
+    <string name="unfav_topic_ok">话题取消收藏</string>
+
+    <string name="title_activity_settings">设置</string>
+    <string name="settings_nomal">常规设置</string>
+    <string name="settings_more">其他</string>
+    <string name="settings_use_https">使用HTTPS</string>
+    <string name="settings_clear_cache">清除缓存</string>
+    <string name="settings_noimage_nowifi">无图模式</string>
+    <string name="settings_noimage_nowifi_summary">2G/3G网络下不显示图片</string>
+    <string name="settings_check_update">检查更新</string>
+    <string name="settings_check_update_summary">检测是否有新版本</string>
+    <string name="settings_feedback">意见反馈</string>
+    <string name="settings_feedback_summary">去软件市场上给个好评</string>
+    <string name="settings_about">关于我们</string>
+    <string name="settings_about_summary">关于我们、版权信息</string>
+    <string name="settings_aboutme_format">%1$s%2$s%3$sby %4$s</string>
+
+    <string name="memu_title_share">分享</string>
+    <string name="memu_title_star">收藏</string>
+    <string name="memu_title_unstar">取消收藏</string>
+    <string name="memu_title_reply">回复</string>
+
+    <string name="title_activity_topic">话题详情</string>
+
+    <string name="title_fragment_comment_hint">这里输入你的回复内容</string>
+    <string name="title_fragment_comment_yes">回复</string>
+    <string name="title_fragment_comment_cancel">取消</string>
+
+    <string name="title_activity_topic_add">创作新话题</string>
+    <string name="topic_add_title_hint">输入标题</string>
+    <string name="topic_add_content_hint">来，写点内容吧</string>
+    <string name="topic_add_quit_or_not">放弃此次创建话题机会？</string>
+    <string name="topic_add_working">创建话题中...</string>
+
+
+    <string name="title_confirm_yes">确定</string>
+    <string name="title_confirm_cancel">取消</string>
+
+    <string name="title_activity_topic_comment">回复话题</string>
+    <string name="topic_comment_content_hint">来，写点回复吧</string>
+    <string name="topic_comment_working">正在发表回复...</string>
+    <string name="topic_comment_succeed">回复成功</string>
+
+    <string name="action_settings">Settings</string>
+</resources>

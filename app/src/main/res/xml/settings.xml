@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="settings_settings"
+        android:title="@string/settings_nomal">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_noimage_nowifi"
+            android:summary="@string/settings_noimage_nowifi_summary"
+            android:title="@string/settings_noimage_nowifi" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_https"
+            android:title="@string/settings_use_https"/>
+
+        <Preference
+            android:key="pref_cache"
+            android:title="@string/settings_clear_cache"
+            android:summary="0KB"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_more">
+
+        <Preference
+            android:key="pref_check_update"
+            android:title="@string/settings_check_update"
+            android:summary="@string/settings_check_update_summary"/>
+
+        <Preference
+            android:key="pref_feedback"
+            android:title="@string/settings_feedback"
+            android:summary="@string/settings_feedback_summary"/>
+
+        <Preference
+            android:key="pref_about"
+            android:title="@string/settings_about"
+            android:summary="@string/settings_about_summary"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

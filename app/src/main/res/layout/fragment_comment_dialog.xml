@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_fragment_comment_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="100dp"
+    android:maxHeight="200dp"
+    android:padding="16dp"
+    android:gravity="top"
+    android:maxLength="10000"
+    android:background="@android:color/transparent"
+    android:hint="@string/title_fragment_comment_hint"/>

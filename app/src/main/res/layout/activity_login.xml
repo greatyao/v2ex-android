@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="V2EX for Android"
+        android:padding="16dp"
+        android:gravity="center"
+        android:textSize="32sp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_v2ex_description"
+        android:gravity="center"
+        android:padding="8dp"
+        />
+
+    <EditText
+        android:id="@+id/login_username_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:singleLine="true"
+        android:drawableLeft="@drawable/ic_person"
+        android:drawablePadding="8dp"
+        android:textColor="#222222"
+        android:hint="@string/login_user_hint" />
+
+    <EditText
+        android:id="@+id/login_password_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/login_passwd_hint"
+        android:singleLine="true"
+        android:inputType="textPassword"
+        android:textColor="#222222"
+        android:drawableLeft="@drawable/ic_lock"
+        android:drawablePadding="8dp"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/login_login_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/login_button"
+        android:textStyle="bold"
+        android:text="@string/login_login"/>
+
+    <TextView
+        android:id="@+id/login_sign_up_txt"
+        style="?android:borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/login_signup"
+        android:textSize="14sp"
+        android:textColor="#555"
+        android:onClick="onClick"
+        />
+
+
+</LinearLayout>
