@@ -49,9 +49,11 @@ public class NodeActivity extends BaseActivity {
                 bundle.putString("node_name", mNodeName);
             } else {
                 mNode = (NodeModel) intent.getParcelableExtra("model");
-                mNodeId = mNode.id;
                 setTitle(mNode.title);
-                bundle.putInt("node_id", mNodeId);
+                mNodeId = mNode.id;
+                mNodeName = mNode.name;
+                //bundle.putInt("node_id", mNodeId);
+                bundle.putString("node_name", mNodeName);
             }
         } else {
             mNodeId = savedInstanceState.getInt("id");

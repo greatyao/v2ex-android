@@ -11,7 +11,7 @@ public final class DatabaseHelper extends SQLiteOpenHelper {
 
     //db
     public static final String DB_NAME = "v2ex.db";
-    public static final int DB_VERSION = 5;
+    public static final int DB_VERSION = 6;
 
     // 话题数据表(话题ID,收藏状态,阅读状态)
     public static final String TOPIC_TABLE_NAME = "topics_table";
@@ -29,12 +29,12 @@ public final class DatabaseHelper extends SQLiteOpenHelper {
     //节点数据表(节点ID,收藏状态)
     public static final String NODE_TABLE_NAME = "nodes_table";
     public static final String NODE_COLUMN_ID = "_id";
-    public static final String NODE_COLUMN_NODEID = "node_id";
+    public static final String NODE_COLUMN_NODENAME = "node_name";
     public static final String NODE_COLUMN_ISFAVOR = "isfavored";
 
     private static final String NODE_TABLE_CREATE = "CREATE TABLE " + NODE_TABLE_NAME
             + "(" + NODE_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + NODE_COLUMN_NODEID + " INTEGER UNIQUE, "
+            + NODE_COLUMN_NODENAME + " CHAR(256) UNIQUE NOT NULL, "
             + NODE_COLUMN_ISFAVOR + " INTEGER NOT NULL);";
 
     private volatile static DatabaseHelper mDBHelper;

@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 
 /**
@@ -19,15 +20,15 @@ public class V2EXDataSource {
 
     final String TAG = "V2EXDataSource";
 
-    private String[] allColumns = { DatabaseHelper.TOPIC_COLUMN_TOPICID,
-            DatabaseHelper.TOPIC_COLUMN_READ,
-            DatabaseHelper.TOPIC_COLUMN_FAVOR };
-
     public V2EXDataSource(DatabaseHelper dbHelper) {
         database = dbHelper.getWritableDatabase();
     }
 
-    private void insert(TopicModel model, boolean read, boolean favor) {
+    private String[] allColumns = { DatabaseHelper.TOPIC_COLUMN_TOPICID,
+            DatabaseHelper.TOPIC_COLUMN_READ,
+            DatabaseHelper.TOPIC_COLUMN_FAVOR };
+
+    private void insertTopic(TopicModel model, boolean read, boolean favor) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.TOPIC_COLUMN_TOPICID, model.id);
         values.put(DatabaseHelper.TOPIC_COLUMN_FAVOR, favor ? 1 : 0);
@@ -46,7 +47,7 @@ public class V2EXDataSource {
 
         //数据项不存在,插入
         if(!isTopicExisted(topicId)){
-            insert(model, true, false);
+            insertTopic(model, true, false);
             return true;
         }
 
@@ -71,7 +72,7 @@ public class V2EXDataSource {
             return false;
 
         if (!isTopicExisted(topicId)) {
-            insert(model, false, true);
+            insertTopic(model, false, true);
             return true;
         }
 
@@ -108,6 +109,7 @@ public class V2EXDataSource {
                 null, null, null);
 
         if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            cursor.close();
             return true;
         }
 
@@ -129,9 +131,87 @@ public class V2EXDataSource {
 
         if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
             result = cursor.getInt(cursor.getColumnIndex(column));
+            cursor.close();
         }
 
-        cursor.close();
         return result;
     }
+
+
+    private String[] allNodeColumns = {DatabaseHelper.NODE_COLUMN_NODENAME,
+            DatabaseHelper.NODE_COLUMN_ISFAVOR };
+
+    private void insertNode(String nodeName, boolean favor) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.NODE_COLUMN_NODENAME, nodeName);
+        values.put(DatabaseHelper.NODE_COLUMN_ISFAVOR, favor ? 1 : 0);
+        database.insert(DatabaseHelper.NODE_TABLE_NAME, null, values);
+    }
+
+    private boolean isNodeExisted(String nodeName) {
+        Cursor cursor = database.query(DatabaseHelper.NODE_TABLE_NAME, allNodeColumns,
+                DatabaseHelper.NODE_COLUMN_NODENAME + "='" + nodeName + "'", null,
+                null, null, null);
+
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            cursor.close();
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 节点是否已收藏
+     */
+    public boolean isNodeFavorite(String nodeName) {
+        Cursor cursor = database.query(DatabaseHelper.NODE_TABLE_NAME, allNodeColumns,
+                DatabaseHelper.NODE_COLUMN_NODENAME + " ='" + nodeName + "'", null,
+                null, null, null);
+
+        int result = 0;
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            result = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.NODE_COLUMN_ISFAVOR));
+            cursor.close();
+        }
+
+        Log.i(TAG, nodeName+result);
+        return result == 1;
+    }
+
+    /**
+     * 将某个节点加入收藏或者取消收藏
+     */
+    public boolean favoriteNode(String nodeName, boolean favor){
+        Log.i(TAG, "favoriteNode"+nodeName);
+
+        if(!isNodeExisted(nodeName)){
+            Log.i(TAG, "insertNode"+nodeName);
+            insertNode(nodeName, favor);
+            return true;
+        }
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.NODE_COLUMN_ISFAVOR, favor ? 1 : 0);
+        database.update(DatabaseHelper.NODE_TABLE_NAME, values,
+                DatabaseHelper.NODE_COLUMN_NODENAME + " ='" + nodeName + "'",
+                null);
+        return true;
+    }
+
+    ArrayList<String> getAllFavorNodes(){
+        ArrayList<String> nodes = new ArrayList<String>();
+        Cursor cursor = database.query(DatabaseHelper.NODE_TABLE_NAME, allNodeColumns,
+                DatabaseHelper.NODE_COLUMN_ISFAVOR + " = " + 1, null, null, null,
+                null);
+        if (cursor != null && cursor.getCount() > 0 ){
+            while(cursor.moveToFirst()) {
+                nodes.add(cursor.getString(cursor.getColumnIndex(DatabaseHelper.NODE_TABLE_NAME)));
+            }
+            cursor.close();
+        }
+
+        return nodes;
+    }
+
 }

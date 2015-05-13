@@ -172,6 +172,7 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
         mStarItem = menu.findItem(R.id.menu_node_star);
         mUnStarItem = menu.findItem(R.id.menu_node_unstar);
         if (mShowMenu && mIsLogin) {
+            mIsStarred = mDataSource.isNodeFavorite(mNodeName);
             mStarItem.setVisible(!mIsStarred);
             mUnStarItem.setVisible(mIsStarred);
         } else {
@@ -250,6 +251,7 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
             mIsStarred = data == 200;
             mStarItem.setVisible(!mIsStarred);
             mUnStarItem.setVisible(mIsStarred);
+            mDataSource.favoriteNode(mNodeName, mIsStarred);
             MessageUtils.showMiddleToast(getActivity(),
                     getString(mIsStarred ? R.string.fav_nodes_ok : R.string.unfav_nodes_ok));
         }

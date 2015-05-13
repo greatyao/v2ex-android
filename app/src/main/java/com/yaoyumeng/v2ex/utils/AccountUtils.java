@@ -2,6 +2,7 @@ package com.yaoyumeng.v2ex.utils;
 
 import android.content.Context;
 
+import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NodeModel;
@@ -20,7 +21,6 @@ public class AccountUtils {
     public static final int REQUEST_LOGIN = 0;
 
     private static final String key_login_member = "logined@member";
-    private static final String key_collections = "logined@collections";
     private static final String key_fav_nodes = "logined@fav_nodes";
 
     /**
@@ -69,8 +69,11 @@ public class AccountUtils {
         data.delete();
     }
 
-    public static void writeFavoriteNodes(Context cxt, ArrayList<NodeModel> collections) {
-        PersistenceHelper.saveObject(cxt, collections, key_fav_nodes);
+    public static void writeFavoriteNodes(Context cxt, ArrayList<NodeModel> nodes) {
+        PersistenceHelper.saveObject(cxt, nodes, key_fav_nodes);
+        for(NodeModel node : nodes){
+            Application.getDataSource().favoriteNode(node.name, true);
+        }
     }
 
     public static ArrayList<NodeModel> readFavoriteNodes(Context cxt) {

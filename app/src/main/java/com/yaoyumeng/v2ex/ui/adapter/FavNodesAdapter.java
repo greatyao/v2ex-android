@@ -26,8 +26,6 @@ public class FavNodesAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        android.util.Log.i("FavNodesAdapter:getItem", mNodes.get(position).title);
-
         TopicsFragment nodeFragment = new TopicsFragment();
         Bundle argument = new Bundle();
         argument.putString("node_name", mNodes.get(position).name);
