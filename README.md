@@ -24,15 +24,15 @@ V2EX社区客户端，非官方。
 
 ### 屏幕截图
 
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/latest.jpg" width="150" height="264"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/hot.jpg" width="150" height="264"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/nodes.jpg" width="150" height="264"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/favor.jpg" width="150" height="264"/>
+<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/latest.png" width="150" height="264"/>
+<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/hot.png" width="150" height="264"/>
+<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/nodes.png" width="150" height="264"/>
+<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/favor.png" width="150" height="264"/>
 
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/topic_details.jpg" width="150" height="264"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/user_details.jpg" width="150" height="264"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/topic_add.jpg" width="150" height="264"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/topic_reply.jpg" width="150" height="264"/>
+<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/topic_details.png" width="150" height="264"/>
+<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/user_details.png" width="150" height="264"/>
+<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/topic_add.png" width="150" height="264"/>
+<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/topic_reply.png" width="150" height="264"/>
 
 
 ### LICENSE
