@@ -25,6 +25,7 @@ public class ReplyModel extends V2EXModel implements Parcelable {
         contentRendered = jsonObject.getString("content_rendered")
                 .replace("href=\"/member/", "href=\"http://www.v2ex.com/member/")
                 .replace("href=\"/i/", "href=\"https://i.v2ex.co/")
+                .replace("href=\"/t/", "href=\"http://www.v2ex.com/t/")
                 .replace("href=\"/go/", "href=\"http://www.v2ex.com/go/");
         member = new MemberModel();
         member.parse(jsonObject.getJSONObject("member"));
