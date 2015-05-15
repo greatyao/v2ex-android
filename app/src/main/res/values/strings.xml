@@ -97,6 +97,7 @@
     <string name="topic_comment_content_hint">来，写点回复吧</string>
     <string name="topic_comment_working">正在发表回复...</string>
     <string name="topic_comment_succeed">回复成功</string>
+    <string name="topic_comment_not_empty">回复内容不能为空</string>
 
     <string name="action_settings">Settings</string>
 </resources>

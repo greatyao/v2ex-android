@@ -66,6 +66,10 @@ public class TopicFragment extends BaseFragment
         @Override
         public void onClick(View v) {
             String content = mEnterLayout.getContent();
+            if(content.isEmpty()){
+                MessageUtils.showMiddleToast(getActivity(), getString(R.string.topic_comment_not_empty));
+                return;
+            }
             InputUtils.popSoftkeyboard(getActivity(), mEnterLayout.content, false);
             ((BaseActivity) getActivity()).showProgressBar(R.string.topic_comment_working);
             V2EXManager.replyCreateWithTopicId(getActivity(), mTopicId, content, new CommentHelper());
