@@ -19,7 +19,7 @@ import com.yaoyumeng.v2ex.utils.AccountUtils;
  * Created by yugy on 14-1-29.
  */
 public class BaseActivity extends ActionBarActivity
-        implements AccountUtils.OAccountListener, BaseFragment.BackHandledInterface{
+        implements AccountUtils.OnAccountListener, BaseFragment.BackHandledInterface{
 
     private ProgressDialog mProgressDialog;
     protected boolean mIsLogin;

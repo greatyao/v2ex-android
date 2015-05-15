@@ -18,4 +18,15 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <TextView
+        android:id="@+id/txt_fragment_notification_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="32dp"
+        android:text="@string/notification_empty"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+
 </LinearLayout>

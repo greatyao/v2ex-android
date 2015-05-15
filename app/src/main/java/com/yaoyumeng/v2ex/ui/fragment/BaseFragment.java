@@ -11,7 +11,7 @@ import com.yaoyumeng.v2ex.utils.AccountUtils;
 /**
  * Created by yw on 2015/5/3.
  */
-public class BaseFragment extends Fragment implements AccountUtils.OAccountListener {
+public class BaseFragment extends Fragment implements AccountUtils.OnAccountListener {
 
     protected boolean mIsLogin;
     protected MemberModel mLoginProfile;

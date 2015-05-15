@@ -9,9 +9,11 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.V2EXManager;
+import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NotificationModel;
 import com.yaoyumeng.v2ex.ui.MainActivity;
 import com.yaoyumeng.v2ex.ui.adapter.NotificationsAdapter;
@@ -27,6 +29,7 @@ public class NotificationFragment extends BaseFragment implements V2EXManager.Ht
     RecyclerView mRecyclerView;
     NotificationsAdapter mAdapter;
     SwipeRefreshLayout mSwipeLayout;
+    private TextView mEmptyText;
     boolean mIsLoading;
     RecyclerView.LayoutManager mLayoutManager;
 
@@ -53,6 +56,8 @@ public class NotificationFragment extends BaseFragment implements V2EXManager.Ht
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
+        mEmptyText = (TextView) rootView.findViewById(R.id.txt_fragment_notification_empty);
+
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -73,6 +78,31 @@ public class NotificationFragment extends BaseFragment implements V2EXManager.Ht
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if(!mIsLogin){
+            mSwipeLayout.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyText.setVisibility(View.VISIBLE);
+        } else {
+            mEmptyText.setVisibility(View.GONE);
+            mSwipeLayout.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+
+            mSwipeLayout.setRefreshing(true);
+            requestNotifications();
+        }
+    }
+
+    @Override
+    public void onLogin(MemberModel member) {
+       super.onLogin(member);
+
+        //登录,刷新信息
+        mEmptyText.setVisibility(View.GONE);
+        mSwipeLayout.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+
+        mSwipeLayout.setRefreshing(true);
         requestNotifications();
     }
 

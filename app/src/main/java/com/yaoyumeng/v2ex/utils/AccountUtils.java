@@ -26,19 +26,19 @@ public class AccountUtils {
     /**
      * 帐号登陆登出监听接口
      */
-    public static interface OAccountListener{
+    public static interface OnAccountListener{
         abstract public void onLogout();
 
         abstract public void onLogin(MemberModel member);
     }
 
-    private static HashSet<OAccountListener> listeners = new HashSet<OAccountListener>();
+    private static HashSet<OnAccountListener> listeners = new HashSet<OnAccountListener>();
 
     /**
      * 注册登录接口
      * @param listener
      */
-    public static void registerAccountListener(OAccountListener listener){
+    public static void registerAccountListener(OnAccountListener listener){
         listeners.add(listener);
     }
 
@@ -46,7 +46,7 @@ public class AccountUtils {
      * 取消登录接口的注册
      * @param listener
      */
-    public static void unregisterAccountListener(OAccountListener listener){
+    public static void unregisterAccountListener(OnAccountListener listener){
         listeners.remove(listener);
     }
 
@@ -71,9 +71,9 @@ public class AccountUtils {
         refreshFavoriteNodes(cxt);
 
         //通知所有页面,登录成功,更新用户信息
-        Iterator<OAccountListener> iterator = listeners.iterator();
+        Iterator<OnAccountListener> iterator = listeners.iterator();
         while(iterator.hasNext()){
-            OAccountListener listener = iterator.next();
+            OnAccountListener listener = iterator.next();
             listener.onLogin(profile);
         }
     }
@@ -136,16 +136,16 @@ public class AccountUtils {
         removeFavNodes(cxt);
 
         //通知所有页面退出登录了,清除登录痕迹
-        Iterator<OAccountListener> iterator = listeners.iterator();
+        Iterator<OnAccountListener> iterator = listeners.iterator();
         while(iterator.hasNext()){
-            OAccountListener listener = iterator.next();
+            OnAccountListener listener = iterator.next();
             listener.onLogout();
         }
     }
 
-    static class FavNodesHelper implements V2EXManager.HttpRequestHandler<ArrayList<NodeModel>>{
+    public static class FavNodesHelper implements V2EXManager.HttpRequestHandler<ArrayList<NodeModel>>{
         Context mContext;
-        FavNodesHelper(Context cxt){
+        public FavNodesHelper(Context cxt){
             mContext = cxt;
         }
 

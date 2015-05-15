@@ -70,6 +70,7 @@
     <string name="settings_aboutme_format">%1$s%2$s%3$sby %4$s</string>
 
     <string name="notification_message">没有任何提醒消息</string>
+    <string name="notification_empty">无法显示提醒消息,请登录</string>
 
     <string name="memu_title_share">分享</string>
     <string name="memu_title_star">收藏</string>
