@@ -2,27 +2,24 @@ package com.yaoyumeng.v2ex.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.etsy.android.grid.StaggeredGridView;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.ui.MainActivity;
-import com.yaoyumeng.v2ex.ui.NodeActivity;
 import com.yaoyumeng.v2ex.ui.adapter.AllNodesAdapter;
 import com.yaoyumeng.v2ex.ui.widget.AlphaView;
 
@@ -33,8 +30,9 @@ import java.util.ArrayList;
  */
 public class AllNodesFragment extends BaseFragment
         implements AlphaView.OnAlphaChangedListener, V2EXManager.HttpRequestHandler<ArrayList<NodeModel>> {
-    static String TAG = "NodesActivity";
-    StaggeredGridView mGridView;
+    private static final String TAG = "AllNodesFragment";
+    RecyclerView mRecyclerView;
+    RecyclerView.LayoutManager mLayoutManager;
     AllNodesAdapter mNodeAdapter;
     AlphaView mAlphaView;
     TextView mOverlay;
@@ -56,17 +54,11 @@ public class AllNodesFragment extends BaseFragment
         mNodeAdapter = new AllNodesAdapter(context);
         mAlphaView = (AlphaView) layout.findViewById(R.id.alpha_view);
         mAlphaView.setOnAlphaChangedListener(this);
-        mGridView = (StaggeredGridView) layout.findViewById(R.id.grid_all_node);
-        mGridView.setAdapter(mNodeAdapter);
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                NodeModel node = (NodeModel) mNodeAdapter.getItem(position);
-                Intent intent = new Intent(context, NodeActivity.class);
-                intent.putExtra("model", (Parcelable) node);
-                startActivity(intent);
-            }
-        });
+        mRecyclerView = (RecyclerView) layout.findViewById(R.id.grid_all_node);
+
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mNodeAdapter);
 
         mOverlay = (TextView) inflater.inflate(R.layout.overlay, null);
         mOverlay.setVisibility(View.INVISIBLE);
@@ -141,9 +133,7 @@ public class AllNodesFragment extends BaseFragment
             handler.postDelayed(overlayThread, 500);
             if (mNodeAdapter.getAlphaPosition().get(s) != null) {
                 int position = mNodeAdapter.getAlphaPosition().get(s);
-                mGridView.setNeedSync(true);
-                mGridView.setSelection(position);
-                mGridView.smoothScrollBy(100, 10);
+                mLayoutManager.scrollToPosition(position);
             }
         }
     }

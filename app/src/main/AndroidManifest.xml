@@ -84,10 +84,6 @@
                 android:value="com.yaoyumeng.v2ex.ui.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".ui.MainActivity" />
-        <activity
             android:name=".ui.UserActivity"
             android:parentActivityName=".ui.MainActivity" >
             <intent-filter>

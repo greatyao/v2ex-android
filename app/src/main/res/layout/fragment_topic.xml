@@ -11,13 +11,11 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <ListView
-            android:id="@+id/replies_listview"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_replies"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:divider="@android:color/transparent">
-        </ListView>
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

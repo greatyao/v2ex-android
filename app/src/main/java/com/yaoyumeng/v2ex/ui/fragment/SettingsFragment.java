@@ -29,6 +29,7 @@ import com.yaoyumeng.v2ex.utils.FileUtils;
 import com.yaoyumeng.v2ex.utils.PhoneUtils;
 
 /**
+ * 设置
  * Created by yw on 2015/5/13.
  */
 public class SettingsFragment extends PreferenceFragment{
@@ -61,7 +62,7 @@ public class SettingsFragment extends PreferenceFragment{
         root.removeView(localListView);
 
         ViewGroup localViewGroup = (ViewGroup) LayoutInflater.from(getActivity())
-                .inflate(R.layout.activity_settings, null);
+                .inflate(R.layout.fragment_settings, null);
         ((ViewGroup) localViewGroup.findViewById(R.id.setting_content))
                 .addView(localListView, -1, -1);
         localViewGroup.setVisibility(View.VISIBLE);
@@ -151,7 +152,7 @@ public class SettingsFragment extends PreferenceFragment{
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
-        dialog.setContentView(R.layout.activity_settings_dialog_aboutme);
+        dialog.setContentView(R.layout.settings_dialog_aboutme);
 
         TextView textView = (TextView) dialog.findViewById(R.id.dialog_text);
         textView.setOnClickListener(new View.OnClickListener() {

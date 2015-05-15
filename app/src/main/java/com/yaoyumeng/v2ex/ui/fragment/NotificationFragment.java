@@ -1,22 +1,21 @@
 package com.yaoyumeng.v2ex.ui.fragment;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.NotificationModel;
 import com.yaoyumeng.v2ex.ui.MainActivity;
-import com.yaoyumeng.v2ex.ui.TopicActivity;
-import com.yaoyumeng.v2ex.ui.adapter.NotificationAdapter;
+import com.yaoyumeng.v2ex.ui.adapter.NotificationsAdapter;
+import com.yaoyumeng.v2ex.utils.MessageUtils;
 
 import java.util.ArrayList;
 
@@ -25,14 +24,16 @@ import java.util.ArrayList;
  */
 public class NotificationFragment extends BaseFragment implements V2EXManager.HttpRequestHandler<ArrayList<NotificationModel>> {
     public static final String TAG = "NotificationFragment";
-    ListView mListView;
-    NotificationAdapter mAdapter;
+    RecyclerView mRecyclerView;
+    NotificationsAdapter mAdapter;
     SwipeRefreshLayout mSwipeLayout;
     boolean mIsLoading;
+    RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAdapter = new NotificationsAdapter(getActivity());
     }
 
     @Override
@@ -46,21 +47,11 @@ public class NotificationFragment extends BaseFragment implements V2EXManager.Ht
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notification, container, false);
 
-        mListView = (ListView) rootView.findViewById(R.id.notification_listview);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notification_listview);
+        mLayoutManager = new LinearLayoutManager(getActivity());
 
-        mAdapter = new NotificationAdapter(getActivity());
-        mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                NotificationModel notification = (NotificationModel) mAdapter.getItem(position);
-                if (notification != null) {
-                    Intent intent = new Intent(getActivity(), TopicActivity.class);
-                    intent.putExtra("topic_id", notification.notificationTopic.id);
-                    startActivity(intent);
-                }
-            }
-        });
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
 
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -89,7 +80,10 @@ public class NotificationFragment extends BaseFragment implements V2EXManager.Ht
     public void onSuccess(ArrayList<NotificationModel> data) {
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
-        if (data.size() == 0) return;
+        if (data.size() == 0) {
+            MessageUtils.showMiddleToast(getActivity(), getString(R.string.notification_message));
+            return;
+        }
 
         mAdapter.update(data);
     }
@@ -98,6 +92,7 @@ public class NotificationFragment extends BaseFragment implements V2EXManager.Ht
     public void onFailure(int reason, String error) {
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
+        MessageUtils.showErrorMessage(getActivity(), error);
     }
 
     private void requestNotifications() {

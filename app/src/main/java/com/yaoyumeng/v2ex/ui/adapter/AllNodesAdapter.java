@@ -1,12 +1,19 @@
 package com.yaoyumeng.v2ex.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.TextView;
 
+import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.model.NodeModel;
-import com.yaoyumeng.v2ex.ui.widget.NodeView;
+import com.yaoyumeng.v2ex.ui.NodeActivity;
 import com.yaoyumeng.v2ex.utils.PinyinAlpha;
 import com.yaoyumeng.v2ex.utils.PinyinComparator;
 
@@ -21,7 +28,7 @@ import java.util.TreeMap;
 /**
  * Created by yw on 2015/4/28.
  */
-public class AllNodesAdapter extends BaseAdapter {
+public class AllNodesAdapter extends RecyclerView.Adapter<AllNodesAdapter.ViewHolder> {
     Context mContext;
     List<NodeModel> mNodes = new ArrayList<NodeModel>();
     HashMap<String, Integer> mAlphaPosition = new HashMap<String, Integer>();
@@ -35,29 +42,39 @@ public class AllNodesAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_node, viewGroup, false);
+        return new ViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        final NodeModel node = mNodes.get(position);
+
+        viewHolder.card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, NodeActivity.class);
+                intent.putExtra("model", (Parcelable) node);
+                mContext.startActivity(intent);
+            }
+        });
+
+        viewHolder.title.setText(node.title);
+        if (node.header != null) {
+            viewHolder.header.setVisibility(View.VISIBLE);
+            viewHolder.header.setText(Html.fromHtml(node.header));
+        } else {
+            viewHolder.header.setVisibility(View.GONE);
+        }
+        viewHolder.topics.setText(node.topics + " 个话题");
+    }
+
+    @Override
+    public int getItemCount() {
         return mNodes.size();
     }
 
-    @Override
-    public Object getItem(int position) {
-        return mNodes.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null)
-            convertView = new NodeView(mContext);
-
-        ((NodeView) convertView).parse(mNodes.get(position));
-
-        return convertView;
-    }
 
     public void update(ArrayList<NodeModel> data) {
         TreeMap<String, List<NodeModel>> lists = new TreeMap<String, List<NodeModel>>();
@@ -88,6 +105,22 @@ public class AllNodesAdapter extends BaseAdapter {
         }
 
         notifyDataSetChanged();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView title;
+        public TextView header;
+        public TextView topics;
+        public CardView card;
+
+        public ViewHolder(View view) {
+            super(view);
+
+            card = (CardView) view.findViewById(R.id.card_container);
+            title = (TextView) view.findViewById(R.id.node_title);
+            header = (TextView) view.findViewById(R.id.node_summary);
+            topics = (TextView) view.findViewById(R.id.node_topics);
+        }
     }
 
 }

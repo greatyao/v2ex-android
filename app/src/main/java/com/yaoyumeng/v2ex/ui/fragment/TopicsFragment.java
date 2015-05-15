@@ -2,10 +2,11 @@ package com.yaoyumeng.v2ex.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,8 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.yaoyumeng.v2ex.Application;
@@ -25,8 +24,6 @@ import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.BaseActivity;
 import com.yaoyumeng.v2ex.ui.MainActivity;
-import com.yaoyumeng.v2ex.ui.SetReadTask;
-import com.yaoyumeng.v2ex.ui.TopicActivity;
 import com.yaoyumeng.v2ex.ui.TopicAddActivity;
 import com.yaoyumeng.v2ex.ui.adapter.TopicsAdapter;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
@@ -43,8 +40,9 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
     public static final int HotTopics = -1;
     public static final int InvalidTopics = -2;
     int mNodeId = InvalidTopics;   //0表示最新话题,-1表示最热话题,其他表示节点下的话题
-    ListView mListView;
+    RecyclerView mRecyclerView;
     TopicsAdapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
     SwipeRefreshLayout mSwipeLayout;
     FloatingActionButton mAddButton;
     boolean mIsLoading;
@@ -83,10 +81,12 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
         View rootView = inflater.inflate(R.layout.fragment_topics, container, false);
 
         mAddButton = (FloatingActionButton) rootView.findViewById(R.id.add_topic_button);
-        mListView = (ListView) rootView.findViewById(R.id.listview_topics);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_topics);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         if ((mNodeId > 0 || !mNodeName.isEmpty()) && mIsLogin)
-            mAddButton.attachToListView(mListView);
+            mAddButton.attachToRecyclerView(mRecyclerView);
         else
             mAddButton.hide(false);
         mAddButton.setOnClickListener(new View.OnClickListener() {
@@ -102,8 +102,8 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
         });
 
         mAdapter = new TopicsAdapter(getActivity());
-        mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mRecyclerView.setAdapter(mAdapter);
+        /*mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TopicModel topic = (TopicModel) mAdapter.getItem(position);
@@ -115,7 +115,7 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
                     startActivityForResult(intent, 0);
                 }
             }
-        });
+        });*/
 
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

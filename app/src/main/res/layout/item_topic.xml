@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    android:background="#fff"
     android:foreground="?android:selectableItemBackground"
     android:orientation="horizontal"
     card_view:cardCornerRadius="8dp">
@@ -75,12 +76,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="author"
+                android:paddingTop="5dp"
                 android:textSize="12sp"
                 android:layout_gravity="center_vertical"
-                android:layout_alignBottom="@+id/nodeCard"
-                android:layout_toRightOf="@+id/nodeCard"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="6dp" />
+                android:layout_alignTop="@+id/nodeCard"
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:id="@+id/time"
@@ -88,10 +88,12 @@
                 android:layout_height="wrap_content"
                 android:text="just now"
                 android:layout_gravity="center_vertical"
+                android:paddingRight="8dp"
+                android:paddingTop="5dp"
                 android:textSize="12sp"
-                android:layout_marginLeft="10dp"
-                android:layout_alignBottom="@+id/name"
-                android:layout_toRightOf="@+id/name" />
+                android:layout_alignTop="@+id/name"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
 

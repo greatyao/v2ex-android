@@ -1,6 +1,7 @@
 package com.yaoyumeng.v2ex.ui;
 
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.widget.BaseAdapter;
 
 import com.yaoyumeng.v2ex.Application;
@@ -12,10 +13,10 @@ import com.yaoyumeng.v2ex.model.TopicModel;
  */
 public class SetReadTask extends AsyncTask<TopicModel, Integer, Boolean> {
     private TopicModel mTopicModel;
-    private BaseAdapter mAdapter;
+    private RecyclerView.Adapter mAdapter;
     private V2EXDataSource mDataSource = Application.getDataSource();
 
-    public SetReadTask(TopicModel topic, BaseAdapter adapter) {
+    public SetReadTask(TopicModel topic, RecyclerView.Adapter adapter) {
         mTopicModel = topic;
         mAdapter = adapter;
     }

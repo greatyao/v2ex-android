@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.SetReadTask;
 import com.yaoyumeng.v2ex.ui.TopicActivity;
+import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.TopicsAdapter;
 import com.yaoyumeng.v2ex.utils.ScreenUtils;
 
@@ -33,13 +36,12 @@ import java.util.ArrayList;
 public class UserFragment extends BaseFragment implements V2EXManager.HttpRequestHandler<ArrayList<MemberModel>> {
 
     private static final String FIELD_UNSET = "未设置";
-    private int mHeaderHeight;
-    private int mMinHeaderTranslation;
     private View mHeader;
-    private View mPlaceHolderView;
-    private TopicsAdapter mAdapter;
     private SwipeRefreshLayout mSwipeLayout;
-    private ListView mListView;
+    private HeaderViewRecyclerAdapter mHeaderAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView mRecyclerView;
+    private TopicsAdapter mAdapter;
     private ImageView mHeaderLogo;
     private TextView mName;
     private TextView mDescription;
@@ -77,56 +79,46 @@ public class UserFragment extends BaseFragment implements V2EXManager.HttpReques
         }
     };
 
-    public static float clamp(float value, float max, float min) {
-        return Math.max(Math.min(value, min), max);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mHeaderHeight = ScreenUtils.dp(getActivity(), 250);
-        mMinHeaderTranslation = -mHeaderHeight;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mSwipeLayout = (SwipeRefreshLayout) inflater.inflate(R.layout.fragment_user, container, false);
-        mListView = (ListView) mSwipeLayout.findViewById(R.id.list_fragment_user);
-        mHeader = mSwipeLayout.findViewById(R.id.header_fragment_user);
-        mHeaderLogo = (ImageView) mSwipeLayout.findViewById(R.id.header_logo_fragment_user);
-        mName = (TextView) mSwipeLayout.findViewById(R.id.txt_fragment_user_name);
-        mTagline = (TextView) mSwipeLayout.findViewById(R.id.txt_fragment_user_tagline);
-        mDescription = (TextView) mSwipeLayout.findViewById(R.id.txt_fragment_user_description);
-        mWebSite = (TextView) mSwipeLayout.findViewById(R.id.title_homepage);
-        mTwitter = (TextView) mSwipeLayout.findViewById(R.id.title_twitter_account);
-        mGithub = (TextView) mSwipeLayout.findViewById(R.id.title_github_account);
-        mLocation = (TextView) mSwipeLayout.findViewById(R.id.title_location);
-        mWebSiteLayout = (LinearLayout) mSwipeLayout.findViewById(R.id.homepage_layout);
-        mTwitterLayout = (LinearLayout) mSwipeLayout.findViewById(R.id.twitter_layout);
-        mGithubLayout = (LinearLayout) mSwipeLayout.findViewById(R.id.github_layout);
-        mLocationLayout = (LinearLayout) mSwipeLayout.findViewById(R.id.location_layout);
+        View rootView = inflater.inflate(R.layout.fragment_topics, container, false);
+        mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_topics);
+        rootView.findViewById(R.id.add_topic_button).setVisibility(View.GONE);
+
+        mHeader = inflater.inflate(R.layout.fragment_user, container, false);
+        mHeaderLogo = (ImageView) mHeader.findViewById(R.id.header_logo_fragment_user);
+        mName = (TextView) mHeader.findViewById(R.id.txt_fragment_user_name);
+        mTagline = (TextView) mHeader.findViewById(R.id.txt_fragment_user_tagline);
+        mDescription = (TextView) mHeader.findViewById(R.id.txt_fragment_user_description);
+        mWebSite = (TextView) mHeader.findViewById(R.id.title_homepage);
+        mTwitter = (TextView) mHeader.findViewById(R.id.title_twitter_account);
+        mGithub = (TextView) mHeader.findViewById(R.id.title_github_account);
+        mLocation = (TextView) mHeader.findViewById(R.id.title_location);
+        mWebSiteLayout = (LinearLayout) mHeader.findViewById(R.id.homepage_layout);
+        mTwitterLayout = (LinearLayout) mHeader.findViewById(R.id.twitter_layout);
+        mGithubLayout = (LinearLayout) mHeader.findViewById(R.id.github_layout);
+        mLocationLayout = (LinearLayout) mHeader.findViewById(R.id.location_layout);
         mWebSiteLayout.setOnClickListener(layoutClick);
         mGithubLayout.setOnClickListener(layoutClick);
         mTwitterLayout.setOnClickListener(layoutClick);
 
-        mPlaceHolderView = getActivity().getLayoutInflater().inflate(R.layout.view_header_placeholder, mListView, false);
-        mListView.addHeaderView(mPlaceHolderView, null, false);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mTopics.size() > 0) {
-                    final TopicModel topic = mTopics.get(position - 1);
-                    if(!Application.getDataSource().isTopicRead(topic.id))
-                        new SetReadTask(topic, mAdapter).execute();
-                    Intent intent = new Intent(getActivity(), TopicActivity.class);
-                    intent.putExtra("model", (Parcelable)topic );
-                    startActivity(intent);
-                }
-            }
-        });
+        RecyclerView.LayoutParams headerLayoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mHeader.setLayoutParams(headerLayoutParams);
+
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new TopicsAdapter(getActivity());
-        return mSwipeLayout;
+        mHeaderAdapter = new HeaderViewRecyclerAdapter(mAdapter);
+        mHeaderAdapter.addHeaderView(mHeader);
+        mRecyclerView.setAdapter(mHeaderAdapter);
+
+        return rootView;
     }
 
     @Override
@@ -145,6 +137,7 @@ public class UserFragment extends BaseFragment implements V2EXManager.HttpReques
                 android.R.color.holo_red_light);
         mSwipeLayout.setProgressViewOffset(false, 0,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+        mSwipeLayout.setRefreshing(true);
 
         setupActionBar();
 
@@ -184,56 +177,11 @@ public class UserFragment extends BaseFragment implements V2EXManager.HttpReques
         mTwitter.setText(mMember.twitter.isEmpty() ? FIELD_UNSET : mMember.twitter);
         mWebSite.setText(mMember.website.isEmpty() ? FIELD_UNSET : mMember.website);
 
-        setupListView();
-    }
-
-    private void setupListView() {
-        mListView.setAdapter(mAdapter);
-        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int scrollY = getScrollY();
-                if (firstVisibleItem == 0 && scrollY == 0)
-                    mSwipeLayout.setEnabled(true);
-                else
-                    mSwipeLayout.setEnabled(false);
-                mHeader.setTranslationY(Math.max(-scrollY, mMinHeaderTranslation));
-                float ratio = clamp(mHeader.getTranslationY() / mMinHeaderTranslation, 0.0f, 1.0f);
-                setTitleAlpha(clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F));
-            }
-        });
         getTopicsData(true);
     }
 
     private void getTopicsData(boolean refresh) {
         V2EXManager.getTopicsByUsername(getActivity(), mUserName, refresh, new RequestTopicHelper());
-    }
-
-    private void setTitleAlpha(float alpha) {
-        //getActivity().getActionBar().setTitle(mSpannableString);
-        mName.setAlpha(1.0f - alpha);
-        mDescription.setAlpha(1.0f - alpha);
-    }
-
-    public int getScrollY() {
-        View c = mListView.getChildAt(0);
-        if (c == null) {
-            return 0;
-        }
-
-        int firstVisiblePosition = mListView.getFirstVisiblePosition();
-        int top = c.getTop();
-
-        int headerHeight = 0;
-        if (firstVisiblePosition >= 1) {
-            headerHeight = mPlaceHolderView.getHeight();
-        }
-
-        return -top + firstVisiblePosition * c.getHeight() + headerHeight;
     }
 
     private void setupActionBar() {

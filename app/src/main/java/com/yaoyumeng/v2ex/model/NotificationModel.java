@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * Created by yw on 2015/5/14.
  */
-public class NotificationModel extends V2EXModel /*implements Parcelable*/ {
+public class NotificationModel extends V2EXModel {
 
     private static final long serialVersionUID = 2015050106L;
 

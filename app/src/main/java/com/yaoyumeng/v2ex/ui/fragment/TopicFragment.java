@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,22 +16,27 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.database.V2EXDataSource;
+import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.ReplyModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.model.V2EXModel;
 import com.yaoyumeng.v2ex.ui.BaseActivity;
+import com.yaoyumeng.v2ex.ui.NodeActivity;
 import com.yaoyumeng.v2ex.ui.TopicCommentActivity;
+import com.yaoyumeng.v2ex.ui.UserActivity;
+import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.ReplyAdapter;
 import com.yaoyumeng.v2ex.ui.widget.EnterLayout;
-import com.yaoyumeng.v2ex.ui.widget.TopicMoreView;
+import com.yaoyumeng.v2ex.ui.widget.RichTextView;
 import com.yaoyumeng.v2ex.utils.InputUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 
@@ -40,9 +47,11 @@ public class TopicFragment extends BaseFragment
 
     public static final int REQUEST_COMMENT = 100;
     public static final int REQUEST_SHARE = 101;
-    ListView mListView;
-    TopicMoreView mHeader;
+    RecyclerView mRecyclerView;
+    View mHeader;
     ReplyAdapter mAdapter;
+    HeaderViewRecyclerAdapter mHeaderAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
     SwipeRefreshLayout mSwipeLayout;
     TopicModel mTopic;
     int mTopicId;
@@ -84,24 +93,22 @@ public class TopicFragment extends BaseFragment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_topic, container, false);
+        mHeader = inflater.inflate(R.layout.item_topic_more, container, false);
 
         mEnterLayout = new EnterLayout(getActivity(), rootView, onClickSend);
         mEnterLayout.hide();
 
-        mListView = (ListView) rootView.findViewById(R.id.replies_listview);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_replies);
         mAdapter = new ReplyAdapter(getActivity(), onItemCommentClick);
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                V2EXModel model = null;
-                if(position == 0)
-                    model = mTopic;
-                else
-                    model = (ReplyModel)mAdapter.getItem(position-1);
-                prepareAddComment(model, true);
-                return false;
-            }
-        });
+
+        RecyclerView.LayoutParams headerLayoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mHeader.setLayoutParams(headerLayoutParams);
+
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mHeaderAdapter = new HeaderViewRecyclerAdapter(mAdapter);
+        mHeaderAdapter.addHeaderView(mHeader);
+        mRecyclerView.setAdapter(mHeaderAdapter);
 
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -188,8 +195,8 @@ public class TopicFragment extends BaseFragment
     }
 
     @Override
-    public boolean onBackPressed(){
-        if(mEnterLayout.content.getText().toString().isEmpty())
+    public boolean onBackPressed() {
+        if (mEnterLayout.content.getText().toString().isEmpty())
             return false;
         else {
             mEnterLayout.clearContent();
@@ -285,13 +292,59 @@ public class TopicFragment extends BaseFragment
      * 设置话题,将其设置为ListView的HeaderView
      */
     private void setupHeaderView() {
-        if (mHeader == null) {
-            mHeader = new TopicMoreView(getActivity());
-            mListView.addHeaderView(mHeader);
-            mListView.setAdapter(mAdapter);
-        }
+        ImageView avatar = (ImageView) mHeader.findViewById(R.id.avatar);
+        TextView titleTextView = (TextView) mHeader.findViewById(R.id.text_title);
+        RichTextView contentTextView = (RichTextView) mHeader.findViewById(R.id.text_content);
+        TextView authorTextView = (TextView) mHeader.findViewById(R.id.text_author);
+        TextView timeTextView = (TextView) mHeader.findViewById(R.id.text_timeline);
+        TextView repliesTextView = (TextView) mHeader.findViewById(R.id.text_replies);
+        TextView nodeTextView = (TextView) mHeader.findViewById(R.id.text_node);
 
-        mHeader.parse(mTopic);
+        titleTextView.setText(mTopic.title);
+        authorTextView.setText(mTopic.member.username);
+        String imageURL = mTopic.member.avatar;
+        ImageLoader.getInstance().displayImage(imageURL, avatar);
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), UserActivity.class);
+                intent.putExtra("model", (Parcelable) mTopic.member);
+                startActivity(intent);
+            }
+        });
+
+        String content = mTopic.contentRendered;
+        contentTextView.setMaxLines(Integer.MAX_VALUE);
+        contentTextView.setTextSize(16);
+        contentTextView.setLineSpacing(3f, 1.2f);
+        contentTextView.setRichText(content);
+
+        repliesTextView.setText(mTopic.replies + "个回复");
+
+        final NodeModel node = mTopic.node;
+        nodeTextView.setText(node.title);
+        nodeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NodeActivity.class);
+                intent.putExtra("model", (Parcelable) node);
+                startActivity(intent);
+            }
+        });
+
+        if (mTopic.created > 0) {
+            long created = mTopic.created * 1000;
+            long now = System.currentTimeMillis();
+            long difference = now - created;
+            CharSequence text = (difference >= 0 && difference <= DateUtils.MINUTE_IN_MILLIS) ?
+                    getString(R.string.just_now) :
+                    DateUtils.getRelativeTimeSpanString(
+                            created,
+                            now,
+                            DateUtils.MINUTE_IN_MILLIS,
+                            DateUtils.FORMAT_ABBREV_RELATIVE);
+            timeTextView.setText(text);
+        }
     }
 
     /**
