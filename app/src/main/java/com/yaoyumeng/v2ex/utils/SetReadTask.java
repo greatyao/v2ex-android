@@ -1,4 +1,4 @@
-package com.yaoyumeng.v2ex.ui;
+package com.yaoyumeng.v2ex.utils;
 
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;

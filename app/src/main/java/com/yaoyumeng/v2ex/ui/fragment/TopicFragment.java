@@ -255,7 +255,7 @@ public class TopicFragment extends BaseFragment
     }
 
     private void share() {
-        String url = V2EXManager.BASE_URL + "/t/" + mTopicId;
+        String url = V2EXManager.getBaseUrl() + "/t/" + mTopicId;
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "分享：" + mTopic.title);

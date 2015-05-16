@@ -24,6 +24,7 @@ import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
+import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.ui.MainActivity;
@@ -47,6 +48,7 @@ public class SettingsFragment extends PreferenceFragment {
     CheckBoxPreference mHttps;
     CheckBoxPreference mLoadimage;
     Button mLogout;
+    Application mApp = Application.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,17 +92,20 @@ public class SettingsFragment extends PreferenceFragment {
 
         // https
         mHttps = (CheckBoxPreference) findPreference("pref_https");
+        mHttps.setChecked(mApp.isHttps());
         mHttps.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                V2EXManager.setHttps(mHttps.isChecked());
+                mApp.setConfigHttps(mHttps.isChecked());
                 return true;
             }
         });
 
         // 加载图片loadimage
         mLoadimage = (CheckBoxPreference) findPreference("pref_noimage_nowifi");
+        mLoadimage.setChecked(mApp.isLoadImageInMobileNetwork());
         mLoadimage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
+                mApp.setConfigLoadImageInMobileNetwork(mLoadimage.isChecked());
                 return true;
             }
         });

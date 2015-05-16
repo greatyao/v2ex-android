@@ -36,7 +36,9 @@ public class V2EXManager {
 
     private static final String HTTP_API_URL = "http://www.v2ex.com/api";
     private static final String HTTPS_API_URL = "https://www.v2ex.com/api";
-    private static String API_URL = mApp.mHttps ? HTTPS_API_URL : HTTP_API_URL;
+    public static final String HTTP_BASE_URL = "http://www.v2ex.com";
+    public static final String HTTPS_BASE_URL = "https://www.v2ex.com";
+
     private static final String API_LATEST = "/topics/latest.json";
     private static final String API_HOT = "/topics/hot.json";
     private static final String API_ALL_NODE = "/nodes/all.json";
@@ -44,11 +46,9 @@ public class V2EXManager {
     private static final String API_TOPIC = "/topics/show.json";
     private static final String API_USER = "/members/show.json";
 
-    public static final String BASE_URL = "http://www.v2ex.com";
-    public static final String BASE_HTTPS_URL = "https://www.v2ex.com";
-    public static final String SIGN_UP_URL = BASE_HTTPS_URL + "/signup";
-    public static final String SIGN_IN_URL = BASE_HTTPS_URL + "/signin";
-    public static final String MY_NODES_URL = BASE_HTTPS_URL + "/my/nodes";
+
+    public static final String SIGN_UP_URL = HTTPS_BASE_URL + "/signup";
+    public static final String SIGN_IN_URL = HTTPS_BASE_URL + "/signin";
 
     public static final int V2ErrorTypeNoOnceAndNext = 700;
     public static final int V2ErrorTypeLoginFailure = 701;
@@ -64,46 +64,48 @@ public class V2EXManager {
     public static final int V2ErrorTypeFavNodeFailure = 711;
     public static final int V2ErrorTypeFavTopicFailure = 712;
 
+    public static String getBaseAPIUrl(){
+        return mApp.isHttps() ? HTTPS_API_URL : HTTP_API_URL;
+    }
 
-    public static void setHttps(boolean checked) {
-        mApp.mHttps = checked;
-        API_URL = checked ? HTTPS_API_URL : HTTP_API_URL;
+    public static String getBaseUrl(){
+        return mApp.isHttps() ? HTTPS_BASE_URL : HTTP_BASE_URL;
     }
 
     //获取最热话题
     public static void getHotTopics(Context cxt, boolean refresh,
                                     HttpRequestHandler<ArrayList<TopicModel>> handler) {
-        getTopics(cxt, API_URL + API_HOT, refresh, handler);
+        getTopics(cxt, getBaseAPIUrl() + API_HOT, refresh, handler);
     }
 
     //获取最新话题
     public static void getLatestTopics(Context ctx, boolean refresh,
                                        HttpRequestHandler<ArrayList<TopicModel>> handler) {
-        getTopics(ctx, API_URL + API_LATEST, refresh, handler);
+        getTopics(ctx, getBaseAPIUrl() + API_LATEST, refresh, handler);
     }
 
     //根据节点ID获取其话题
     public static void getTopicsByNodeId(Context ctx, final int nodeId, boolean refresh,
                                          final HttpRequestHandler<ArrayList<TopicModel>> handler) {
-        getTopics(ctx, API_URL + API_TOPIC + "?node_id=" + nodeId, refresh, handler);
+        getTopics(ctx, getBaseAPIUrl() + API_TOPIC + "?node_id=" + nodeId, refresh, handler);
     }
 
     //根据节点名获取其话题
     public static void getTopicsByNodeName(Context ctx, final String nodeName, boolean refresh,
                                            final HttpRequestHandler<ArrayList<TopicModel>> handler) {
-        getTopics(ctx, API_URL + API_TOPIC + "?node_name=" + nodeName, refresh, handler);
+        getTopics(ctx, getBaseAPIUrl() + API_TOPIC + "?node_name=" + nodeName, refresh, handler);
     }
 
     //根据话题ID获取其内容
     public static void getTopicByTopicId(Context cxt, int topicId, boolean refresh,
                                          final HttpRequestHandler<ArrayList<TopicModel>> handler) {
-        getTopics(cxt, API_URL + API_TOPIC + "?id=" + topicId, refresh, handler);
+        getTopics(cxt, getBaseAPIUrl() + API_TOPIC + "?id=" + topicId, refresh, handler);
     }
 
     //根据用户名获取其发表过的话题
     public static void getTopicsByUsername(Context ctx, final String username, boolean refresh,
                                            HttpRequestHandler<ArrayList<TopicModel>> handler) {
-        getTopics(ctx, API_URL + API_TOPIC + "?username=" + username, refresh, handler);
+        getTopics(ctx, getBaseAPIUrl() + API_TOPIC + "?username=" + username, refresh, handler);
     }
 
     /**
@@ -149,7 +151,7 @@ public class V2EXManager {
             }
         }
 
-        new AsyncHttpClient().get(ctx, API_URL + API_ALL_NODE,
+        new AsyncHttpClient().get(ctx, getBaseAPIUrl() + API_ALL_NODE,
                 new WrappedJsonHttpResponseHandler<NodeModel>(ctx, NodeModel.class, key, handler));
     }
 
@@ -166,7 +168,7 @@ public class V2EXManager {
             }
         }
 
-        new AsyncHttpClient().get(ctx, API_URL + API_REPLIES + "?topic_id=" + topicId,
+        new AsyncHttpClient().get(ctx, getBaseAPIUrl() + API_REPLIES + "?topic_id=" + topicId,
                 new WrappedJsonHttpResponseHandler<ReplyModel>(ctx, ReplyModel.class, key, handler));
     }
 
@@ -183,7 +185,7 @@ public class V2EXManager {
             }
         }
 
-        new AsyncHttpClient().get(ctx, API_URL + API_USER + "?username=" + username,
+        new AsyncHttpClient().get(ctx, getBaseAPIUrl() + API_USER + "?username=" + username,
                 new WrappedJsonHttpResponseHandler<MemberModel>(ctx, MemberModel.class, key, handler));
     }
 
@@ -223,7 +225,7 @@ public class V2EXManager {
     private static void requestOnceWithURLString(final Context cxt, String url,
                                                  final HttpRequestHandler<String> handler) {
         AsyncHttpClient client = getClient(cxt);
-        client.addHeader("Referer", BASE_HTTPS_URL);
+        client.addHeader("Referer", getBaseUrl());
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -270,7 +272,7 @@ public class V2EXManager {
             public void onSuccess(String data) {
                 final String once = data;
                 AsyncHttpClient client = getClient(cxt);
-                client.addHeader("Origin", BASE_HTTPS_URL);
+                client.addHeader("Origin", HTTPS_BASE_URL);
                 client.addHeader("Referer", SIGN_IN_URL);
                 client.addHeader("Content-Type", "application/x-www-form-urlencoded");
                 RequestParams params = new RequestParams();
@@ -323,7 +325,7 @@ public class V2EXManager {
             if (node.url.startsWith("//"))
                 node.url = "http:" + node.url;
             else
-                node.url = "http://www.v2ex.com" + node.url;
+                node.url = HTTP_BASE_URL + node.url;
             collections.add(node);
         }
         return collections;
@@ -337,7 +339,7 @@ public class V2EXManager {
      */
     public static void getFavoriteNodes(final Context context,
                                         final HttpRequestHandler<ArrayList<NodeModel>> handler) {
-        getClient(context).get(MY_NODES_URL, new TextHttpResponseHandler() {
+        getClient(context).get(getBaseUrl() +  "/my/nodes" , new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 handler.onFailure(statusCode, throwable.getMessage());
@@ -359,7 +361,7 @@ public class V2EXManager {
      */
     public static void getProfile(final Context context,
                                   final HttpRequestHandler<ArrayList<MemberModel>> profileHandler) {
-        getClient(context).get(BASE_HTTPS_URL, new TextHttpResponseHandler() {
+        getClient(context).get(getBaseUrl(), new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 profileHandler.onFailure(statusCode, throwable.getMessage());
@@ -385,13 +387,13 @@ public class V2EXManager {
      */
     public static void replyCreateWithTopicId(final Context cxt, final int topicId, final String content,
                                               final HttpRequestHandler<Integer> handler) {
-        final String urlString = BASE_HTTPS_URL + "/t/" + topicId;
+        final String urlString = getBaseUrl() + "/t/" + topicId;
         requestOnceWithURLString(cxt, urlString, new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
                 String once = data;
                 AsyncHttpClient client = getClient(cxt);
-                client.addHeader("Origin", BASE_HTTPS_URL);
+                client.addHeader("Origin", getBaseUrl());
                 client.addHeader("Referer", urlString);
                 client.addHeader("Content-Type", "application/x-www-form-urlencoded");
                 RequestParams params = new RequestParams();
@@ -436,12 +438,12 @@ public class V2EXManager {
                                                final String title, final String content,
                                                final HttpRequestHandler<Integer> handler) {
 
-        final String urlString = BASE_HTTPS_URL + "/new/" + nodeName;
+        final String urlString = getBaseUrl() + "/new/" + nodeName;
         requestOnceWithURLString(cxt, urlString, new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String once) {
                 AsyncHttpClient client = getClient(cxt);
-                client.addHeader("Origin", BASE_HTTPS_URL);
+                client.addHeader("Origin", getBaseUrl());
                 client.addHeader("Referer", urlString);
                 client.addHeader("Content-Type", "application/x-www-form-urlencoded");
                 RequestParams params = new RequestParams();
@@ -498,9 +500,9 @@ public class V2EXManager {
      */
     public static void favNodeWithNodeName(final Context context, String nodeName,
                                            final HttpRequestHandler<Integer> handler) {
-        String urlString = BASE_HTTPS_URL + "/go/" + nodeName;
+        String urlString = getBaseUrl() + "/go/" + nodeName;
         final AsyncHttpClient client = getClient(context, false);
-        client.addHeader("Referer", BASE_HTTPS_URL);
+        client.addHeader("Referer", getBaseUrl());
         client.addHeader("Content-Type", "application/x-www-form-urlencoded");
         client.get(urlString, new TextHttpResponseHandler() {
             @Override
@@ -517,7 +519,7 @@ public class V2EXManager {
                 }
 
                 final boolean fav = !favUrl.contains("unfavorite");
-                client.get(context, BASE_HTTPS_URL + favUrl, new TextHttpResponseHandler() {
+                client.get(context, getBaseUrl() + favUrl, new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         if (statusCode == 302) {
@@ -545,9 +547,9 @@ public class V2EXManager {
      */
     public static void favTopicWithTopicId(final Context context, int topicId,
                                            final HttpRequestHandler<Integer> handler) {
-        String urlString = BASE_HTTPS_URL + "/t/" + topicId;
+        String urlString = getBaseUrl() + "/t/" + topicId;
         final AsyncHttpClient client = getClient(context, false);
-        client.addHeader("Referer", BASE_HTTPS_URL);
+        client.addHeader("Referer", getBaseUrl());
         client.addHeader("Content-Type", "application/x-www-form-urlencoded");
         client.get(urlString, new TextHttpResponseHandler() {
             @Override
@@ -566,7 +568,7 @@ public class V2EXManager {
 
                 favUrl = favUrl.replace("\" class=\"tb", "");
                 final boolean fav = !favUrl.contains("unfavorite");
-                client.get(context, BASE_HTTPS_URL + favUrl, new TextHttpResponseHandler() {
+                client.get(context, getBaseUrl() + favUrl, new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         if (statusCode == 302) {
@@ -592,9 +594,9 @@ public class V2EXManager {
      */
     public static void getNotifications(final Context context,
                                         final HttpRequestHandler<ArrayList<NotificationModel>> handler) {
-        String urlString = BASE_HTTPS_URL + "/notifications";
+        String urlString = getBaseUrl() + "/notifications";
         final AsyncHttpClient client = getClient(context, false);
-        client.addHeader("Referer", BASE_HTTPS_URL);
+        client.addHeader("Referer", getBaseUrl());
         client.addHeader("Content-Type", "application/x-www-form-urlencoded");
         client.get(urlString, new TextHttpResponseHandler() {
             @Override

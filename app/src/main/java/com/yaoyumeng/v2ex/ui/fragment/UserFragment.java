@@ -3,7 +3,6 @@ package com.yaoyumeng.v2ex.ui.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,24 +11,17 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
-import com.yaoyumeng.v2ex.ui.SetReadTask;
-import com.yaoyumeng.v2ex.ui.TopicActivity;
 import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.TopicsAdapter;
-import com.yaoyumeng.v2ex.utils.ScreenUtils;
 
 import java.util.ArrayList;
 

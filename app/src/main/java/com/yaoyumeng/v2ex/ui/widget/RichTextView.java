@@ -9,6 +9,7 @@ import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.utils.AsyncImageGetter;
 import com.yaoyumeng.v2ex.utils.NetWorkHelper;
 
@@ -41,7 +42,7 @@ public class RichTextView extends TextView {
             htmlSpannable = new SpannableStringBuilder(spanned);
         }
 
-        if (NetWorkHelper.isMobile(getContext())) {
+        if (NetWorkHelper.isMobile(getContext()) && !Application.getInstance().isLoadImageInMobileNetwork()) {
             //移动网络情况下如果设置了不显示图片,则遵命
         } else{
             ImageSpan[] spans = htmlSpannable.getSpans(0, htmlSpannable.length(), ImageSpan.class);

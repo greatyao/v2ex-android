@@ -24,12 +24,12 @@ import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 
 import java.io.File;
+import java.util.Properties;
 
 public class Application extends android.app.Application{
 
     private static Application mContext;
     private static int sMemoryClass;
-    public static boolean mHttps = false;
     private DatabaseHelper mDatabaseHelper;
     private static V2EXDataSource mDataSource;
 
@@ -43,7 +43,7 @@ public class Application extends android.app.Application{
         mContext = this;
 
         initDatabase();
-        initiImageLoader();
+        initImageLoader();
         initAppConfig();
         initAccount();
     }
@@ -60,7 +60,7 @@ public class Application extends android.app.Application{
         final ActivityManager mgr = (ActivityManager) getApplicationContext().
                 getSystemService(Activity.ACTIVITY_SERVICE);
         sMemoryClass = mgr.getMemoryClass();
-        mHttps = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_https", false);
+        //mHttps = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_https", false);
     }
 
     private void initDatabase(){
@@ -68,7 +68,7 @@ public class Application extends android.app.Application{
         mDataSource = new V2EXDataSource(mDatabaseHelper);
     }
 
-    private void initiImageLoader() {
+    private void initImageLoader() {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .imageScaleType(ImageScaleType.EXACTLY)
@@ -109,5 +109,96 @@ public class Application extends android.app.Application{
 
     public static Context getContext(){
         return mContext;
+    }
+
+    /**
+     * 3G网络下是否加载显示文章图片
+     * @return
+     */
+    public boolean isLoadImageInMobileNetwork()
+    {
+        String perf_loadimage = getProperty(AppConfig.CONF_NOIMAGE_NOWIFI);
+        if(perf_loadimage == null || perf_loadimage.isEmpty())
+            return false;
+        else
+            return Boolean.parseBoolean(perf_loadimage);
+    }
+
+    /**
+     * 设置3G网络下是否加载文章图片
+     * @param b
+     */
+    public void setConfigLoadImageInMobileNetwork(boolean b)
+    {
+        setProperty(AppConfig.CONF_NOIMAGE_NOWIFI, String.valueOf(b));
+    }
+
+    /**
+     * 是否发出提示音
+     * @return
+     */
+    public boolean isVoice()
+    {
+        String perf_voice = getProperty(AppConfig.CONF_VOICE);
+        //默认是开启提示声音
+        if(perf_voice == null || perf_voice.isEmpty())
+            return true;
+        else
+            return Boolean.parseBoolean(perf_voice);
+    }
+
+    /**
+     * 设置是否发出提示音
+     * @param b
+     */
+    public void setConfigVoice(boolean b)
+    {
+        setProperty(AppConfig.CONF_VOICE, String.valueOf(b));
+    }
+
+    /**
+     * 是否Https登录
+     * @return
+     */
+    public boolean isHttps()
+    {
+        String perf_https = getProperty(AppConfig.CONF_USE_HTTPS);
+        if(perf_https == null || perf_https.isEmpty())
+            return true;
+        else
+            return Boolean.parseBoolean(perf_https);
+    }
+
+    /**
+     * 设置是是否Https访问
+     * @param b
+     */
+    public void setConfigHttps(boolean b)
+    {
+        setProperty(AppConfig.CONF_USE_HTTPS, String.valueOf(b));
+    }
+
+    public boolean containsProperty(String key){
+        Properties props = getProperties();
+        return props.containsKey(key);
+    }
+
+    public void setProperties(Properties ps){
+        AppConfig.getAppConfig(this).set(ps);
+    }
+
+    public Properties getProperties(){
+        return AppConfig.getAppConfig(this).get();
+    }
+
+    public void setProperty(String key,String value){
+        AppConfig.getAppConfig(this).set(key, value);
+    }
+
+    public String getProperty(String key){
+        return AppConfig.getAppConfig(this).get(key);
+    }
+    public void removeProperty(String...key){
+        AppConfig.getAppConfig(this).remove(key);
     }
 }

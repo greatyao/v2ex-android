@@ -21,7 +21,7 @@ import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.NodeActivity;
-import com.yaoyumeng.v2ex.ui.SetReadTask;
+import com.yaoyumeng.v2ex.utils.SetReadTask;
 import com.yaoyumeng.v2ex.ui.TopicActivity;
 import com.yaoyumeng.v2ex.ui.UserActivity;
 
