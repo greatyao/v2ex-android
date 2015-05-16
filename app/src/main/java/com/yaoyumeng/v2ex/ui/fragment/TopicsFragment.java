@@ -103,19 +103,6 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
 
         mAdapter = new TopicsAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
-        /*mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TopicModel topic = (TopicModel) mAdapter.getItem(position);
-                if (topic != null) {
-                    if(!mDataSource.isTopicRead(topic.id))
-                        new SetReadTask(topic, mAdapter).execute();
-                    Intent intent = new Intent(getActivity(), TopicActivity.class);
-                    intent.putExtra("model", (Parcelable) topic);
-                    startActivityForResult(intent, 0);
-                }
-            }
-        });*/
 
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -138,6 +125,7 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Bundle args = getArguments();
+        mSwipeLayout.setRefreshing(true);
         if (args.containsKey("node_name")) {
             mNodeName = args.getString("node_name");
             requestTopicsByName(false);
