@@ -19,20 +19,24 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.ui.MainActivity;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 import com.yaoyumeng.v2ex.utils.FileUtils;
+import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.PhoneUtils;
 
 /**
  * 设置
  * Created by yw on 2015/5/13.
  */
-public class SettingsFragment extends PreferenceFragment{
+public class SettingsFragment extends PreferenceFragment {
 
     public static final String GITGUB_PROJECT = "https://github.com/greatyao/v2ex-android";
     SharedPreferences mPreferences;
@@ -55,8 +59,8 @@ public class SettingsFragment extends PreferenceFragment{
         super.onActivityCreated(savedInstanceState);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        ViewGroup root = (ViewGroup)getView();
-        ListView localListView = (ListView)root.findViewById(android.R.id.list);
+        ViewGroup root = (ViewGroup) getView();
+        ListView localListView = (ListView) root.findViewById(android.R.id.list);
         localListView.setBackgroundColor(0);
         localListView.setCacheColorHint(0);
         root.removeView(localListView);
@@ -106,6 +110,7 @@ public class SettingsFragment extends PreferenceFragment{
         mUpdate.setSummary("版本: " + PhoneUtils.getPackageInfo(getActivity()).versionName);
         mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
+                checkUpdate();
                 return true;
             }
         });
@@ -131,7 +136,7 @@ public class SettingsFragment extends PreferenceFragment{
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 } catch (Exception e) {
-                    Toast.makeText(getActivity(), "软件市场里暂时没有找到V2EX", Toast.LENGTH_SHORT).show();
+                    MessageUtils.showMiddleToast(getActivity(), "软件市场里暂时没有找到V2EX");
                 }
                 return true;
             }
@@ -146,6 +151,30 @@ public class SettingsFragment extends PreferenceFragment{
                 return true;
             }
         });
+    }
+
+    private void checkUpdate() {
+        UmengUpdateAgent.setUpdateAutoPopup(false);
+        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+            @Override
+            public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
+                switch (updateStatus) {
+                    case UpdateStatus.Yes: // has update
+                        UmengUpdateAgent.showUpdateDialog(getActivity(), updateInfo);
+                        break;
+                    case UpdateStatus.No: // has no update
+                        MessageUtils.showMiddleToast(getActivity(), "没有更新");
+                        break;
+                    case UpdateStatus.NoneWifi: // none wifi
+                        MessageUtils.showMiddleToast(getActivity(), "没有wifi连接， 只在wifi下更新");
+                        break;
+                    case UpdateStatus.Timeout: // time out
+                        MessageUtils.showMiddleToast(getActivity(), "超时");
+                        break;
+                }
+            }
+        });
+        UmengUpdateAgent.update(getActivity());
     }
 
     private void showAboutMe() {
@@ -164,7 +193,7 @@ public class SettingsFragment extends PreferenceFragment{
         String title = new StringBuilder().append(PhoneUtils.getApplicationName(getActivity())).append("<br/>").toString();
         String subTitle = new StringBuilder().append(getString(R.string.app_sub_name)).append("<br/>").toString();
         String author = getString(R.string.app_author);
-        String authorUrl = new StringBuilder().append("@") .append("<a href='")
+        String authorUrl = new StringBuilder().append("@").append("<a href='")
                 .append("http://www.v2ex.com/member/").append(author).append("'>")
                 .append(author).append("</a>").toString();
         String githubUrl = new StringBuilder()

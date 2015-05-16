@@ -19,7 +19,7 @@
             android:value="5538403067e58e38e6001af9" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="Channel1" />
+            android:value="play" />
 
         <activity
             android:name=".ui.MainActivity"
@@ -117,6 +117,15 @@
             android:name=".ui.TopicCommentActivity"
             android:label="@string/title_activity_topic_comment"
             android:parentActivityName=".ui.TopicActivity">
+        </activity>
+
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
     </application>
 

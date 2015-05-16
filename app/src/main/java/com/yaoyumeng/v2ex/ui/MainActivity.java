@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.umeng.update.UmengUpdateAgent;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.ui.fragment.AllNodesFragment;
 import com.yaoyumeng.v2ex.ui.fragment.FavNodesFragment;
@@ -17,8 +18,6 @@ import com.yaoyumeng.v2ex.ui.fragment.NavigationDrawerFragment;
 import com.yaoyumeng.v2ex.ui.fragment.NotificationFragment;
 import com.yaoyumeng.v2ex.ui.fragment.SettingsFragment;
 import com.yaoyumeng.v2ex.ui.fragment.TopicsFragment;
-
-//import com.umeng.update.UmengUpdateAgent;
 
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks{
@@ -42,7 +41,7 @@ public class MainActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //UmengUpdateAgent.update(this);
+        UmengUpdateAgent.update(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
