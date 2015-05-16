@@ -78,15 +78,16 @@
                 android:text="author"
                 android:paddingTop="5dp"
                 android:textSize="12sp"
-                android:layout_gravity="center_vertical"
-                android:layout_alignTop="@+id/nodeCard"
-                android:layout_centerHorizontal="true" />
+                android:layout_alignBottom="@+id/nodeCard"
+                android:layout_toRightOf="@+id/nodeCard"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="6dp" />
 
             <TextView
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="just now"
+                android:text="2010年1月1日"
                 android:layout_gravity="center_vertical"
                 android:paddingRight="8dp"
                 android:paddingTop="5dp"
