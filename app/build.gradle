@@ -8,7 +8,7 @@ android {
         applicationId "com.yaoyumeng.v2ex"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 17
+        versionCode 18
         versionName "1.1.0"
     }
     buildTypes {

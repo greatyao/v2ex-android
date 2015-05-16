@@ -4,6 +4,8 @@ V2EX社区客户端，非官方。
 
 [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.yaoyumeng.v2ex)
 
+[**其他下载链接**](https://github.com/greatyao/v2ex-android/releases/download/1.1.0/v2ex-android-v1.1.0.apk)
+
 
 ### 支持功能
 
