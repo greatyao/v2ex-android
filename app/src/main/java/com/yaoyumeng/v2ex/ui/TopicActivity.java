@@ -56,12 +56,12 @@ public class TopicActivity extends BaseActivity {
                 }
             }
         } else {
-            mTopicId = savedInstanceState.getInt("id");
+            mTopicId = savedInstanceState.getInt("topic_id");
             bundle.putInt("topic_id", mTopicId);
         }
 
         fragment.setArguments(bundle);
-        getFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     @Override
@@ -79,5 +79,11 @@ public class TopicActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("topic_id", mTopicId);
+        super.onSaveInstanceState(outState);
     }
 }
