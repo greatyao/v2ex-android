@@ -102,10 +102,10 @@ public class SettingsFragment extends PreferenceFragment {
 
         // 加载图片loadimage
         mLoadimage = (CheckBoxPreference) findPreference("pref_noimage_nowifi");
-        mLoadimage.setChecked(mApp.isLoadImageInMobileNetwork());
+        mLoadimage.setChecked(!mApp.isLoadImageInMobileNetwork());
         mLoadimage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                mApp.setConfigLoadImageInMobileNetwork(mLoadimage.isChecked());
+                mApp.setConfigLoadImageInMobileNetwork(!mLoadimage.isChecked());
                 return true;
             }
         });
