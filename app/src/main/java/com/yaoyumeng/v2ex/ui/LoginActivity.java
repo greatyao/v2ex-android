@@ -73,7 +73,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 new V2EXManager.HttpRequestHandler<Integer>() {
             @Override
             public void onSuccess(Integer data) {
-                getProfileAndFavNodes();
+                getProfile();
             }
 
             @Override
@@ -108,7 +108,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 }
             };
 
-    private void getProfileAndFavNodes(){
+    private void getProfile(){
         mProgressDialog.setMessage(getString(R.string.login_obtain_profile));
         V2EXManager.getProfile(this, profileHandler);
     }
