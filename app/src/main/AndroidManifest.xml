@@ -64,6 +64,7 @@
         <activity
             android:name=".ui.TopicActivity"
             android:label="@string/title_activity_topic"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".ui.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
