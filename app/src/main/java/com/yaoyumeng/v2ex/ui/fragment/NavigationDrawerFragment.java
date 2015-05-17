@@ -28,6 +28,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.ui.LoginActivity;
+import com.yaoyumeng.v2ex.ui.MainActivity;
 import com.yaoyumeng.v2ex.ui.UserActivity;
 import com.yaoyumeng.v2ex.ui.adapter.DrawerAdapter;
 
@@ -142,8 +143,13 @@ public class NavigationDrawerFragment extends BaseFragment {
     @Override
     public void onLogin(MemberModel profile) {
         super.onLogin(profile);
+
+        //更新头像和昵称
         mUserTextView.setText(profile.username);
         ImageLoader.getInstance().displayImage(profile.avatar, mUserImgView);
+
+        //更新用户资料
+        ((MainActivity)getActivity()).initAccount();
     }
 
     @Override
@@ -237,6 +243,10 @@ public class NavigationDrawerFragment extends BaseFragment {
         });
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    public int getCurrentSelectedPosition(){
+        return mCurrentSelectedPosition;
     }
 
     private void selectItem(int position) {

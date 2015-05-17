@@ -45,22 +45,12 @@ public class Application extends android.app.Application{
         initDatabase();
         initImageLoader();
         initAppConfig();
-        initAccount();
-    }
-
-    //刷新用户资料:包括节点收藏,话题收藏等
-    private void initAccount(){
-        if(AccountUtils.isLogined(this)){
-            AccountUtils.refreshFavoriteNodes(this);
-            AccountUtils.refreshNotifications(this);
-        }
     }
 
     private void initAppConfig() {
         final ActivityManager mgr = (ActivityManager) getApplicationContext().
                 getSystemService(Activity.ACTIVITY_SERVICE);
         sMemoryClass = mgr.getMemoryClass();
-        //mHttps = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_https", false);
     }
 
     private void initDatabase(){

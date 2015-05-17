@@ -67,9 +67,6 @@ public class AccountUtils {
     public static void writeLoginMember(Context cxt, MemberModel profile) {
         PersistenceHelper.saveModel(cxt, profile, key_login_member);
 
-        //刷新用户收藏节点资料
-        refreshFavoriteNodes(cxt);
-
         //通知所有页面,登录成功,更新用户信息
         Iterator<OnAccountListener> iterator = listeners.iterator();
         while(iterator.hasNext()){
@@ -143,46 +140,52 @@ public class AccountUtils {
         }
     }
 
-    public static class FavNodesHelper implements V2EXManager.HttpRequestHandler<ArrayList<NodeModel>>{
-        Context mContext;
-        public FavNodesHelper(Context cxt){
-            mContext = cxt;
-        }
-
-        @Override
-        public void onSuccess(ArrayList<NodeModel> data){
-            AccountUtils.writeFavoriteNodes(mContext, data);
-        }
-
-        @Override
-        public void onFailure(int reason, String error){
-        }
+    public static interface OnAccountFavoriteNodesListener{
+        void onAccountFavoriteNodes(ArrayList<NodeModel> nodes);
     }
 
     /**
      * 刷新用户收藏节点
      * @param cxt
-     * @param handler
+     * @param listener
      */
-    public static void refreshFavoriteNodes(Context cxt, FavNodesHelper handler){
-        if(handler == null)
-            handler = new FavNodesHelper(cxt);
-        V2EXManager.getFavoriteNodes(cxt, handler);
+    public static void refreshFavoriteNodes(final Context cxt,
+                                            final OnAccountFavoriteNodesListener listener){
+        V2EXManager.getFavoriteNodes(cxt, new V2EXManager.HttpRequestHandler<ArrayList<NodeModel>>() {
+            @Override
+            public void onSuccess(ArrayList<NodeModel> data) {
+                AccountUtils.writeFavoriteNodes(cxt, data);
+                if(listener != null)
+                    listener.onAccountFavoriteNodes(data);
+            }
+
+            @Override
+            public void onFailure(int reason, String error) {
+
+            }
+        });
+    }
+
+    public static interface OnAccountNotificationCountListener{
+        public void onAccountNotificationCount(int count);
     }
 
     /**
-     * 刷新用户收藏节点
+     * 刷新用户的未读提醒数量
      * @param cxt
      */
-    public static void refreshFavoriteNodes(Context cxt){
-        refreshFavoriteNodes(cxt, null);
-    }
+    public static void refreshNotificationCount(Context cxt,
+                                            final OnAccountNotificationCountListener listener){
+        V2EXManager.getNotificationCount(cxt, new V2EXManager.HttpRequestHandler<Integer>() {
+            @Override
+            public void onSuccess(Integer count) {
+                if(listener != null && count > 0)
+                    listener.onAccountNotificationCount(count);
+            }
 
-    /**
-     * 刷新用户的未读提醒
-     * @param cxt
-     */
-    public static void refreshNotifications(Context cxt){
-        //V2EXManager.getNotifications(cxt);
+            @Override
+            public void onFailure(int reason, String error) {
+            }
+        });
     }
 }

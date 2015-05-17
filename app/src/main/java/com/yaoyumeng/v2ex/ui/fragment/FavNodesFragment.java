@@ -71,30 +71,16 @@ public class FavNodesFragment extends BaseFragment {
         ((MainActivity) activity).onSectionAttached(4);
     }
 
-    class RefreshNodesHelper extends AccountUtils.FavNodesHelper{
-
-        public RefreshNodesHelper(Context cxt){
-            super(cxt);
-        }
-
-        @Override
-        public void onSuccess(ArrayList<NodeModel> data){
-            super.onSuccess(data);
-            if (data != null && data.size() != 0) {
-                mViewPager.setAdapter(new FavNodesAdapter(getFragmentManager(), data));
-                mPagerSlidingTabStrip.setViewPager(mViewPager);
-            }
-
-        }
-
-        @Override
-        public void onFailure(int reason, String error){
-        }
-
-    }
-
     private void refreshFavNodes(){
-        AccountUtils.refreshFavoriteNodes(getActivity(), new RefreshNodesHelper(getActivity()));
+        AccountUtils.refreshFavoriteNodes(getActivity(), new AccountUtils.OnAccountFavoriteNodesListener() {
+            @Override
+            public void onAccountFavoriteNodes(ArrayList<NodeModel> nodes) {
+                if (nodes != null && nodes.size() != 0) {
+                    mViewPager.setAdapter(new FavNodesAdapter(getFragmentManager(), nodes));
+                    mPagerSlidingTabStrip.setViewPager(mViewPager);
+                }
+            }
+        });
 
     }
 }

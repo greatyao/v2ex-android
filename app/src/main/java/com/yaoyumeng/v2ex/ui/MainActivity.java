@@ -1,10 +1,9 @@
 package com.yaoyumeng.v2ex.ui;
 
-import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.ViewGroup;
@@ -18,9 +17,11 @@ import com.yaoyumeng.v2ex.ui.fragment.NavigationDrawerFragment;
 import com.yaoyumeng.v2ex.ui.fragment.NotificationFragment;
 import com.yaoyumeng.v2ex.ui.fragment.SettingsFragment;
 import com.yaoyumeng.v2ex.ui.fragment.TopicsFragment;
+import com.yaoyumeng.v2ex.utils.AccountUtils;
+import com.yaoyumeng.v2ex.utils.MessageUtils;
 
 public class MainActivity extends BaseActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks{
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -47,7 +48,7 @@ public class MainActivity extends BaseActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mDrawerLayout = (ViewGroup)findViewById(R.id.drawer_layout);
+        mDrawerLayout = (ViewGroup) findViewById(R.id.drawer_layout);
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.left_drawer);
         mTitle = getTitle();
@@ -57,10 +58,12 @@ public class MainActivity extends BaseActivity
                 R.id.left_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        //ActionBar actionBar = getActionBar();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+
+        if (mIsLogin) initAccount();
     }
 
     @Override
@@ -68,9 +71,9 @@ public class MainActivity extends BaseActivity
         // update the main content by replacing fragments
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        switch (position){
+        switch (position) {
             case 0:
-                if(mNewestTopicsFragment == null){
+                if (mNewestTopicsFragment == null) {
                     mNewestTopicsFragment = new TopicsFragment();
                     Bundle bundle = new Bundle();
                     bundle.putInt("node_id", TopicsFragment.LatestTopics);
@@ -81,7 +84,7 @@ public class MainActivity extends BaseActivity
                 fragmentTransaction.replace(R.id.container, mNewestTopicsFragment);
                 break;
             case 1:
-                if(mHotTopicsFragment == null){
+                if (mHotTopicsFragment == null) {
                     mHotTopicsFragment = new TopicsFragment();
                     Bundle bundle = new Bundle();
                     bundle.putInt("node_id", TopicsFragment.HotTopics);
@@ -92,19 +95,19 @@ public class MainActivity extends BaseActivity
                 fragmentTransaction.replace(R.id.container, mHotTopicsFragment);
                 break;
             case 2:
-                if(mAllNodesFragment == null){
+                if (mAllNodesFragment == null) {
                     mAllNodesFragment = new AllNodesFragment();
                 }
                 fragmentTransaction.replace(R.id.container, mAllNodesFragment);
                 break;
             case 3:
-                if(mFavNodesFragment == null){
+                if (mFavNodesFragment == null) {
                     mFavNodesFragment = new FavNodesFragment();
                 }
                 fragmentTransaction.replace(R.id.container, mFavNodesFragment);
                 break;
             case 4:
-                if(mNotificationFragment == null){
+                if (mNotificationFragment == null) {
                     mNotificationFragment = new NotificationFragment();
                 }
                 fragmentTransaction.replace(R.id.container, mNotificationFragment);
@@ -140,7 +143,7 @@ public class MainActivity extends BaseActivity
     }
 
     public void restoreActionBar() {
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
@@ -156,9 +159,10 @@ public class MainActivity extends BaseActivity
     }
 
     private long exitTime = 0;
+
     @Override
     public void onBackPressed() {
-        if(mNavigationDrawerFragment.isDrawerOpen()){
+        if (mNavigationDrawerFragment.isDrawerOpen()) {
             mNavigationDrawerFragment.closeDrawer();
             return;
         }
@@ -169,5 +173,19 @@ public class MainActivity extends BaseActivity
         } else {
             finish();
         }
+    }
+
+    //刷新用户资料:包括节点收藏,话题收藏等
+    public void initAccount() {
+        if (mNavigationDrawerFragment.getCurrentSelectedPosition() != 4)
+            AccountUtils.refreshFavoriteNodes(this, null);
+
+        AccountUtils.refreshNotificationCount(this, new AccountUtils.OnAccountNotificationCountListener() {
+            @Override
+            public void onAccountNotificationCount(int count) {
+                MessageUtils.showMiddleToast(MainActivity.this, "你有 " + count + " 条未读提醒");
+            }
+        });
+
     }
 }

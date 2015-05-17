@@ -305,13 +305,23 @@ public class V2EXManager {
         });
     }
 
-    private static String getUsernameFromResponce(String content) {
+    private static String getUsernameFromResponse(String content) {
         Pattern userPattern = Pattern.compile("<a href=\"/member/([^\"]+)\" class=\"top\">");
         Matcher userMatcher = userPattern.matcher(content);
         if (userMatcher.find())
             return userMatcher.group(1);
         return null;
     }
+
+    private static int getNotificationCountFromResponse(String content) {
+        Pattern pattern = Pattern.compile("<a href=\"/notifications\"([^>]*)>([0-9]+) 条未读提醒</a>");
+        Matcher matcher = pattern.matcher(content);
+        if (matcher.find()) {
+            return Integer.parseInt(matcher.group(2));
+        }
+        return -1;
+    }
+
 
     private static ArrayList<NodeModel> getNodeModelsFromResponse(String content) {
         Pattern pattern = Pattern.compile("<a class=\"grid_item\" href=\"/go/([^\"]+)\" id=([^>]+)><div([^>]+)><img src=\"([^\"]+)([^>]+)><([^>]+)></div>([^<]+)");
@@ -369,9 +379,31 @@ public class V2EXManager {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseBody) {
-                String username = getUsernameFromResponce(responseBody);
+                String username = getUsernameFromResponse(responseBody);
                 if (username != null) {
                     getMemberInfoByUsername(context, username, true, profileHandler);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取未读提醒数目(只在>0的情况下才唤醒处理事件)
+     * @param cxt
+     * @param handler
+     */
+    public static void getNotificationCount(Context cxt, final HttpRequestHandler<Integer> handler){
+        getClient(cxt, false).get(getBaseUrl(), new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                handler.onFailure(V2ErrorTypeGetNotificationFailure, throwable.getMessage());
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseBody) {
+                int count = getNotificationCountFromResponse(responseBody);
+                if (count > 0){
+                    handler.onSuccess(count);
                 }
             }
         });
