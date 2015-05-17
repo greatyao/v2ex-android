@@ -38,10 +38,8 @@
                 android:layout_below="@+id/text_title"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:ellipsize="end"
-                android:maxLines="10"
-                android:text="帖子内容"
-                android:textSize="15sp" />
+                android:lineSpacingExtra="1.5dp"
+                android:text="帖子内容"/>
 
             <ImageView
                 android:id="@+id/avatar"

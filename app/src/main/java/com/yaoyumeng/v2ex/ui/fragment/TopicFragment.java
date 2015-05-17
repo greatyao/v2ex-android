@@ -318,9 +318,6 @@ public class TopicFragment extends BaseFragment
         });
 
         String content = mTopic.contentRendered;
-        contentTextView.setMaxLines(Integer.MAX_VALUE);
-        contentTextView.setTextSize(16);
-        contentTextView.setLineSpacing(3f, 1.2f);
         contentTextView.setRichText(content);
 
         repliesTextView.setText(mTopic.replies + "个回复");
