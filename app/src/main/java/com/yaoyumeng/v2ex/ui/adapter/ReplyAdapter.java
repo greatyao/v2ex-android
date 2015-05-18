@@ -93,6 +93,8 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
                         DateUtils.MINUTE_IN_MILLIS,
                         DateUtils.FORMAT_ABBREV_RELATIVE);
         viewHolder.time.setText(text);
+
+        viewHolder.floor.setText(String.format("第%d楼", i+1));
     }
 
     @Override
@@ -116,12 +118,13 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
-        public CardView card;
+        CardView card;
         ImageView avatar;
         RichTextView content;
         TextView replier;
         TextView time;
         CheckBox comment;
+        TextView floor;
 
         public ViewHolder(View view) {
             super(view);
@@ -132,6 +135,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
             time = (TextView) view.findViewById(R.id.time);
             replier = (TextView) view.findViewById(R.id.replier);
             comment = (CheckBox) view.findViewById(R.id.commentBtn);
+            floor = (TextView) view.findViewById(R.id.which_floor);
         }
     }
 }
