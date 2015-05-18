@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="5dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="4dp"
     android:background="#fff"
+    card_view:cardCornerRadius="2dp"
     android:foreground="?android:selectableItemBackground"
     android:orientation="horizontal">
 
@@ -56,12 +58,19 @@
                 android:textColor="#aaa"
                 android:textSize="12sp" />
 
-            <CheckBox
-                android:id="@+id/commentBtn"
-                android:layout_width="60dp"
-                android:layout_height="12dp"
+            <TextView
+                android:id="@+id/which_floor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="第1楼"
+                android:textColor="#aaa"
+                android:textSize="12sp"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
-                android:button="@drawable/checkbox_comment" />
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp" />
+
         </RelativeLayout>
 
         <com.yaoyumeng.v2ex.ui.widget.RichTextView
@@ -72,8 +81,29 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
             android:layout_toRightOf="@+id/avatar"
             android:text="@string/topic" />
+
+    <RelativeLayout
+        android:id="@+id/comment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/content"
+        android:layout_toRightOf="@+id/avatar"
+        android:layout_marginTop="8dp"
+        android:maxHeight="30dp">
+
+        <CheckBox
+            android:id="@+id/commentBtn"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:button="@drawable/checkbox_comment"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
 
     </RelativeLayout>
 

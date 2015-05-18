@@ -4,11 +4,14 @@
     android:id="@+id/card_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     android:background="#fff"
     android:foreground="?android:selectableItemBackground"
     android:orientation="horizontal"
-    card_view:cardCornerRadius="8dp">
+    card_view:cardCornerRadius="2dp">
 
     <RelativeLayout
         android:id="@+id/info"
