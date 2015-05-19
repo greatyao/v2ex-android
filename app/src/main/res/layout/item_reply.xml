@@ -20,13 +20,14 @@
         android:layout_marginLeft="10dp"
         android:padding="8dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView    
+			xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/avatar"
             android:layout_width="@dimen/avatar_normal_size"
             android:layout_height="@dimen/avatar_normal_size"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/ic_avatar" />
+            android:src="@drawable/ic_avatar" />
 
         <RelativeLayout
             android:id="@+id/replier_layout"
