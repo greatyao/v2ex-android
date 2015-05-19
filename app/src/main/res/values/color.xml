@@ -34,6 +34,6 @@
     <color name="colorPrimary">@color/material_deep_teal_500</color>
     <color name="colorPrimaryDark">@color/material_deep_teal_500</color>
 
-
+    <color name="share_dialog_item">#9A9A9A</color>
 
 </resources>
