@@ -12,12 +12,13 @@
         android:padding="8dp"
         android:background="@drawable/account_bg">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView    
+			xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/img_member"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerVertical="true"
-            android:background="@drawable/ic_avatar"
+            android:src="@drawable/ic_avatar"
             android:layout_marginRight="16dp" />
 
             <TextView

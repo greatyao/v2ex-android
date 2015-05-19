@@ -44,7 +44,8 @@
                 android:lineSpacingExtra="1.5dp"
                 android:text="帖子内容"/>
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView    
+				xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/avatar_normal_size"
                 android:layout_height="@dimen/avatar_normal_size"
