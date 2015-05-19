@@ -30,6 +30,7 @@ public class ShareDialog extends CommonDialog implements
     }
 
     public ShareDialog(Context context) {
+        //this(context, R.style.dialog_share);
         super(context);
         init();
     }

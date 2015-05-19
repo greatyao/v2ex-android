@@ -19,7 +19,6 @@ import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
 import com.yaoyumeng.v2ex.R;
 
-
 /**
  * Created by yw on 2015/5/17.
  */
@@ -28,8 +27,8 @@ public class ShareHelper {
     public static final String WEICHAT_APPID = "wxf612bad3fa62a531";
     public static final String WEICHAT_SECRET = "8c5657cd9b0062c1197c17c3106030c2";
 
-    public static final String QQ_APPID = "100945993";
-    public static final String QQ_APPKEY = "8edd3cc70a5dcc13482d6fe75969601b";
+    public static final String QQ_APPID = "100424468";
+    public static final String QQ_APPKEY = "c7394704798a158208a74ab60104f0ba";
 
     private Activity mActivity;
     private String mTitle;
@@ -39,7 +38,6 @@ public class ShareHelper {
     final UMSocialService mController = UMServiceFactory
             .getUMSocialService("com.umeng.share");
 
-
     SocializeListeners.SnsPostListener mSnsPostListener;
 
     public ShareHelper(Activity activity) {
@@ -48,7 +46,7 @@ public class ShareHelper {
             public void onComplete(SHARE_MEDIA platform, int stCode,
                                    SocializeEntity entity) {
                 if (stCode == 200)
-                    Toast.makeText(mActivity, "分享成功", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mActivity, "分享成功", Toast.LENGTH_SHORT).show();
                 else {
                     String eMsg = "";
                     if (stCode == -101) {
@@ -104,11 +102,7 @@ public class ShareHelper {
                         copyTextToBoard(mUrl);
                         break;
                     case R.id.ly_share_more_option:
-                        Intent intent = new Intent(Intent.ACTION_SEND);
-                        intent.setType("text/plain");
-                        intent.putExtra(Intent.EXTRA_SUBJECT, "分享：" + mContent);
-                        intent.putExtra(Intent.EXTRA_TEXT, mContent + " " + mUrl);
-                        mActivity.startActivity(Intent.createChooser(intent, "选择分享"));
+                        shareContentWithSystem();
                         break;
                     default:
                         break;
@@ -117,6 +111,14 @@ public class ShareHelper {
             }
         });
         dialog.show();
+    }
+
+    private void shareContentWithSystem(){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "分享：" + mContent);
+        intent.putExtra(Intent.EXTRA_TEXT, mContent + " " + mUrl);
+        mActivity.startActivity(Intent.createChooser(intent, "选择分享"));
     }
 
     private void copyTextToBoard(String string){

@@ -35,6 +35,7 @@ import com.yaoyumeng.v2ex.ui.TopicCommentActivity;
 import com.yaoyumeng.v2ex.ui.UserActivity;
 import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.ReplyAdapter;
+import com.yaoyumeng.v2ex.ui.social.ShareHelper;
 import com.yaoyumeng.v2ex.ui.widget.EnterLayout;
 import com.yaoyumeng.v2ex.ui.widget.RichTextView;
 import com.yaoyumeng.v2ex.utils.InputUtils;
@@ -46,7 +47,6 @@ public class TopicFragment extends BaseFragment
         implements V2EXManager.HttpRequestHandler<ArrayList<ReplyModel>> {
 
     public static final int REQUEST_COMMENT = 100;
-    public static final int REQUEST_SHARE = 101;
     RecyclerView mRecyclerView;
     View mHeader;
     ReplyAdapter mAdapter;
@@ -66,7 +66,7 @@ public class TopicFragment extends BaseFragment
         @Override
         public void onClick(View v) {
             String content = mEnterLayout.getContent();
-            if(content.isEmpty()){
+            if (content.isEmpty()) {
                 MessageUtils.showMiddleToast(getActivity(), getString(R.string.topic_comment_not_empty));
                 return;
             }
@@ -255,12 +255,9 @@ public class TopicFragment extends BaseFragment
     }
 
     private void share() {
-        String url = V2EXManager.getBaseUrl() + "/t/" + mTopicId;
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "分享：" + mTopic.title);
-        intent.putExtra(Intent.EXTRA_TEXT, mTopic.title + " " + url);
-        startActivity(Intent.createChooser(intent, "选择分享"));
+        ShareHelper helper = new ShareHelper(getActivity());
+        helper.setContent(getString(R.string.app_name), mTopic.title, V2EXManager.getBaseUrl() + "/t/" + mTopicId);
+        helper.handleShare();
     }
 
     //回复话题作者

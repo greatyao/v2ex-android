@@ -30,14 +30,6 @@ public class CommonDialog extends Dialog {
         init(context);
     }
 
-    protected CommonDialog(Context context, boolean flag,
-                           OnCancelListener listener) {
-        super(context, flag, listener);
-        contentPadding = (int) getContext().getResources().getDimension(
-                R.dimen.global_dialog_padding);
-        init(context);
-    }
-
     protected void init(final Context context) {
         setCancelable(false);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
