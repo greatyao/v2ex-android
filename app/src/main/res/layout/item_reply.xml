@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="4dp"
     android:background="#fff"
-    card_view:cardCornerRadius="2dp"
-    android:foreground="?android:selectableItemBackground"
-    android:orientation="horizontal">
+    android:foreground="?android:selectableItemBackground">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:padding="8dp">
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView    
-			xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/avatar"
             android:layout_width="@dimen/avatar_normal_size"
             android:layout_height="@dimen/avatar_normal_size"
@@ -35,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/avatar"
             android:layout_toRightOf="@+id/avatar"
+            android:layout_marginRight="16dp"
             android:maxHeight="30dp">
 
             <TextView
@@ -63,14 +56,14 @@
                 android:id="@+id/which_floor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:text="第1楼"
                 android:textColor="#aaa"
-                android:textSize="12sp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp" />
+                android:textSize="12sp" />
 
         </RelativeLayout>
 
@@ -81,30 +74,39 @@
             android:layout_below="@+id/replier_layout"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
             android:layout_toRightOf="@+id/avatar"
             android:text="@string/topic" />
 
-    <RelativeLayout
-        android:id="@+id/comment_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/content"
-        android:layout_toRightOf="@+id/avatar"
-        android:layout_marginTop="8dp"
-        android:maxHeight="30dp">
+        <RelativeLayout
+            android:id="@+id/comment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/content"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_toRightOf="@+id/avatar">
 
-        <CheckBox
-            android:id="@+id/commentBtn"
-            android:layout_width="50dp"
-            android:layout_height="25dp"
-            android:button="@drawable/checkbox_comment"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+            <CheckBox
+                android:id="@+id/commentBtn"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:button="@drawable/checkbox_comment" />
         </RelativeLayout>
 
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/divide_reply"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@+id/avatar"
+            android:background="#ffe4e4e4"
+            android:layout_below="@+id/comment_layout" />
 
     </RelativeLayout>
 

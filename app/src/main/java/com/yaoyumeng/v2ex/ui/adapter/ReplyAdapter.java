@@ -95,6 +95,8 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
         viewHolder.time.setText(text);
 
         viewHolder.floor.setText(String.format("第%d楼", i+1));
+
+        viewHolder.divide.setVisibility(i == mReplies.size() - 1 ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -125,6 +127,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
         TextView time;
         CheckBox comment;
         TextView floor;
+        View divide;
 
         public ViewHolder(View view) {
             super(view);
@@ -136,6 +139,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
             replier = (TextView) view.findViewById(R.id.replier);
             comment = (CheckBox) view.findViewById(R.id.commentBtn);
             floor = (TextView) view.findViewById(R.id.which_floor);
+            divide = view.findViewById(R.id.divide_reply);
         }
     }
 }
