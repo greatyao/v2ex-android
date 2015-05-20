@@ -65,6 +65,12 @@ public class UserActivity extends BaseActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("username", mUsername);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
