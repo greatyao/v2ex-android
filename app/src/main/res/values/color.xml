@@ -32,6 +32,7 @@
     <color name="actionbar_color">#bf360c</color>
     <color name="drawer_arrow_second_color">#303f9f</color>
     <color name="colorPrimary">@color/material_deep_teal_500</color>
+    <color name="colorPrimaryLight">@color/material_deep_teal_200</color>
     <color name="colorPrimaryDark">@color/material_deep_teal_500</color>
 
     <color name="share_dialog_item">#9A9A9A</color>

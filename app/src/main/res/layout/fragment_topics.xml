@@ -32,6 +32,7 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
         android:src="@drawable/ic_action_add"
-        fab:fab_colorNormal="@color/colorPrimary" />
+        fab:fab_colorNormal="@color/colorPrimary"
+        fab:fab_colorPressed="@color/colorPrimaryLight" />
     </FrameLayout>
 </LinearLayout>
