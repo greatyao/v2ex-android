@@ -155,6 +155,10 @@ public class UserFragment extends BaseFragment implements V2EXManager.HttpReques
     }
 
     @Override
+    public void onSuccess(ArrayList<MemberModel> data, int total, int current) {
+    }
+
+    @Override
     public void onFailure(int reason, String error) {
         mSwipeLayout.setRefreshing(false);
     }
@@ -188,6 +192,10 @@ public class UserFragment extends BaseFragment implements V2EXManager.HttpReques
             mTopics = data;
             mAdapter.update(data, false);
             mSwipeLayout.setRefreshing(false);
+        }
+
+        @Override
+        public void onSuccess(ArrayList<TopicModel> data, int totalPages, int currentPage) {
         }
 
         @Override

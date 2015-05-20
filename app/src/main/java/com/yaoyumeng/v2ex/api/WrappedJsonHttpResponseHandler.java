@@ -48,7 +48,7 @@ class WrappedJsonHttpResponseHandler<T extends V2EXModel> extends JsonHttpRespon
         }
         PersistenceHelper.saveModelList(context, models, key);
         try{
-            handler.onSuccess(models);
+            handler.onSuccess(models, 1, 1);
         } catch(Exception e){
             e.printStackTrace();
         }

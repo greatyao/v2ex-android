@@ -77,6 +77,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             }
 
             @Override
+            public void onSuccess(Integer data, int totalPages, int currentPage){
+            }
+
+            @Override
             public void onFailure(int reason, String error) {
                 MessageUtils.showErrorMessage(LoginActivity.this, error);
                 mProgressDialog.dismiss();
@@ -100,6 +104,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     intent.putExtra("profile", (Parcelable)mProfile);
                     setResult(RESULT_OK, intent);
                     finish();
+                }
+
+                @Override
+                public void onSuccess(ArrayList<MemberModel> data, int totalPages, int currentPage){
                 }
 
                 @Override

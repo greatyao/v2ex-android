@@ -197,6 +197,10 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
     }
 
     @Override
+    public void onSuccess(ArrayList<TopicModel> data, int totalPages, int currentPage){
+    }
+
+    @Override
     public void onFailure(int reason, String error) {
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
@@ -242,6 +246,10 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
             mDataSource.favoriteNode(mNodeName, mIsStarred);
             MessageUtils.showMiddleToast(getActivity(),
                     getString(mIsStarred ? R.string.fav_nodes_ok : R.string.unfav_nodes_ok));
+        }
+
+        @Override
+        public void onSuccess(Integer data, int totalPages, int currentPage){
         }
 
         @Override

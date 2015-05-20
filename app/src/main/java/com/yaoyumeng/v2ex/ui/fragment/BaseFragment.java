@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.umeng.analytics.MobclickAgent;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.ui.BaseActivity;
+import com.yaoyumeng.v2ex.ui.widget.FootUpdate;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 
 /**
@@ -16,6 +17,8 @@ public class BaseFragment extends Fragment implements AccountUtils.OnAccountList
     protected boolean mIsLogin;
     protected MemberModel mLoginProfile;
     protected BackHandledInterface mBackHandledInterface;
+
+    protected FootUpdate mFootUpdate = new FootUpdate();
 
     public static interface BackHandledInterface {
         public abstract void setSelectedFragment(BaseFragment selectedFragment);

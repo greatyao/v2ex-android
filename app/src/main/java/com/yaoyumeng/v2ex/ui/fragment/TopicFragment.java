@@ -194,6 +194,10 @@ public class TopicFragment extends BaseFragment
     }
 
     @Override
+    public void onSuccess(ArrayList<ReplyModel> data, int totalPages, int currentPage) {
+    }
+
+    @Override
     public void onFailure(int reason, String error) {
         mSwipeLayout.setRefreshing(false);
     }
@@ -368,6 +372,10 @@ public class TopicFragment extends BaseFragment
         }
 
         @Override
+        public void onSuccess(ArrayList<TopicModel> data, int total, int current) {
+        }
+
+        @Override
         public void onFailure(int reason, String error) {
             mSwipeLayout.setRefreshing(false);
         }
@@ -394,6 +402,10 @@ public class TopicFragment extends BaseFragment
         }
 
         @Override
+        public void onSuccess(Integer data, int total, int current) {
+        }
+
+        @Override
         public void onFailure(int reason, String error) {
             ((BaseActivity) getActivity()).showProgressBar(false);
             MessageUtils.showErrorMessage(getActivity(), error);
@@ -413,6 +425,11 @@ public class TopicFragment extends BaseFragment
             mDataSource.favoriteTopic(mTopic, mIsStarred);
             MessageUtils.showMiddleToast(getActivity(),
                     getString(mIsStarred ? R.string.fav_topic_ok : R.string.unfav_topic_ok));
+        }
+
+        @Override
+        public void onSuccess(Integer data, int total, int current) {
+
         }
 
         @Override

@@ -61,7 +61,7 @@ public class UserActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString("username", mUsername);
         fragment.setArguments(bundle);
-        getFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     @Override

@@ -115,6 +115,13 @@ public class AllNodesFragment extends BaseFragment
     }
 
     @Override
+    public void onSuccess(ArrayList<NodeModel> data, int totalPages, int currentPage) {
+        mNodeAdapter.update(data);
+        mSwipeLayout.setRefreshing(false);
+        mAlphaView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onFailure(int reason, String error) {
         mSwipeLayout.setRefreshing(false);
     }

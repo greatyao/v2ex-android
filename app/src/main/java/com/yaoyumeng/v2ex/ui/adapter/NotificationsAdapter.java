@@ -29,23 +29,26 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
     List<NotificationModel> mNotifications = new ArrayList<NotificationModel>();
     private Context mContext;
+    OnScrollToLastListener mListener;
 
-    public NotificationsAdapter( Context context )
-    {
+    public static interface OnScrollToLastListener {
+        public void onLoadMore();
+    }
+
+    public NotificationsAdapter(Context context, OnScrollToLastListener listen) {
         this.mContext = context;
+        this.mListener = listen;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder( ViewGroup viewGroup, int i )
-    {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         // 给ViewHolder设置布局文件
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_notification, viewGroup, false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder( ViewHolder viewHolder, int i )
-    {
+    public void onBindViewHolder(ViewHolder viewHolder, int i) {
         // 给ViewHolder设置元素
         final NotificationModel model = mNotifications.get(i);
         final MemberModel member = model.notificationMember;
@@ -77,7 +80,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                 model.notificationTopic.title + model.notificationDescriptionAfter);
 
         String contentTxt = topic.content;
-        if(contentTxt == null || contentTxt.isEmpty()) {
+        if (contentTxt == null || contentTxt.isEmpty()) {
             viewHolder.content.setVisibility(View.GONE);
         } else {
             viewHolder.content.setVisibility(View.VISIBLE);
@@ -86,16 +89,23 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
         String date = topic.url;
         viewHolder.time.setText(date);
+
+        if (mNotifications.size() - i <= 1 && mListener != null) {
+            mListener.onLoadMore();
+        }
     }
 
-    public void update(ArrayList<NotificationModel> data) {
-        mNotifications = data;
+    public void update(ArrayList<NotificationModel> data, boolean merge) {
+        if (merge) {
+            mNotifications.addAll(data);
+        } else {
+            mNotifications = data;
+        }
         notifyDataSetChanged();
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         // 返回数据总数
         return mNotifications.size();
     }

@@ -160,6 +160,11 @@ public class AccountUtils {
             }
 
             @Override
+            public void onSuccess(ArrayList<NodeModel> nodes, int totalPages, int currentPage){
+
+            }
+
+            @Override
             public void onFailure(int reason, String error) {
 
             }
@@ -181,6 +186,11 @@ public class AccountUtils {
             public void onSuccess(Integer count) {
                 if(listener != null && count > 0)
                     listener.onAccountNotificationCount(count);
+            }
+
+            @Override
+            public void onSuccess(Integer count, int totalPages, int currentPage){
+
             }
 
             @Override

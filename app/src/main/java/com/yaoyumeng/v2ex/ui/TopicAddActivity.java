@@ -99,6 +99,10 @@ public class TopicAddActivity extends BaseActivity implements V2EXManager.HttpRe
     }
 
     @Override
+    public void onSuccess(Integer data, int total, int current) {
+    }
+
+    @Override
     public void onFailure(int reason, String error) {
         showProgressBar(false);
         MessageUtils.showErrorMessage(this, error);

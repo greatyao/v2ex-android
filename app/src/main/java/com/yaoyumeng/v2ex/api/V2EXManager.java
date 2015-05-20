@@ -16,6 +16,7 @@ import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.NotificationModel;
 import com.yaoyumeng.v2ex.model.PersistenceHelper;
 import com.yaoyumeng.v2ex.model.ReplyModel;
+import com.yaoyumeng.v2ex.model.TopicListModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 
 import org.apache.http.Header;
@@ -136,6 +137,35 @@ public class V2EXManager {
 
         new AsyncHttpClient().get(ctx, urlString,
                 new WrappedJsonHttpResponseHandler<TopicModel>(ctx, TopicModel.class, key, handler));
+    }
+
+    /**
+     * 获取首页分类话题列表 (包括技术,创意,好玩,Apple,酷工作,交易,城市,问与答,R2)
+     * @param ctx
+     * @param urlString
+     * @param refresh
+     * @param handler
+     */
+    public static void getCategoryTopics(Context ctx, String urlString, boolean refresh,
+                                        final HttpRequestHandler<ArrayList<TopicModel>> handler){
+        final AsyncHttpClient client = getClient(ctx, false);
+        client.addHeader("Referer", getBaseUrl());
+        client.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        //client.get("http://www.v2ex.com/?tab=jobs", new TextHttpResponseHandler() {
+            client.get("http://www.v2ex.com/go/v2ex", new TextHttpResponseHandler() {
+                @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.e(TAG, throwable.getMessage());
+                handler.onFailure(statusCode, throwable.getMessage());
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseBody) {
+                TopicListModel topics = new TopicListModel();
+                topics.parse(responseBody);
+                handler.onSuccess(topics);
+            }
+        });
     }
 
     //获取所有节点
@@ -268,6 +298,11 @@ public class V2EXManager {
     public static void loginWithUsername(final Context cxt, final String username, final String password,
                                          final HttpRequestHandler<Integer> handler) {
         requestOnceWithURLString(cxt, SIGN_IN_URL, new HttpRequestHandler<String>() {
+            @Override
+            public void onSuccess(String data, int totalPages, int currentPage){
+
+            }
+
             @Override
             public void onSuccess(String data) {
                 final String once = data;
@@ -402,7 +437,7 @@ public class V2EXManager {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseBody) {
                 int count = getNotificationCountFromResponse(responseBody);
-                if (count > 0){
+                if (count > 0) {
                     handler.onSuccess(count);
                 }
             }
@@ -421,6 +456,10 @@ public class V2EXManager {
                                               final HttpRequestHandler<Integer> handler) {
         final String urlString = getBaseUrl() + "/t/" + topicId;
         requestOnceWithURLString(cxt, urlString, new HttpRequestHandler<String>() {
+            @Override
+            public void onSuccess(String data, int totalPages, int currentPage){
+            }
+
             @Override
             public void onSuccess(String data) {
                 String once = data;
@@ -472,6 +511,10 @@ public class V2EXManager {
 
         final String urlString = getBaseUrl() + "/new/" + nodeName;
         requestOnceWithURLString(cxt, urlString, new HttpRequestHandler<String>() {
+            @Override
+            public void onSuccess(String data, int totalPages, int currentPage){
+            }
+
             @Override
             public void onSuccess(String once) {
                 AsyncHttpClient client = getClient(cxt);
@@ -624,9 +667,10 @@ public class V2EXManager {
      * @param context
      * @param handler
      */
-    public static void getNotifications(final Context context,
+    public static void getNotifications(final Context context, int page,
                                         final HttpRequestHandler<ArrayList<NotificationModel>> handler) {
         String urlString = getBaseUrl() + "/notifications";
+        if(page > 1) urlString += "?p=" + page;
         final AsyncHttpClient client = getClient(context, false);
         client.addHeader("Referer", getBaseUrl());
         client.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -641,14 +685,33 @@ public class V2EXManager {
             public void onSuccess(int statusCode, Header[] headers, String responseBody) {
                 ArrayList<NotificationModel> notifications = new ArrayList<NotificationModel>();
                 Document doc = Jsoup.parse(responseBody);
-                Elements elements = doc.body().getElementsByAttributeValue("class", "cell");
+                Element body = doc.body();
+                Elements elements = body.getElementsByAttributeValue("class", "cell");
                 for (Element el : elements) {
                     NotificationModel notification = new NotificationModel();
                     if (notification.parse(el))
                         notifications.add(notification);
                 }
 
-                handler.onSuccess(notifications);
+                elements = body.getElementsByAttributeValue("class", "inner");
+                int total = 1, current = 1;
+                for (Element el : elements) {
+                    Elements tds = el.getElementsByTag("td");
+                    if(tds.size() != 3) continue;
+
+                    String pageString = el.getElementsByAttributeValue("align", "center").text();
+                    String [] arrayString = pageString.split("/");
+                    if(arrayString.length != 2) continue;
+
+                    try{
+                        total = Integer.parseInt(arrayString[1]);
+                        current = Integer.parseInt(arrayString[0]);
+                    } catch (Exception e){
+                    }
+                    break;
+                }
+
+                handler.onSuccess(notifications, total, current);
             }
         });
     }
@@ -666,6 +729,8 @@ public class V2EXManager {
 
     public interface HttpRequestHandler<E> {
         public void onSuccess(E data);
+
+        public void onSuccess(E data, int totalPages, int currentPage);
 
         public void onFailure(int reason, String error);
     }

@@ -95,6 +95,10 @@ public class TopicCommentActivity extends BaseActivity
     }
 
     @Override
+    public void onSuccess(Integer data, int total, int current) {
+    }
+
+    @Override
     public void onFailure(int reason, String error) {
         showProgressBar(false);
         MessageUtils.showErrorMessage(TopicCommentActivity.this, error);

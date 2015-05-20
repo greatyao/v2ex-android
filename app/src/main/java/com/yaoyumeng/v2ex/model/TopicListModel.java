@@ -8,6 +8,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 
 /**
+ * 话题列表类,网页解析得到
  * Created by yw on 2015/5/19.
  */
 public class TopicListModel extends ArrayList<TopicModel>{
