@@ -31,21 +31,6 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
-    <string name="title_drawer_latest">最新</string>
-    <string name="title_drawer_hot">热门</string>
-    <string name="title_drawer_all_nodes">所有</string>
-    <string name="title_drawer_fav_nodes">收藏</string>
-    <string name="title_drawer_settings">设置</string>
-    <string name="title_drawer_notification">提醒</string>
-
-    <string name="title_main_latest">最新话题</string>
-    <string name="title_main_hot">热门话题</string>
-    <string name="title_main_all_nodes">所有节点</string>
-    <string name="title_main_fav_nodes">节点收藏</string>
-    <string name="title_main_notification">提醒系统</string>
-    <string name="title_main_settings">偏好设置</string>
-
-
     <string name="fav_nodes_empty">没有收藏的节点,请登录或者到所有节点页面下添加节点</string>
     <string name="fav_nodes_working">节点收藏中...</string>
     <string name="fav_nodes_ok">节点加入收藏</string>
@@ -111,4 +96,5 @@
     <string name="tip_share_done">分享完成</string>
 
     <string name="action_settings">Settings</string>
+
 </resources>
