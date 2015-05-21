@@ -34,8 +34,8 @@
         <item>热门</item>
         <item>所有</item>
         <item>收藏</item>
-        <item>设置</item>
         <item>提醒</item>
+        <item>设置</item>
     </string-array>
 
     <string-array name="v2ex_nav_main_titles">
