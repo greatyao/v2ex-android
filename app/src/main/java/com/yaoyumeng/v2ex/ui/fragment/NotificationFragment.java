@@ -45,13 +45,6 @@ public class NotificationFragment extends BaseFragment implements V2EXManager.Ht
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        ((MainActivity) activity).onSectionAttached(5);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notification, container, false);
 

@@ -78,6 +78,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
             @Override
             public void onSuccess(Integer data, int totalPages, int currentPage){
+                getProfile();
             }
 
             @Override

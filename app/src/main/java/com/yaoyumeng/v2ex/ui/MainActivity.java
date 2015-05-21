@@ -6,11 +6,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.umeng.update.UmengUpdateAgent;
 import com.yaoyumeng.v2ex.R;
+import com.yaoyumeng.v2ex.ui.adapter.SpinnerAdapter;
 import com.yaoyumeng.v2ex.ui.fragment.AllNodesFragment;
 import com.yaoyumeng.v2ex.ui.fragment.FavNodesFragment;
 import com.yaoyumeng.v2ex.ui.fragment.NavigationDrawerFragment;
@@ -23,9 +27,10 @@ import com.yaoyumeng.v2ex.utils.MessageUtils;
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-
+    private SpinnerAdapter mSpinnerAdapter;
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    ViewGroup mDrawerLayout;
+    private ViewGroup mDrawerLayout;
+    private View mActionbarCustom;
 
     private TopicsFragment mNewestTopicsFragment;
     private TopicsFragment mHotTopicsFragment;
@@ -37,6 +42,10 @@ public class MainActivity extends BaseActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    private String[] mFavoriteTabTitles;
+    private String[] mFavoriteTabPaths;
+    private String[] mMainTitles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,26 +62,67 @@ public class MainActivity extends BaseActivity
                 getFragmentManager().findFragmentById(R.id.left_drawer);
         mTitle = getTitle();
 
+        mFavoriteTabTitles = getResources().getStringArray(R.array.v2ex_favorite_tab_titles);
+        mFavoriteTabPaths = getResources().getStringArray(R.array.v2ex_favorite_tab_paths);
+        mMainTitles = getResources().getStringArray(R.array.v2ex_nav_main_titles);
+
+        mSpinnerAdapter = new SpinnerAdapter(this, mFavoriteTabTitles);
+
+        ActionBar supportActionBar = getSupportActionBar();
+        supportActionBar.setCustomView(R.layout.actionbar_custom_spinner);
+        mActionbarCustom = supportActionBar.getCustomView();
+        Spinner spinner = (Spinner) supportActionBar.getCustomView().findViewById(R.id.spinner);
+        spinner.setAdapter(mSpinnerAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TopicsFragment fragment = new TopicsFragment();
+                Bundle bundle = new Bundle();
+                mSpinnerAdapter.setCheckPos(position);
+                bundle.putString("tab", mFavoriteTabPaths[position]);
+                bundle.putBoolean("attach_main", true);
+                bundle.putBoolean("show_menu", false);
+                fragment.setArguments(bundle);
+
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container, fragment, mFavoriteTabTitles[position]).commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.left_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(true);
+        //ActionBar actionBar = getSupportActionBar();
+        //actionBar.setDisplayHomeAsUpEnabled(true);
+        //actionBar.setHomeButtonEnabled(true);
+        //actionBar.setDisplayShowTitleEnabled(true);
 
         if (mIsLogin) initAccount();
     }
 
+    int mSelectPos = 0;
+
     @Override
     public void onNavigationDrawerItemSelected(final int position) {
-        // update the main content by replacing fragments
+        mSelectPos = position;
+
+        //特别处理
+        if(position== 0){
+            onSpinnerSelected();
+            return;
+        }
+
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         switch (position) {
-            case 0:
+            case 1:
                 if (mNewestTopicsFragment == null) {
                     mNewestTopicsFragment = new TopicsFragment();
                     Bundle bundle = new Bundle();
@@ -81,9 +131,9 @@ public class MainActivity extends BaseActivity
                     bundle.putBoolean("show_menu", false);
                     mNewestTopicsFragment.setArguments(bundle);
                 }
-                fragmentTransaction.replace(R.id.container, mNewestTopicsFragment);
+                fragmentTransaction.replace(R.id.container, mNewestTopicsFragment).commit();
                 break;
-            case 1:
+            case 2:
                 if (mHotTopicsFragment == null) {
                     mHotTopicsFragment = new TopicsFragment();
                     Bundle bundle = new Bundle();
@@ -92,61 +142,58 @@ public class MainActivity extends BaseActivity
                     bundle.putBoolean("show_menu", false);
                     mHotTopicsFragment.setArguments(bundle);
                 }
-                fragmentTransaction.replace(R.id.container, mHotTopicsFragment);
+                fragmentTransaction.replace(R.id.container, mHotTopicsFragment).commit();
                 break;
-            case 2:
+            case 3:
                 if (mAllNodesFragment == null) {
                     mAllNodesFragment = new AllNodesFragment();
                 }
-                fragmentTransaction.replace(R.id.container, mAllNodesFragment);
+                fragmentTransaction.replace(R.id.container, mAllNodesFragment).commit();
                 break;
-            case 3:
+            case 4:
                 if (mFavNodesFragment == null) {
                     mFavNodesFragment = new FavNodesFragment();
                 }
-                fragmentTransaction.replace(R.id.container, mFavNodesFragment);
+                fragmentTransaction.replace(R.id.container, mFavNodesFragment).commit();
                 break;
-            case 4:
+            case 5:
                 if (mNotificationFragment == null) {
                     mNotificationFragment = new NotificationFragment();
                 }
-                fragmentTransaction.replace(R.id.container, mNotificationFragment);
-                break;
-            case 5:
-                fragmentTransaction.replace(R.id.container, new SettingsFragment());
-                break;
-        }
-        fragmentTransaction.commit();
-    }
-
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_main_latest);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_main_hot);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_main_all_nodes);
-                break;
-            case 4:
-                mTitle = getString(R.string.title_main_fav_nodes);
-                break;
-            case 5:
-                mTitle = getString(R.string.title_main_notification);
+                fragmentTransaction.replace(R.id.container, mNotificationFragment).commit();
                 break;
             case 6:
-                mTitle = getString(R.string.title_main_settings);
+                fragmentTransaction.replace(R.id.container, new SettingsFragment()).commit();
                 break;
+        }
+    }
+
+    private void onSpinnerSelected() {
+        ActionBar actionBar = getSupportActionBar();
+        Spinner spinner;
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(mActionbarCustom);
+        spinner = (Spinner) mActionbarCustom.findViewById(R.id.spinner);
+
+        boolean containFragment = false;
+        if (!containFragment) {
+            int pos = spinner.getSelectedItemPosition();
+            spinner.getOnItemSelectedListener().onItemSelected(null, null, pos, pos);
         }
     }
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        if (mSelectPos != 0) {
+            mTitle = mMainTitles[mSelectPos];
+            actionBar.setDisplayShowCustomEnabled(false);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(mTitle);
+        } else {
+            actionBar.setDisplayShowCustomEnabled(true);
+            actionBar.setCustomView(mActionbarCustom);
+            actionBar.setTitle("");
+        }
     }
 
     @Override

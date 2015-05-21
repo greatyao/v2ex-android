@@ -37,7 +37,7 @@ import com.yaoyumeng.v2ex.utils.PhoneUtils;
  * 设置
  * Created by yw on 2015/5/13.
  */
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends  PreferenceFragment {
 
     public static final String GITGUB_PROJECT = "https://github.com/greatyao/v2ex-android";
     SharedPreferences mPreferences;
@@ -212,11 +212,5 @@ public class SettingsFragment extends PreferenceFragment {
         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         dialog.show();
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(6);
     }
 }

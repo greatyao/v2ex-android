@@ -67,7 +67,7 @@ public class NavigationDrawerFragment extends BaseFragment {
     private ImageView mUserImgView;
     private TextView mUserTextView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = 1;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 

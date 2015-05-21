@@ -49,6 +49,7 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
     boolean mAttachMain;
     NodeModel mNode;
     String mNodeName;
+    String mTabName;
     MenuItem mStarItem;
     MenuItem mUnStarItem;
     boolean mIsStarred;
@@ -69,9 +70,7 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
         mNodeId = args.getInt("node_id", InvalidTopics);
         mNodeName = args.getString("node_name", "");
         mShowMenu = args.getBoolean("show_menu", false);
-
-        if (mNodeId <= 0 && mAttachMain)
-            ((MainActivity) activity).onSectionAttached(mNodeId == LatestTopics ? 1 : 2);
+        mTabName = args.getString("tab", "");
 
         setHasOptionsMenu(mShowMenu);
     }
@@ -137,7 +136,10 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
             mNodeId = mNode.id;
             mNodeName = mNode.name;
             requestTopicsById(false);
-        } else {
+        } else if(args.containsKey("tab")){
+            mTabName = args.getString("tab");
+            requestTopicsByTab(false);
+        } else{
             getActivity().finish();
         }
     }
@@ -198,6 +200,7 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
 
     @Override
     public void onSuccess(ArrayList<TopicModel> data, int totalPages, int currentPage){
+        onSuccess(data);
     }
 
     @Override
@@ -224,6 +227,10 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
             V2EXManager.getTopicsByNodeId(getActivity(), mNodeId, refresh, this);
     }
 
+    private void requestTopicsByTab(boolean refresh){
+        V2EXManager.getTopicsByTab(getActivity(), mTabName, refresh, this);
+    }
+
     private void requestTopics(boolean refresh) {
         if (mIsLoading)
             return;
@@ -231,6 +238,8 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
         mIsLoading = true;
         if (mNodeName != null && !mNodeName.isEmpty())
             requestTopicsByName(refresh);
+        else if(mTabName != null && !mTabName.isEmpty())
+            requestTopicsByTab(refresh);
         else
             requestTopicsById(refresh);
 

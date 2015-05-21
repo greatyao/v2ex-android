@@ -65,12 +65,6 @@ public class FavNodesFragment extends BaseFragment {
         refreshFavNodes();
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(4);
-    }
-
     private void refreshFavNodes(){
         AccountUtils.refreshFavoriteNodes(getActivity(), new AccountUtils.OnAccountFavoriteNodesListener() {
             @Override

@@ -54,7 +54,11 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, TopicActivity.class);
-                intent.putExtra("model", (Parcelable) topic);
+
+                if(topic.content == null || topic.contentRendered == null)
+                    intent.putExtra("topic_id", topic.id);
+                else
+                    intent.putExtra("model", (Parcelable) topic);
                 if(!mDataSource.isTopicRead(topic.id))
                     new SetReadTask(topic, TopicsAdapter.this).execute();
                 mContext.startActivity(intent);

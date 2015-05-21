@@ -19,14 +19,7 @@ public class DrawerAdapter extends BaseAdapter {
 
     public DrawerAdapter(Context context) {
         mContext = context;
-        mTitles = new String[]{
-                context.getResources().getString(R.string.title_drawer_latest),
-                context.getResources().getString(R.string.title_drawer_hot),
-                context.getResources().getString(R.string.title_drawer_all_nodes),
-                context.getResources().getString(R.string.title_drawer_fav_nodes),
-                context.getResources().getString(R.string.title_drawer_notification),
-                context.getResources().getString(R.string.title_drawer_settings)
-        };
+        mTitles = context.getResources().getStringArray(R.array.v2ex_nav_drawers);
     }
 
     @Override
@@ -47,16 +40,18 @@ public class DrawerAdapter extends BaseAdapter {
     public int getIconId(int position) {
         switch (position) {
             case 0:
-                return R.drawable.ic_news;
+                return R.drawable.ic_discovery;
             case 1:
-                return R.drawable.ic_hot;
+                return R.drawable.ic_news;
             case 2:
-                return R.drawable.ic_nodes;
+                return R.drawable.ic_hot;
             case 3:
-                return R.drawable.ic_favourite;
+                return R.drawable.ic_nodes;
             case 4:
-                return R.drawable.ic_notify;
+                return R.drawable.ic_favourite;
             case 5:
+                return R.drawable.ic_notify;
+            case 6:
                 return R.drawable.ic_settings;
             default:
                 return 0;

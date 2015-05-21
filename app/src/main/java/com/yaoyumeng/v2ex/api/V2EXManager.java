@@ -140,6 +140,18 @@ public class V2EXManager {
     }
 
     /**
+     *  获取首页分类话题列表
+     * @param ctx
+     * @param tab tab名称
+     * @param refresh
+     * @param handler
+     */
+    public static void getTopicsByTab(Context ctx, String tab, boolean refresh,
+                                         final HttpRequestHandler<ArrayList<TopicModel>> handler){
+        getCategoryTopics(ctx, getBaseUrl() + "/?tab=" + tab, refresh, handler);
+    }
+
+    /**
      * 获取首页分类话题列表 (包括技术,创意,好玩,Apple,酷工作,交易,城市,问与答,R2)
      * @param ctx
      * @param urlString
@@ -151,11 +163,9 @@ public class V2EXManager {
         final AsyncHttpClient client = getClient(ctx, false);
         client.addHeader("Referer", getBaseUrl());
         client.addHeader("Content-Type", "application/x-www-form-urlencoded");
-        //client.get("http://www.v2ex.com/?tab=jobs", new TextHttpResponseHandler() {
-            client.get("http://www.v2ex.com/go/v2ex", new TextHttpResponseHandler() {
+        client.get(urlString, new TextHttpResponseHandler() {
                 @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.e(TAG, throwable.getMessage());
                 handler.onFailure(statusCode, throwable.getMessage());
             }
 
