@@ -96,7 +96,8 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
 
         viewHolder.floor.setText(String.format("第%d楼", i+1));
 
-        viewHolder.divide.setVisibility(i == mReplies.size() - 1 ? View.GONE : View.VISIBLE);
+        if(viewHolder.divide != null)
+            viewHolder.divide.setVisibility(i == mReplies.size() - 1 ? View.GONE : View.VISIBLE);
     }
 
     @Override
