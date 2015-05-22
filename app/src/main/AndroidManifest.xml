@@ -13,7 +13,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Coding.AppTheme" >
+        android:theme="@style/V2EX.AppTheme" >
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5538403067e58e38e6001af9" />
@@ -24,7 +24,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Coding.ActionbarSpannerTheme" >
+            android:theme="@style/V2EX.ActivityTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
