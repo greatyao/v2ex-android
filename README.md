@@ -2,9 +2,14 @@
 
 V2EX社区客户端，非官方。
 
+#### Google Play下载
 [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.yaoyumeng.v2ex)
 
-[**其他下载链接**](https://github.com/greatyao/v2ex-android/releases/download/1.2.0/v2ex-android-v1.2.0.apk)
+#### 其他下载链接
+
+[**OSChina**](http://files.git.oschina.net/group1/M00/00/77/fMqNk1VfQzCAeDclAChvcn7PVPM656.apk?token=e2100b0450c536893228e8eb6a5166cb&ts=1432306534&filename=app-release.apk)
+
+[**Github**](https://github.com/greatyao/v2ex-android/releases/download/1.2.0/v2ex-android-v1.2.0.apk)
 
 
 ### 支持功能
