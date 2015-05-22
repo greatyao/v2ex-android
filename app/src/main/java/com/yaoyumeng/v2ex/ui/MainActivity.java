@@ -113,16 +113,10 @@ public class MainActivity extends BaseActivity
     public void onNavigationDrawerItemSelected(final int position) {
         mSelectPos = position;
 
-        //特别处理
-        if (position == 0) {
-            onSpinnerSelected();
-            return;
-        }
-
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         switch (position) {
-            case 1:
+            case 0:
                 if (mNewestTopicsFragment == null) {
                     mNewestTopicsFragment = new TopicsFragment();
                     Bundle bundle = new Bundle();
@@ -133,7 +127,7 @@ public class MainActivity extends BaseActivity
                 }
                 fragmentTransaction.replace(R.id.container, mNewestTopicsFragment).commit();
                 break;
-            case 2:
+            case 1:
                 if (mHotTopicsFragment == null) {
                     mHotTopicsFragment = new TopicsFragment();
                     Bundle bundle = new Bundle();
@@ -143,6 +137,9 @@ public class MainActivity extends BaseActivity
                     mHotTopicsFragment.setArguments(bundle);
                 }
                 fragmentTransaction.replace(R.id.container, mHotTopicsFragment).commit();
+                break;
+            case 2:
+                //特别处理
                 break;
             case 3:
                 if (mAllNodesFragment == null) {
@@ -166,6 +163,11 @@ public class MainActivity extends BaseActivity
                 fragmentTransaction.replace(R.id.container, new SettingsFragment()).commit();
                 break;
         }
+
+        if (position == 2) {
+            onSpinnerSelected();
+            return;
+        }
     }
 
     private void onSpinnerSelected() {
@@ -185,7 +187,7 @@ public class MainActivity extends BaseActivity
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        if (mSelectPos != 0) {
+        if (mSelectPos != 2) {
             mTitle = mMainTitles[mSelectPos];
             actionBar.setDisplayShowCustomEnabled(false);
             actionBar.setDisplayShowTitleEnabled(true);

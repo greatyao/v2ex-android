@@ -29,9 +29,9 @@
     </string-array>
 
     <string-array name="v2ex_nav_drawers">
-        <item>发现</item>
         <item>最新</item>
         <item>热门</item>
+        <item>发现</item>
         <item>所有</item>
         <item>收藏</item>
         <item>提醒</item>
@@ -39,9 +39,9 @@
     </string-array>
 
     <string-array name="v2ex_nav_main_titles">
-        <item />
         <item>最新话题</item>
         <item>热门话题</item>
+        <item />
         <item>所有节点</item>
         <item>节点收藏</item>
         <item>提醒系统</item>

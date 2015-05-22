@@ -16,6 +16,15 @@ public class DrawerAdapter extends BaseAdapter {
 
     private Context mContext;
     private String[] mTitles;
+    private final int mIcons[] = new int[]{
+            R.drawable.ic_news,
+            R.drawable.ic_hot,
+            R.drawable.ic_discovery,
+            R.drawable.ic_nodes,
+            R.drawable.ic_favourite,
+            R.drawable.ic_notify,
+            R.drawable.ic_settings
+    };
 
     public DrawerAdapter(Context context) {
         mContext = context;
@@ -38,24 +47,7 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     public int getIconId(int position) {
-        switch (position) {
-            case 0:
-                return R.drawable.ic_discovery;
-            case 1:
-                return R.drawable.ic_news;
-            case 2:
-                return R.drawable.ic_hot;
-            case 3:
-                return R.drawable.ic_nodes;
-            case 4:
-                return R.drawable.ic_favourite;
-            case 5:
-                return R.drawable.ic_notify;
-            case 6:
-                return R.drawable.ic_settings;
-            default:
-                return 0;
-        }
+        return mIcons[position];
     }
 
     @Override

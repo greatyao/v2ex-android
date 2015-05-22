@@ -166,7 +166,7 @@ public class SettingsFragment extends PreferenceFragment {
                         UmengUpdateAgent.showUpdateDialog(getActivity(), updateInfo);
                         break;
                     case UpdateStatus.No: // has no update
-                        MessageUtils.showMiddleToast(getActivity(), "没有更新");
+                        MessageUtils.showMiddleToast(getActivity(), "已经是最新版本");
                         break;
                     case UpdateStatus.NoneWifi: // none wifi
                         MessageUtils.showMiddleToast(getActivity(), "没有wifi连接， 只在wifi下更新");

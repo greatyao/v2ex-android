@@ -147,6 +147,16 @@ public class V2EXManager {
      */
     public static void getCategoryTopics(final Context ctx, String urlString, boolean refresh,
                                          final HttpRequestHandler<ArrayList<TopicModel>> handler) {
+        final String key = Uri.parse(urlString).getEncodedQuery();
+        if (!refresh) {
+            //尝试从缓存中加载
+            ArrayList<TopicModel> topics = PersistenceHelper.loadModelList(ctx, key);
+            if (topics != null && topics.size() > 0) {
+                SafeHandler.onSuccess(handler, topics);
+                return;
+            }
+        }
+
         final AsyncHttpClient client = getClient(ctx, false);
         client.addHeader("Referer", getBaseUrl());
         client.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -160,6 +170,8 @@ public class V2EXManager {
             public void onSuccess(int statusCode, Header[] headers, String responseBody) {
                 TopicListModel topics = new TopicListModel();
                 topics.parse(responseBody);
+                if(topics.size() > 0)
+                    PersistenceHelper.saveModelList(ctx, topics, key);
                 SafeHandler.onSuccess(handler, topics);
             }
         });
