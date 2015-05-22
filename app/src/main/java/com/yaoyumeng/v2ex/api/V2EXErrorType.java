@@ -40,7 +40,7 @@ public enum V2EXErrorType {
                 return cxt.getResources().getString(R.string.error_reply);
 
             case ErrorGetNotificationFailure:
-                return cxt.getResources().getString(R.string.error_reply);
+                return cxt.getResources().getString(R.string.error_get_notification);
 
             case ErrorCreateNewFailure:
                 return cxt.getResources().getString(R.string.error_create_topic);
