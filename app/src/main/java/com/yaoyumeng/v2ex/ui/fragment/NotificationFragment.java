@@ -1,6 +1,5 @@
 package com.yaoyumeng.v2ex.ui.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +14,6 @@ import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NotificationModel;
-import com.yaoyumeng.v2ex.ui.MainActivity;
 import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.NotificationsAdapter;
 import com.yaoyumeng.v2ex.ui.widget.FootUpdate;
@@ -140,7 +138,7 @@ public class NotificationFragment extends BaseFragment implements V2EXManager.Ht
     }
 
     @Override
-    public void onFailure(int reason, String error) {
+    public void onFailure(String error) {
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
         MessageUtils.showErrorMessage(getActivity(), error);

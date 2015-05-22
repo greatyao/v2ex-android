@@ -165,7 +165,7 @@ public class AccountUtils {
             }
 
             @Override
-            public void onFailure(int reason, String error) {
+            public void onFailure(String error) {
 
             }
         });
@@ -194,7 +194,7 @@ public class AccountUtils {
             }
 
             @Override
-            public void onFailure(int reason, String error) {
+            public void onFailure(String error) {
             }
         });
     }

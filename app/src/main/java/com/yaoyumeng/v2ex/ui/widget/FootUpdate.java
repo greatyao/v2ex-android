@@ -88,11 +88,11 @@ public class FootUpdate {
                 method.invoke(listView, v);
             } catch (Exception e) {
             }
-        } else if(listView instanceof HeaderViewRecyclerAdapter){
+        } else if (listView instanceof HeaderViewRecyclerAdapter) {
             try {
                 Method method = listView.getClass().getMethod("addFooterView", View.class);
                 method.invoke(listView, v);
-            }catch (Exception e) {
+            } catch (Exception e) {
             }
         }
 

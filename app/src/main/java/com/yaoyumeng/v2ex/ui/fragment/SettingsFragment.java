@@ -1,6 +1,5 @@
 package com.yaoyumeng.v2ex.ui.fragment;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,7 +26,6 @@ import com.umeng.update.UpdateStatus;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.V2EXManager;
-import com.yaoyumeng.v2ex.ui.MainActivity;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 import com.yaoyumeng.v2ex.utils.FileUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
@@ -37,7 +35,7 @@ import com.yaoyumeng.v2ex.utils.PhoneUtils;
  * 设置
  * Created by yw on 2015/5/13.
  */
-public class SettingsFragment extends  PreferenceFragment {
+public class SettingsFragment extends PreferenceFragment {
 
     public static final String GITGUB_PROJECT = "https://github.com/greatyao/v2ex-android";
     SharedPreferences mPreferences;

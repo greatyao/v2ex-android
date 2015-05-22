@@ -47,29 +47,14 @@ public class V2EXManager {
     private static final String API_TOPIC = "/topics/show.json";
     private static final String API_USER = "/members/show.json";
 
-
     public static final String SIGN_UP_URL = HTTPS_BASE_URL + "/signup";
     public static final String SIGN_IN_URL = HTTPS_BASE_URL + "/signin";
 
-    public static final int V2ErrorTypeNoOnceAndNext = 700;
-    public static final int V2ErrorTypeLoginFailure = 701;
-    public static final int V2ErrorTypeGetTopicTokenFailure = 702;
-    public static final int V2ErrorTypeCommentFailure = 703;
-    public static final int V2ErrorTypeGetFeedURLFailure = 704;
-    public static final int V2ErrorTypeGetTopicListFailure = 705;
-    public static final int V2ErrorTypeGetNotificationFailure = 706;
-    public static final int V2ErrorTypeGetFavUrlFailure = 707;
-    public static final int V2ErrorTypeGetMemyFailure = 708;
-    public static final int V2ErrorTypeGetCheckInURLFailure = 709;
-    public static final int V2ErrorTypeCreateNewFailure = 710;
-    public static final int V2ErrorTypeFavNodeFailure = 711;
-    public static final int V2ErrorTypeFavTopicFailure = 712;
-
-    public static String getBaseAPIUrl(){
+    public static String getBaseAPIUrl() {
         return mApp.isHttps() ? HTTPS_API_URL : HTTP_API_URL;
     }
 
-    public static String getBaseUrl(){
+    public static String getBaseUrl() {
         return mApp.isHttps() ? HTTPS_BASE_URL : HTTP_BASE_URL;
     }
 
@@ -140,33 +125,36 @@ public class V2EXManager {
     }
 
     /**
-     *  获取首页分类话题列表
+     * 获取首页分类话题列表
+     *
      * @param ctx
-     * @param tab tab名称
+     * @param tab     tab名称
      * @param refresh
      * @param handler
      */
     public static void getTopicsByTab(Context ctx, String tab, boolean refresh,
-                                         final HttpRequestHandler<ArrayList<TopicModel>> handler){
+                                      final HttpRequestHandler<ArrayList<TopicModel>> handler) {
         getCategoryTopics(ctx, getBaseUrl() + "/?tab=" + tab, refresh, handler);
     }
 
     /**
      * 获取首页分类话题列表 (包括技术,创意,好玩,Apple,酷工作,交易,城市,问与答,R2)
+     *
      * @param ctx
      * @param urlString
      * @param refresh
      * @param handler
      */
-    public static void getCategoryTopics(Context ctx, String urlString, boolean refresh,
-                                        final HttpRequestHandler<ArrayList<TopicModel>> handler){
+    public static void getCategoryTopics(final Context ctx, String urlString, boolean refresh,
+                                         final HttpRequestHandler<ArrayList<TopicModel>> handler) {
         final AsyncHttpClient client = getClient(ctx, false);
         client.addHeader("Referer", getBaseUrl());
         client.addHeader("Content-Type", "application/x-www-form-urlencoded");
         client.get(urlString, new TextHttpResponseHandler() {
-                @Override
+            @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                handler.onFailure(statusCode, throwable.getMessage());
+                handler.onFailure(V2EXErrorType.errorMessage(ctx,
+                        V2EXErrorType.ErrorGetTopicListFailure));
             }
 
             @Override
@@ -274,13 +262,12 @@ public class V2EXManager {
                 if (once != null)
                     handler.onSuccess(once);
                 else
-                    handler.onFailure(V2ErrorTypeNoOnceAndNext,
-                            cxt.getString(R.string.error_obtain_once));
+                    handler.onFailure(V2EXErrorType.errorMessage(cxt, V2EXErrorType.ErrorNoOnceAndNext));
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                handler.onFailure(statusCode, error.getMessage());
+                handler.onFailure(V2EXErrorType.errorMessage(cxt, V2EXErrorType.ErrorNoOnceAndNext));
             }
         });
     }
@@ -309,7 +296,7 @@ public class V2EXManager {
                                          final HttpRequestHandler<Integer> handler) {
         requestOnceWithURLString(cxt, SIGN_IN_URL, new HttpRequestHandler<String>() {
             @Override
-            public void onSuccess(String data, int totalPages, int currentPage){
+            public void onSuccess(String data, int totalPages, int currentPage) {
 
             }
 
@@ -331,21 +318,22 @@ public class V2EXManager {
                         if (statusCode == 302) {
                             handler.onSuccess(200);
                         } else {
-                            handler.onFailure(statusCode, cxt.getString(R.string.error_login));
+                            handler.onFailure(V2EXErrorType
+                                    .errorMessage(cxt, V2EXErrorType.ErrorLoginFailure));
                         }
                     }
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseBody) {
                         String errorContent = getProblemFromHtmlResponse(cxt, responseBody);
-                        handler.onFailure(V2ErrorTypeLoginFailure, errorContent);
+                        handler.onFailure(errorContent);
                     }
                 });
             }
 
             @Override
-            public void onFailure(int reason, String error) {
-                handler.onFailure(V2ErrorTypeNoOnceAndNext, error);
+            public void onFailure(String error) {
+                handler.onFailure(error);
             }
         });
     }
@@ -394,10 +382,11 @@ public class V2EXManager {
      */
     public static void getFavoriteNodes(final Context context,
                                         final HttpRequestHandler<ArrayList<NodeModel>> handler) {
-        getClient(context).get(getBaseUrl() +  "/my/nodes" , new TextHttpResponseHandler() {
+        getClient(context).get(getBaseUrl() + "/my/nodes", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                handler.onFailure(statusCode, throwable.getMessage());
+                handler.onFailure(V2EXErrorType
+                        .errorMessage(context, V2EXErrorType.ErrorFavNodeFailure));
             }
 
             @Override
@@ -419,7 +408,8 @@ public class V2EXManager {
         getClient(context).get(getBaseUrl(), new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                profileHandler.onFailure(statusCode, throwable.getMessage());
+                profileHandler.onFailure(V2EXErrorType
+                        .errorMessage(context, V2EXErrorType.ErrorGetProfileFailure));
             }
 
             @Override
@@ -434,14 +424,15 @@ public class V2EXManager {
 
     /**
      * 获取未读提醒数目(只在>0的情况下才唤醒处理事件)
+     *
      * @param cxt
      * @param handler
      */
-    public static void getNotificationCount(Context cxt, final HttpRequestHandler<Integer> handler){
+    public static void getNotificationCount(final Context cxt, final HttpRequestHandler<Integer> handler) {
         getClient(cxt, false).get(getBaseUrl(), new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                handler.onFailure(V2ErrorTypeGetNotificationFailure, throwable.getMessage());
+                handler.onFailure(V2EXErrorType.errorMessage(cxt, V2EXErrorType.ErrorGetNotificationFailure));
             }
 
             @Override
@@ -467,7 +458,7 @@ public class V2EXManager {
         final String urlString = getBaseUrl() + "/t/" + topicId;
         requestOnceWithURLString(cxt, urlString, new HttpRequestHandler<String>() {
             @Override
-            public void onSuccess(String data, int totalPages, int currentPage){
+            public void onSuccess(String data, int totalPages, int currentPage) {
             }
 
             @Override
@@ -484,7 +475,7 @@ public class V2EXManager {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String errorContent = getProblemFromHtmlResponse(cxt, new String(responseBody));
-                        handler.onFailure(statusCode, errorContent);
+                        handler.onFailure(errorContent);
                     }
 
                     @Override
@@ -492,16 +483,15 @@ public class V2EXManager {
                         if (statusCode == 302) {
                             handler.onSuccess(200);
                         } else {
-                            handler.onFailure(V2ErrorTypeCommentFailure, cxt.getString(R.string.error_reply));
+                            handler.onFailure(V2EXErrorType.errorMessage(cxt, V2EXErrorType.ErrorCommentFailure));
                         }
                     }
                 });
             }
 
             @Override
-            public void onFailure(int reason, String error) {
-                Log.e(TAG, error + reason);
-                handler.onFailure(V2ErrorTypeGetTopicTokenFailure, error);
+            public void onFailure(String error) {
+                handler.onFailure(error);
             }
         });
     }
@@ -522,7 +512,7 @@ public class V2EXManager {
         final String urlString = getBaseUrl() + "/new/" + nodeName;
         requestOnceWithURLString(cxt, urlString, new HttpRequestHandler<String>() {
             @Override
-            public void onSuccess(String data, int totalPages, int currentPage){
+            public void onSuccess(String data, int totalPages, int currentPage) {
             }
 
             @Override
@@ -539,25 +529,23 @@ public class V2EXManager {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String errorContent = getProblemFromHtmlResponse(cxt, new String(responseBody));
-                        handler.onFailure(statusCode, errorContent);
+                        handler.onFailure(errorContent);
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.i("create:onFailure", "status=" + statusCode);
-                        Log.i("create:onFailure:1", headers.toString());
                         if (statusCode == 302) {
                             handler.onSuccess(200);
                         } else {
-                            handler.onFailure(V2ErrorTypeCreateNewFailure, cxt.getString(R.string.error_create_topic));
+                            handler.onFailure(V2EXErrorType.errorMessage(cxt, V2EXErrorType.ErrorCreateNewFailure));
                         }
                     }
                 });
             }
 
             @Override
-            public void onFailure(int reason, String error) {
-                handler.onFailure(V2ErrorTypeNoOnceAndNext, cxt.getString(R.string.error_obtain_once));
+            public void onFailure(String error) {
+                handler.onFailure(error);
             }
         });
     }
@@ -592,14 +580,14 @@ public class V2EXManager {
         client.get(urlString, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                handler.onFailure(V2ErrorTypeFavNodeFailure, throwable.getMessage());
+                handler.onFailure(V2EXErrorType.errorMessage(context, V2EXErrorType.ErrorFavNodeFailure));
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseBody) {
                 String favUrl = getFavUrlStringFromResponse(responseBody);
                 if (favUrl.isEmpty()) {
-                    handler.onFailure(V2ErrorTypeFavNodeFailure, context.getString(R.string.error_unknown));
+                    handler.onFailure(context.getString(R.string.error_unknown));
                     return;
                 }
 
@@ -610,13 +598,13 @@ public class V2EXManager {
                         if (statusCode == 302) {
                             handler.onSuccess(fav ? 200 : 201);
                         } else {
-                            handler.onFailure(V2ErrorTypeFavNodeFailure, throwable.getMessage());
+                            handler.onFailure(V2EXErrorType.errorMessage(context, V2EXErrorType.ErrorFavNodeFailure));
                         }
                     }
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        handler.onFailure(V2ErrorTypeFavNodeFailure, getProblemFromHtmlResponse(context, responseString));
+                        handler.onFailure(getProblemFromHtmlResponse(context, responseString));
                     }
                 });
             }
@@ -639,7 +627,7 @@ public class V2EXManager {
         client.get(urlString, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                handler.onFailure(V2ErrorTypeFavTopicFailure, throwable.getMessage());
+                handler.onFailure(V2EXErrorType.errorMessage(context, V2EXErrorType.ErrorFavTopicFailure));
             }
 
             @Override
@@ -647,7 +635,7 @@ public class V2EXManager {
                 String favUrl = getFavUrlStringFromResponse(responseBody);
                 Log.i(TAG, favUrl);
                 if (favUrl.isEmpty()) {
-                    handler.onFailure(V2ErrorTypeFavTopicFailure, context.getString(R.string.error_unknown));
+                    handler.onFailure(context.getString(R.string.error_unknown));
                     return;
                 }
 
@@ -659,13 +647,13 @@ public class V2EXManager {
                         if (statusCode == 302) {
                             handler.onSuccess(fav ? 200 : 201);
                         } else {
-                            handler.onFailure(V2ErrorTypeFavTopicFailure, throwable.getMessage());
+                            handler.onFailure(V2EXErrorType.errorMessage(context, V2EXErrorType.ErrorFavTopicFailure));
                         }
                     }
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        handler.onFailure(V2ErrorTypeFavTopicFailure, getProblemFromHtmlResponse(context, responseString));
+                        handler.onFailure(getProblemFromHtmlResponse(context, responseString));
                     }
                 });
             }
@@ -674,21 +662,21 @@ public class V2EXManager {
 
     /**
      * 获取用户的未读提醒消息
+     *
      * @param context
      * @param handler
      */
     public static void getNotifications(final Context context, int page,
                                         final HttpRequestHandler<ArrayList<NotificationModel>> handler) {
         String urlString = getBaseUrl() + "/notifications";
-        if(page > 1) urlString += "?p=" + page;
+        if (page > 1) urlString += "?p=" + page;
         final AsyncHttpClient client = getClient(context, false);
         client.addHeader("Referer", getBaseUrl());
         client.addHeader("Content-Type", "application/x-www-form-urlencoded");
         client.get(urlString, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.e(TAG, throwable.getMessage());
-                handler.onFailure(statusCode, throwable.getMessage());
+                handler.onFailure(V2EXErrorType.errorMessage(context, V2EXErrorType.ErrorGetNotificationFailure));
             }
 
             @Override
@@ -707,16 +695,16 @@ public class V2EXManager {
                 int total = 1, current = 1;
                 for (Element el : elements) {
                     Elements tds = el.getElementsByTag("td");
-                    if(tds.size() != 3) continue;
+                    if (tds.size() != 3) continue;
 
                     String pageString = el.getElementsByAttributeValue("align", "center").text();
-                    String [] arrayString = pageString.split("/");
-                    if(arrayString.length != 2) continue;
+                    String[] arrayString = pageString.split("/");
+                    if (arrayString.length != 2) continue;
 
-                    try{
+                    try {
                         total = Integer.parseInt(arrayString[1]);
                         current = Integer.parseInt(arrayString[0]);
-                    } catch (Exception e){
+                    } catch (Exception e) {
                     }
                     break;
                 }
@@ -742,6 +730,6 @@ public class V2EXManager {
 
         public void onSuccess(E data, int totalPages, int currentPage);
 
-        public void onFailure(int reason, String error);
+        public void onFailure(String error);
     }
 }

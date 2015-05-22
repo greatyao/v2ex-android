@@ -32,7 +32,7 @@ public class BaseFragment extends Fragment implements AccountUtils.OnAccountList
             mLoginProfile = AccountUtils.readLoginMember(getActivity());
         AccountUtils.registerAccountListener(this);
 
-        mBackHandledInterface = (BackHandledInterface)getActivity();
+        mBackHandledInterface = (BackHandledInterface) getActivity();
     }
 
     @Override
@@ -71,7 +71,7 @@ public class BaseFragment extends Fragment implements AccountUtils.OnAccountList
         mLoginProfile = member;
     }
 
-    public boolean onBackPressed(){
+    public boolean onBackPressed() {
         return false;
     }
 

@@ -22,6 +22,7 @@ import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.TopicsAdapter;
+import com.yaoyumeng.v2ex.utils.MessageUtils;
 
 import java.util.ArrayList;
 
@@ -159,8 +160,9 @@ public class UserFragment extends BaseFragment implements V2EXManager.HttpReques
     }
 
     @Override
-    public void onFailure(int reason, String error) {
+    public void onFailure(String error) {
         mSwipeLayout.setRefreshing(false);
+        MessageUtils.showErrorMessage(getActivity(), error);
     }
 
     private void showData() {
@@ -199,8 +201,9 @@ public class UserFragment extends BaseFragment implements V2EXManager.HttpReques
         }
 
         @Override
-        public void onFailure(int reason, String error) {
+        public void onFailure(String error) {
             mSwipeLayout.setRefreshing(false);
+            MessageUtils.showErrorMessage(getActivity(), error);
         }
 
     }

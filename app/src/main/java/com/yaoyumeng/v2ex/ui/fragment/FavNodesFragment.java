@@ -1,7 +1,5 @@
 package com.yaoyumeng.v2ex.ui.fragment;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,7 +12,6 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NodeModel;
-import com.yaoyumeng.v2ex.ui.MainActivity;
 import com.yaoyumeng.v2ex.ui.adapter.FavNodesAdapter;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 
@@ -65,7 +62,7 @@ public class FavNodesFragment extends BaseFragment {
         refreshFavNodes();
     }
 
-    private void refreshFavNodes(){
+    private void refreshFavNodes() {
         AccountUtils.refreshFavoriteNodes(getActivity(), new AccountUtils.OnAccountFavoriteNodesListener() {
             @Override
             public void onAccountFavoriteNodes(ArrayList<NodeModel> nodes) {

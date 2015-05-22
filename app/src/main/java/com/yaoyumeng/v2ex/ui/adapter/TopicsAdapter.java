@@ -21,9 +21,9 @@ import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.NodeActivity;
-import com.yaoyumeng.v2ex.utils.SetReadTask;
 import com.yaoyumeng.v2ex.ui.TopicActivity;
 import com.yaoyumeng.v2ex.ui.UserActivity;
+import com.yaoyumeng.v2ex.utils.SetReadTask;
 
 import java.util.ArrayList;
 
@@ -55,11 +55,11 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ViewHolder
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, TopicActivity.class);
 
-                if(topic.content == null || topic.contentRendered == null)
+                if (topic.content == null || topic.contentRendered == null)
                     intent.putExtra("topic_id", topic.id);
                 else
                     intent.putExtra("model", (Parcelable) topic);
-                if(!mDataSource.isTopicRead(topic.id))
+                if (!mDataSource.isTopicRead(topic.id))
                     new SetReadTask(topic, TopicsAdapter.this).execute();
                 mContext.startActivity(intent);
             }

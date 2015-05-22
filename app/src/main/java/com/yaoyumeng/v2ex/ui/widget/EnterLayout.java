@@ -1,10 +1,7 @@
 package com.yaoyumeng.v2ex.ui.widget;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.text.Editable;
-import android.text.Spannable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;

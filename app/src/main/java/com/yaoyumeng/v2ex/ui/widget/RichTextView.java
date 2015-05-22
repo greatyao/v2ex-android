@@ -32,7 +32,7 @@ public class RichTextView extends TextView {
         super(context, attrs, defStyle);
     }
 
-    public void setRichText(String text){
+    public void setRichText(String text) {
 
         Spanned spanned = Html.fromHtml(text, new AsyncImageGetter(getContext(), this), null);
         SpannableStringBuilder htmlSpannable;
@@ -44,7 +44,7 @@ public class RichTextView extends TextView {
 
         if (NetWorkHelper.isMobile(getContext()) && !Application.getInstance().isLoadImageInMobileNetwork()) {
             //移动网络情况下如果设置了不显示图片,则遵命
-        } else{
+        } else {
             ImageSpan[] spans = htmlSpannable.getSpans(0, htmlSpannable.length(), ImageSpan.class);
             final ArrayList<String> imageUrls = new ArrayList<String>();
             final ArrayList<String> imagePositions = new ArrayList<String>();

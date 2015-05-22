@@ -1,17 +1,10 @@
 package com.yaoyumeng.v2ex.api;
 
-import android.app.Activity;
 import android.content.Context;
-import android.view.View;
-import android.widget.Toast;
 
-import com.yaoyumeng.v2ex.R;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.yaoyumeng.v2ex.model.PersistenceHelper;
 import com.yaoyumeng.v2ex.model.V2EXModel;
-import com.github.mrengineer13.snackbar.SnackBar;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.yaoyumeng.v2ex.utils.MessageUtils;
-import com.yaoyumeng.v2ex.utils.NetWorkHelper;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -29,7 +22,7 @@ class WrappedJsonHttpResponseHandler<T extends V2EXModel> extends JsonHttpRespon
     String key;
 
     public WrappedJsonHttpResponseHandler(Context cxt, Class c, String key,
-                                          V2EXManager.HttpRequestHandler<ArrayList<T>> handler){
+                                          V2EXManager.HttpRequestHandler<ArrayList<T>> handler) {
         this.handler = handler;
         this.c = c;
         this.context = cxt;
@@ -44,12 +37,12 @@ class WrappedJsonHttpResponseHandler<T extends V2EXModel> extends JsonHttpRespon
             obj.parse(response);
             if (obj != null)
                 models.add(obj);
-        } catch(Exception e){
+        } catch (Exception e) {
         }
         PersistenceHelper.saveModelList(context, models, key);
-        try{
+        try {
             handler.onSuccess(models);
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -57,21 +50,21 @@ class WrappedJsonHttpResponseHandler<T extends V2EXModel> extends JsonHttpRespon
     @Override
     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
         ArrayList<T> models = new ArrayList<T>();
-        for(int i = 0; i < response.length(); i++){
+        for (int i = 0; i < response.length(); i++) {
             try {
                 JSONObject jsonObj = response.getJSONObject(i);
                 T obj = (T) Class.forName(c.getName()).newInstance();
                 obj.parse(jsonObj);
                 if (obj != null)
                     models.add(obj);
-            } catch(Exception e){
+            } catch (Exception e) {
             }
         }
         PersistenceHelper.saveModelList(context, models, key);
 
-        try{
+        try {
             handler.onSuccess(models);
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -89,11 +82,11 @@ class WrappedJsonHttpResponseHandler<T extends V2EXModel> extends JsonHttpRespon
         handleFailure(statusCode, e.getMessage());
     }
 
-    private void handleFailure(int statusCode, String error){
-        try{
-            handler.onFailure(statusCode, error);
-            MessageUtils.handleNetworkFailure(context);
-        } catch(Exception e){
+    private void handleFailure(int statusCode, String error) {
+        try {
+            error = V2EXErrorType.errorMessage(context, V2EXErrorType.ErrorApiForbidden);
+            handler.onFailure(error);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

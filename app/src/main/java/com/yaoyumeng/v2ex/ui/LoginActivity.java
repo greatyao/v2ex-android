@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by yugy on 14-2-26.
  */
-public class LoginActivity extends BaseActivity implements View.OnClickListener{
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
     private EditText mUsername;
@@ -45,15 +44,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.login_login_btn:
-                if(mUsername.getText().length() == 0){
+                if (mUsername.getText().length() == 0) {
                     mUsername.setError(getString(R.string.login_error_empty_user));
                     mUsername.requestFocus();
-                }else if(mPassword.getText().length() == 0){
+                } else if (mPassword.getText().length() == 0) {
                     mPassword.setError(getString(R.string.login_error_empty_passwd));
                     mPassword.requestFocus();
-                }else{
+                } else {
                     login();
                 }
                 break;
@@ -63,7 +62,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-    private void login(){
+    private void login() {
         mProgressDialog = ProgressDialog.show(LoginActivity.this, null,
                 getString(R.string.login_loging), true, true);
 
@@ -71,65 +70,66 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 mUsername.getText().toString(),
                 mPassword.getText().toString(),
                 new V2EXManager.HttpRequestHandler<Integer>() {
-            @Override
-            public void onSuccess(Integer data) {
-                getProfile();
-            }
+                    @Override
+                    public void onSuccess(Integer data) {
+                        getProfile();
+                    }
 
-            @Override
-            public void onSuccess(Integer data, int totalPages, int currentPage){
-                getProfile();
-            }
+                    @Override
+                    public void onSuccess(Integer data, int totalPages, int currentPage) {
+                        getProfile();
+                    }
 
-            @Override
-            public void onFailure(int reason, String error) {
-                MessageUtils.showErrorMessage(LoginActivity.this, error);
-                mProgressDialog.dismiss();
-            }
-        });
+                    @Override
+                    public void onFailure(String error) {
+                        MessageUtils.showErrorMessage(LoginActivity.this, error);
+                        mProgressDialog.dismiss();
+                    }
+                });
     }
 
     private V2EXManager.HttpRequestHandler<ArrayList<MemberModel>> profileHandler =
-            new V2EXManager.HttpRequestHandler<ArrayList<MemberModel>>(){
+            new V2EXManager.HttpRequestHandler<ArrayList<MemberModel>>() {
                 @Override
                 public void onSuccess(ArrayList<MemberModel> data) {
                     mProgressDialog.dismiss();
-                    if(data.size() == 0){
-                        onFailure(-1, "");
+                    if (data.size() == 0) {
+                        onFailure("");
                         return;
                     }
                     mProfile = data.get(0);
                     AccountUtils.writeLoginMember(LoginActivity.this, mProfile);
                     mProgressDialog.dismiss();
                     Intent intent = new Intent();
-                    intent.putExtra("profile", (Parcelable)mProfile);
+                    intent.putExtra("profile", (Parcelable) mProfile);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
 
                 @Override
-                public void onSuccess(ArrayList<MemberModel> data, int totalPages, int currentPage){
+                public void onSuccess(ArrayList<MemberModel> data, int totalPages, int currentPage) {
                 }
 
                 @Override
-                public void onFailure(int reason, String error) {
+                public void onFailure(String error) {
                     mProgressDialog.dismiss();
+                    MessageUtils.showErrorMessage(LoginActivity.this, error);
                 }
             };
 
-    private void getProfile(){
+    private void getProfile() {
         mProgressDialog.setMessage(getString(R.string.login_obtain_profile));
         V2EXManager.getProfile(this, profileHandler);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if(NavUtils.shouldUpRecreateTask(this, upIntent)){
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
                     TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                }else{
+                } else {
                     upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     NavUtils.navigateUpTo(this, upIntent);
                 }

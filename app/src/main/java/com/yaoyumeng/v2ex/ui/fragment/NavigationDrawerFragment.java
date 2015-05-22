@@ -149,7 +149,7 @@ public class NavigationDrawerFragment extends BaseFragment {
         ImageLoader.getInstance().displayImage(profile.avatar, mUserImgView);
 
         //更新用户资料
-        ((MainActivity)getActivity()).initAccount();
+        ((MainActivity) getActivity()).initAccount();
     }
 
     @Override
@@ -245,7 +245,7 @@ public class NavigationDrawerFragment extends BaseFragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    public int getCurrentSelectedPosition(){
+    public int getCurrentSelectedPosition() {
         return mCurrentSelectedPosition;
     }
 

@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
-import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -17,14 +16,13 @@ import android.widget.EditText;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.NodeModel;
-import com.yaoyumeng.v2ex.model.ReplyModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.widget.CustomDialog;
 import com.yaoyumeng.v2ex.utils.InputUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.SimpleTextWatcher;
 
-public class TopicAddActivity extends BaseActivity implements V2EXManager.HttpRequestHandler<Integer>{
+public class TopicAddActivity extends BaseActivity implements V2EXManager.HttpRequestHandler<Integer> {
 
     EditText mTitle;
     EditText mContent;
@@ -36,17 +34,17 @@ public class TopicAddActivity extends BaseActivity implements V2EXManager.HttpRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic_add);
-        mTitle = (EditText)findViewById(R.id.topic_add_title);
-        mContent = (EditText)findViewById(R.id.topic_add_content);
+        mTitle = (EditText) findViewById(R.id.topic_add_title);
+        mContent = (EditText) findViewById(R.id.topic_add_content);
 
         mTitle.addTextChangedListener(textWatcher);
         mContent.addTextChangedListener(textWatcher);
 
         Intent intent = getIntent();
-        if(intent.hasExtra("model")) {
+        if (intent.hasExtra("model")) {
             mNode = (NodeModel) intent.getParcelableExtra("model");
             mNodeName = mNode.name;
-        }else{
+        } else {
             mNodeName = intent.getStringExtra("node_name");
         }
     }
@@ -64,12 +62,12 @@ public class TopicAddActivity extends BaseActivity implements V2EXManager.HttpRe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if(NavUtils.shouldUpRecreateTask(this, upIntent)){
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
                     TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                }else{
+                } else {
                     upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     NavUtils.navigateUpTo(this, upIntent);
                 }
@@ -103,7 +101,7 @@ public class TopicAddActivity extends BaseActivity implements V2EXManager.HttpRe
     }
 
     @Override
-    public void onFailure(int reason, String error) {
+    public void onFailure(String error) {
         showProgressBar(false);
         MessageUtils.showErrorMessage(this, error);
     }
@@ -135,7 +133,7 @@ public class TopicAddActivity extends BaseActivity implements V2EXManager.HttpRe
         }
     };
 
-    private void createTopic(){
+    private void createTopic() {
         InputUtils.popSoftkeyboard(this, mContent, false);
         showProgressBar(R.string.topic_add_working);
         //onSuccess(200);

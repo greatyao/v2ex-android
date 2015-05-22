@@ -11,9 +11,8 @@ import com.yaoyumeng.v2ex.R;
 
 /**
  * 分享界面dialog
- * 
+ *
  * @author kymjs
- * 
  */
 public class ShareDialog extends CommonDialog implements
         View.OnClickListener {
@@ -35,7 +34,7 @@ public class ShareDialog extends CommonDialog implements
         init();
     }
 
-    private void init(){
+    private void init() {
         View shareView = getLayoutInflater().inflate(
                 R.layout.dialog_cotent_share, null);
         shareView.findViewById(R.id.ly_share_qq).setOnClickListener(this);

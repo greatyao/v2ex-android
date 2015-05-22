@@ -44,7 +44,7 @@ public class NotificationView extends CardView {
         avatar = (ImageView) findViewById(R.id.avatar);
         content = (TextView) findViewById(R.id.content);
         title = (TextView) findViewById(R.id.title);
-        time = (TextView)findViewById(R.id.notify_time);
+        time = (TextView) findViewById(R.id.notify_time);
     }
 
     public void parse(final NotificationModel model) {
@@ -66,7 +66,7 @@ public class NotificationView extends CardView {
                 model.notificationTopic.title + model.notificationDescriptionAfter);
 
         String contentTxt = model.notificationTopic.content;
-        if(contentTxt == null || contentTxt.isEmpty()) {
+        if (contentTxt == null || contentTxt.isEmpty()) {
             content.setVisibility(View.GONE);
         } else {
             content.setVisibility(View.VISIBLE);

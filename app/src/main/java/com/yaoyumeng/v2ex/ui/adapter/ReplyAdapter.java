@@ -40,21 +40,20 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
     }
 
     @Override
-    public ViewHolder onCreateViewHolder( ViewGroup viewGroup, int i )
-    {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_reply, viewGroup, false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder( ViewHolder viewHolder, int i ) {
+    public void onBindViewHolder(ViewHolder viewHolder, int i) {
         final ReplyModel reply = mReplies.get(i);
 
-        if(mLogin)  {
+        if (mLogin) {
             View.OnClickListener onClick = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mListener != null)
+                    if (mListener != null)
                         mListener.onItemCommentClick(reply);
                 }
             };
@@ -63,7 +62,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
             viewHolder.comment.setOnClickListener(onClick);
 
             viewHolder.card.setOnClickListener(onClick);
-        } else{
+        } else {
             viewHolder.comment.setVisibility(View.GONE);
         }
 
@@ -75,7 +74,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, UserActivity.class);
-                intent.putExtra("model", (Parcelable)reply.member);
+                intent.putExtra("model", (Parcelable) reply.member);
                 mContext.startActivity(intent);
             }
         });
@@ -94,15 +93,14 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
                         DateUtils.FORMAT_ABBREV_RELATIVE);
         viewHolder.time.setText(text);
 
-        viewHolder.floor.setText(String.format("第%d楼", i+1));
+        viewHolder.floor.setText(String.format("第%d楼", i + 1));
 
-        if(viewHolder.divide != null)
+        if (viewHolder.divide != null)
             viewHolder.divide.setVisibility(i == mReplies.size() - 1 ? View.GONE : View.VISIBLE);
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return mReplies.size();
     }
 
@@ -120,7 +118,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
         abstract void onItemCommentClick(ReplyModel replyObj);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder {
         CardView card;
         ImageView avatar;
         RichTextView content;

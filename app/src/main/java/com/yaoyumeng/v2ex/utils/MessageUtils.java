@@ -25,15 +25,6 @@ public class MessageUtils {
             Toast.makeText(cxt, errorString, Toast.LENGTH_LONG).show();
     }
 
-
-    public static void handleNetworkFailure(Context cxt){
-        boolean isNetAvailable = NetWorkHelper.isNetAvailable(cxt);
-        String errorString = isNetAvailable
-                ? cxt.getString(R.string.error_network_exception)
-                : cxt.getString(R.string.error_network_disconnect);
-        showErrorMessage(cxt, errorString);
-    }
-
     public static void showMiddleToast(Context cxt, String msg) {
         Toast toast = Toast.makeText(cxt, msg, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);

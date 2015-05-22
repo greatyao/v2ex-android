@@ -1,6 +1,5 @@
 package com.yaoyumeng.v2ex.ui.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -19,9 +18,9 @@ import android.widget.TextView;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.NodeModel;
-import com.yaoyumeng.v2ex.ui.MainActivity;
 import com.yaoyumeng.v2ex.ui.adapter.AllNodesAdapter;
 import com.yaoyumeng.v2ex.ui.widget.AlphaView;
+import com.yaoyumeng.v2ex.utils.MessageUtils;
 
 import java.util.ArrayList;
 
@@ -116,8 +115,9 @@ public class AllNodesFragment extends BaseFragment
     }
 
     @Override
-    public void onFailure(int reason, String error) {
+    public void onFailure(String error) {
         mSwipeLayout.setRefreshing(false);
+        MessageUtils.showErrorMessage(getActivity(), error);
     }
 
     private void requestNode(boolean refresh) {

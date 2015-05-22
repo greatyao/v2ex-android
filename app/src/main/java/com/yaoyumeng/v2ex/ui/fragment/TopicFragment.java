@@ -198,8 +198,9 @@ public class TopicFragment extends BaseFragment
     }
 
     @Override
-    public void onFailure(int reason, String error) {
+    public void onFailure(String error) {
         mSwipeLayout.setRefreshing(false);
+        MessageUtils.showErrorMessage(getActivity(), error);
     }
 
     @Override
@@ -376,8 +377,9 @@ public class TopicFragment extends BaseFragment
         }
 
         @Override
-        public void onFailure(int reason, String error) {
+        public void onFailure(String error) {
             mSwipeLayout.setRefreshing(false);
+            MessageUtils.showErrorMessage(getActivity(), error);
         }
     }
 
@@ -406,7 +408,7 @@ public class TopicFragment extends BaseFragment
         }
 
         @Override
-        public void onFailure(int reason, String error) {
+        public void onFailure(String error) {
             ((BaseActivity) getActivity()).showProgressBar(false);
             MessageUtils.showErrorMessage(getActivity(), error);
         }
@@ -433,7 +435,7 @@ public class TopicFragment extends BaseFragment
         }
 
         @Override
-        public void onFailure(int reason, String error) {
+        public void onFailure(String error) {
             ((BaseActivity) getActivity()).showProgressBar(false);
             MessageUtils.showErrorMessage(getActivity(), error);
         }

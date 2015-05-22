@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity
         mSelectPos = position;
 
         //特别处理
-        if(position== 0){
+        if (position == 0) {
             onSpinnerSelected();
             return;
         }

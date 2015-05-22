@@ -55,6 +55,7 @@ public class HeaderViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
 
     /**
      * Construct a new header view recycler adapter
+     *
      * @param adapter The underlying adapter to wrap
      */
     public HeaderViewRecyclerAdapter(RecyclerView.Adapter adapter) {
@@ -66,10 +67,11 @@ public class HeaderViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
 
     /**
      * Replaces the underlying adapter, notifying RecyclerView of changes
+     *
      * @param adapter The new adapter to wrap
      */
     public void setAdapter(RecyclerView.Adapter adapter) {
-        if(mWrappedAdapter != null && mWrappedAdapter.getItemCount() > 0) {
+        if (mWrappedAdapter != null && mWrappedAdapter.getItemCount() > 0) {
             notifyItemRangeRemoved(getHeaderCount(), mWrappedAdapter.getItemCount());
         }
         setWrappedAdapter(adapter);
@@ -88,8 +90,7 @@ public class HeaderViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             int itemCount = mWrappedAdapter.getItemCount();
             if (position < hCount + itemCount) {
                 return getAdapterTypeOffset() + mWrappedAdapter.getItemViewType(position - hCount);
-            }
-            else return FOOTERS_START  + position - hCount - itemCount;
+            } else return FOOTERS_START + position - hCount - itemCount;
         }
     }
 
@@ -114,6 +115,7 @@ public class HeaderViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
     /**
      * Add a static view to appear at the start of the RecyclerView. Headers are displayed in the
      * order they were added.
+     *
      * @param view The header view to add
      */
     public void addHeaderView(View view) {
@@ -123,6 +125,7 @@ public class HeaderViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
     /**
      * Add a static view to appear at the end of the RecyclerView. Footers are displayed in the
      * order they were added.
+     *
      * @param view The footer view to add
      */
     public void addFooterView(View view) {
@@ -159,7 +162,7 @@ public class HeaderViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         if (mWrappedAdapter != null) mWrappedAdapter.unregisterAdapterDataObserver(mDataObserver);
         mWrappedAdapter = adapter;
         Class adapterClass = mWrappedAdapter.getClass();
-        if(!mItemTypesOffset.containsKey(adapterClass)) putAdapterTypeOffset(adapterClass);
+        if (!mItemTypesOffset.containsKey(adapterClass)) putAdapterTypeOffset(adapterClass);
         mWrappedAdapter.registerAdapterDataObserver(mDataObserver);
     }
 

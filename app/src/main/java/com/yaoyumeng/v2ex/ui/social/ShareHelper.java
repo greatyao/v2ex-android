@@ -113,7 +113,7 @@ public class ShareHelper {
         dialog.show();
     }
 
-    private void shareContentWithSystem(){
+    private void shareContentWithSystem() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "分享：" + mContent);
@@ -121,7 +121,7 @@ public class ShareHelper {
         mActivity.startActivity(Intent.createChooser(intent, "选择分享"));
     }
 
-    private void copyTextToBoard(String string){
+    private void copyTextToBoard(String string) {
         ClipboardManager clip = (ClipboardManager) mActivity
                 .getSystemService(Context.CLIPBOARD_SERVICE);
         clip.setText(string);

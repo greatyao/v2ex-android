@@ -23,7 +23,6 @@ import com.yaoyumeng.v2ex.database.V2EXDataSource;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.BaseActivity;
-import com.yaoyumeng.v2ex.ui.MainActivity;
 import com.yaoyumeng.v2ex.ui.TopicAddActivity;
 import com.yaoyumeng.v2ex.ui.adapter.TopicsAdapter;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
@@ -136,10 +135,10 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
             mNodeId = mNode.id;
             mNodeName = mNode.name;
             requestTopicsById(false);
-        } else if(args.containsKey("tab")){
+        } else if (args.containsKey("tab")) {
             mTabName = args.getString("tab");
             requestTopicsByTab(false);
-        } else{
+        } else {
             getActivity().finish();
         }
     }
@@ -199,14 +198,15 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
     }
 
     @Override
-    public void onSuccess(ArrayList<TopicModel> data, int totalPages, int currentPage){
+    public void onSuccess(ArrayList<TopicModel> data, int totalPages, int currentPage) {
         onSuccess(data);
     }
 
     @Override
-    public void onFailure(int reason, String error) {
+    public void onFailure(String error) {
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
+        MessageUtils.showErrorMessage(getActivity(), error);
     }
 
     private void favoriteNode() {
@@ -227,7 +227,7 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
             V2EXManager.getTopicsByNodeId(getActivity(), mNodeId, refresh, this);
     }
 
-    private void requestTopicsByTab(boolean refresh){
+    private void requestTopicsByTab(boolean refresh) {
         V2EXManager.getTopicsByTab(getActivity(), mTabName, refresh, this);
     }
 
@@ -238,7 +238,7 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
         mIsLoading = true;
         if (mNodeName != null && !mNodeName.isEmpty())
             requestTopicsByName(refresh);
-        else if(mTabName != null && !mTabName.isEmpty())
+        else if (mTabName != null && !mTabName.isEmpty())
             requestTopicsByTab(refresh);
         else
             requestTopicsById(refresh);
@@ -258,11 +258,11 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
         }
 
         @Override
-        public void onSuccess(Integer data, int totalPages, int currentPage){
+        public void onSuccess(Integer data, int totalPages, int currentPage) {
         }
 
         @Override
-        public void onFailure(int reason, String error) {
+        public void onFailure(String error) {
             ((BaseActivity) getActivity()).showProgressBar(false);
             MessageUtils.showErrorMessage(getActivity(), error);
         }

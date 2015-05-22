@@ -5,9 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.model.NodeModel;
@@ -39,10 +37,10 @@ public class NodeActivity extends BaseActivity {
              */
             Intent intent = getIntent();
             Uri data = intent.getData();
-            String scheme = data!=null ? data.getScheme() : ""; // "http"
-            String host = data!=null ?  data.getHost() : ""; // "www.v2ex.com"
-            List<String> params = data!=null ? data.getPathSegments() : null;
-            if ((scheme.equals("http") || scheme.equals("https") )
+            String scheme = data != null ? data.getScheme() : ""; // "http"
+            String host = data != null ? data.getHost() : ""; // "www.v2ex.com"
+            List<String> params = data != null ? data.getPathSegments() : null;
+            if ((scheme.equals("http") || scheme.equals("https"))
                     && host.equals("www.v2ex.com")
                     && params != null && params.size() == 2) {
                 mNodeName = params.get(1);
@@ -74,12 +72,12 @@ public class NodeActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if(NavUtils.shouldUpRecreateTask(this, upIntent)){
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
                     TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                }else{
+                } else {
                     upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     NavUtils.navigateUpTo(this, upIntent);
                 }

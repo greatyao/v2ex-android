@@ -2,10 +2,10 @@ package com.yaoyumeng.v2ex.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
-import android.os.Bundle;
 import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,8 +14,8 @@ import android.widget.EditText;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.ReplyModel;
-import com.yaoyumeng.v2ex.utils.InputUtils;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
+import com.yaoyumeng.v2ex.utils.InputUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.SimpleTextWatcher;
 
@@ -32,13 +32,13 @@ public class TopicCommentActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic_comment);
 
-        mContent = (EditText)findViewById(R.id.topic_add_content);
+        mContent = (EditText) findViewById(R.id.topic_add_content);
         mContent.addTextChangedListener(textWatcher);
 
         Intent intent = getIntent();
         mTopicId = intent.getIntExtra("topic_id", 0);
         mReplyToWho = intent.getStringExtra("reply_to");
-        if(mReplyToWho != null && !mReplyToWho.isEmpty()) {
+        if (mReplyToWho != null && !mReplyToWho.isEmpty()) {
             mContent.setText("@" + mReplyToWho + " ");
             //mContent.setSelection(mContent.getText().length());
             InputUtils.popSoftkeyboard(TopicCommentActivity.this, mContent, true);
@@ -52,16 +52,17 @@ public class TopicCommentActivity extends BaseActivity
         mMenuAdd = menu.findItem(R.id.action_add);
         updateAddButton();
 
-        return super.onCreateOptionsMenu(menu);    }
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if(NavUtils.shouldUpRecreateTask(this, upIntent)){
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
                     TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                }else{
+                } else {
                     upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     NavUtils.navigateUpTo(this, upIntent);
                 }
@@ -99,12 +100,12 @@ public class TopicCommentActivity extends BaseActivity
     }
 
     @Override
-    public void onFailure(int reason, String error) {
+    public void onFailure(String error) {
         showProgressBar(false);
         MessageUtils.showErrorMessage(TopicCommentActivity.this, error);
     }
 
-    private void createComment(){
+    private void createComment() {
         InputUtils.popSoftkeyboard(this, mContent, false);
         showProgressBar(R.string.topic_comment_working);
         V2EXManager.replyCreateWithTopicId(this, mTopicId,
