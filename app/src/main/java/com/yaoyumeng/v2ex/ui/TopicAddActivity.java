@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.yaoyumeng.v2ex.R;
+import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
@@ -22,7 +23,7 @@ import com.yaoyumeng.v2ex.utils.InputUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.SimpleTextWatcher;
 
-public class TopicAddActivity extends BaseActivity implements V2EXManager.HttpRequestHandler<Integer> {
+public class TopicAddActivity extends BaseActivity implements HttpRequestHandler<Integer> {
 
     EditText mTitle;
     EditText mContent;

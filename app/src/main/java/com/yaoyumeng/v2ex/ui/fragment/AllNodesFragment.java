@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yaoyumeng.v2ex.R;
+import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.ui.adapter.AllNodesAdapter;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
  * Created by yw on 2015/4/28.
  */
 public class AllNodesFragment extends BaseFragment
-        implements AlphaView.OnAlphaChangedListener, V2EXManager.HttpRequestHandler<ArrayList<NodeModel>> {
+        implements AlphaView.OnAlphaChangedListener, HttpRequestHandler<ArrayList<NodeModel>> {
     private static final String TAG = "AllNodesFragment";
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.melnykov.fab.FloatingActionButton;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
+import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.database.V2EXDataSource;
 import com.yaoyumeng.v2ex.model.NodeModel;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 /**
  * 显示单个节点下的话题或最新/最热话题类
  */
-public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequestHandler<ArrayList<TopicModel>> {
+public class TopicsFragment extends BaseFragment implements HttpRequestHandler<ArrayList<TopicModel>> {
     public static final int RESULT_ADD_TOPIC = 100;
     public static final String TAG = "TopicsFragment";
     public static final int LatestTopics = 0;
@@ -245,7 +246,7 @@ public class TopicsFragment extends BaseFragment implements V2EXManager.HttpRequ
 
     }
 
-    private class RequestFavNodeHelper implements V2EXManager.HttpRequestHandler<Integer> {
+    private class RequestFavNodeHelper implements HttpRequestHandler<Integer> {
         @Override
         public void onSuccess(Integer data) {
             ((BaseActivity) getActivity()).showProgressBar(false);

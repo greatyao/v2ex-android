@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yaoyumeng.v2ex.R;
+import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
@@ -26,7 +27,7 @@ import com.yaoyumeng.v2ex.utils.MessageUtils;
 
 import java.util.ArrayList;
 
-public class UserFragment extends BaseFragment implements V2EXManager.HttpRequestHandler<ArrayList<MemberModel>> {
+public class UserFragment extends BaseFragment implements HttpRequestHandler<ArrayList<MemberModel>> {
 
     private static final String FIELD_UNSET = "未设置";
     private View mHeader;
@@ -188,7 +189,7 @@ public class UserFragment extends BaseFragment implements V2EXManager.HttpReques
         //getActionBarTitleView().setAlpha(0f);
     }
 
-    class RequestTopicHelper implements V2EXManager.HttpRequestHandler<ArrayList<TopicModel>> {
+    class RequestTopicHelper implements HttpRequestHandler<ArrayList<TopicModel>> {
         @Override
         public void onSuccess(ArrayList<TopicModel> data) {
             mTopics = data;

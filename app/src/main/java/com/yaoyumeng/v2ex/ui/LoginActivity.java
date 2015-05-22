@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.yaoyumeng.v2ex.R;
+import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
@@ -69,7 +70,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         V2EXManager.loginWithUsername(this,
                 mUsername.getText().toString(),
                 mPassword.getText().toString(),
-                new V2EXManager.HttpRequestHandler<Integer>() {
+                new HttpRequestHandler<Integer>() {
                     @Override
                     public void onSuccess(Integer data) {
                         getProfile();
@@ -88,8 +89,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 });
     }
 
-    private V2EXManager.HttpRequestHandler<ArrayList<MemberModel>> profileHandler =
-            new V2EXManager.HttpRequestHandler<ArrayList<MemberModel>>() {
+    private HttpRequestHandler<ArrayList<MemberModel>> profileHandler =
+            new HttpRequestHandler<ArrayList<MemberModel>>() {
                 @Override
                 public void onSuccess(ArrayList<MemberModel> data) {
                     mProgressDialog.dismiss();

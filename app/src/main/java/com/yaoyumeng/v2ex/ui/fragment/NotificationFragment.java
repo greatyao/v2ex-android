@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.yaoyumeng.v2ex.R;
+import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NotificationModel;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 /**
  * 显示单个节点下的话题或最新/最热话题类
  */
-public class NotificationFragment extends BaseFragment implements V2EXManager.HttpRequestHandler<ArrayList<NotificationModel>>, NotificationsAdapter.OnScrollToLastListener {
+public class NotificationFragment extends BaseFragment implements HttpRequestHandler<ArrayList<NotificationModel>>, NotificationsAdapter.OnScrollToLastListener {
     public static final String TAG = "NotificationFragment";
     RecyclerView mRecyclerView;
     HeaderViewRecyclerAdapter mHeaderAdapter;

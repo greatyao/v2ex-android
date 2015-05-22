@@ -3,6 +3,7 @@ package com.yaoyumeng.v2ex.utils;
 import android.content.Context;
 
 import com.yaoyumeng.v2ex.Application;
+import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NodeModel;
@@ -151,7 +152,7 @@ public class AccountUtils {
      */
     public static void refreshFavoriteNodes(final Context cxt,
                                             final OnAccountFavoriteNodesListener listener){
-        V2EXManager.getFavoriteNodes(cxt, new V2EXManager.HttpRequestHandler<ArrayList<NodeModel>>() {
+        V2EXManager.getFavoriteNodes(cxt, new HttpRequestHandler<ArrayList<NodeModel>>() {
             @Override
             public void onSuccess(ArrayList<NodeModel> data) {
                 AccountUtils.writeFavoriteNodes(cxt, data);
@@ -181,7 +182,7 @@ public class AccountUtils {
      */
     public static void refreshNotificationCount(Context cxt,
                                             final OnAccountNotificationCountListener listener){
-        V2EXManager.getNotificationCount(cxt, new V2EXManager.HttpRequestHandler<Integer>() {
+        V2EXManager.getNotificationCount(cxt, new HttpRequestHandler<Integer>() {
             @Override
             public void onSuccess(Integer count) {
                 if(listener != null && count > 0)

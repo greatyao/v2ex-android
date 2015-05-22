@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.yaoyumeng.v2ex.R;
+import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.ReplyModel;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
@@ -20,7 +21,7 @@ import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.SimpleTextWatcher;
 
 public class TopicCommentActivity extends BaseActivity
-        implements V2EXManager.HttpRequestHandler<Integer> {
+        implements HttpRequestHandler<Integer> {
 
     EditText mContent;
     MenuItem mMenuAdd;

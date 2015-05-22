@@ -16,13 +16,13 @@ import java.util.ArrayList;
  * Created by yw on 2015/5/2.
  */
 class WrappedJsonHttpResponseHandler<T extends V2EXModel> extends JsonHttpResponseHandler {
-    V2EXManager.HttpRequestHandler<ArrayList<T>> handler;
+    HttpRequestHandler<ArrayList<T>> handler;
     Class c;
     Context context;
     String key;
 
     public WrappedJsonHttpResponseHandler(Context cxt, Class c, String key,
-                                          V2EXManager.HttpRequestHandler<ArrayList<T>> handler) {
+                                         HttpRequestHandler<ArrayList<T>> handler) {
         this.handler = handler;
         this.c = c;
         this.context = cxt;
@@ -61,12 +61,7 @@ class WrappedJsonHttpResponseHandler<T extends V2EXModel> extends JsonHttpRespon
             }
         }
         PersistenceHelper.saveModelList(context, models, key);
-
-        try {
-            handler.onSuccess(models);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SafeHandler.onSuccess(handler, models);
     }
 
     @Override
@@ -83,12 +78,8 @@ class WrappedJsonHttpResponseHandler<T extends V2EXModel> extends JsonHttpRespon
     }
 
     private void handleFailure(int statusCode, String error) {
-        try {
-            error = V2EXErrorType.errorMessage(context, V2EXErrorType.ErrorApiForbidden);
-            handler.onFailure(error);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        error = V2EXErrorType.errorMessage(context, V2EXErrorType.ErrorApiForbidden);
+        SafeHandler.onFailure(handler, error);
     }
 }
 

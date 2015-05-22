@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
+import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.database.V2EXDataSource;
 import com.yaoyumeng.v2ex.model.NodeModel;
@@ -44,7 +45,7 @@ import com.yaoyumeng.v2ex.utils.MessageUtils;
 import java.util.ArrayList;
 
 public class TopicFragment extends BaseFragment
-        implements V2EXManager.HttpRequestHandler<ArrayList<ReplyModel>> {
+        implements HttpRequestHandler<ArrayList<ReplyModel>> {
 
     public static final int REQUEST_COMMENT = 100;
     RecyclerView mRecyclerView;
@@ -353,7 +354,7 @@ public class TopicFragment extends BaseFragment
     /**
      * 获取/刷新该话题内容的帮助类
      */
-    class RequestTopicHelper implements V2EXManager.HttpRequestHandler<ArrayList<TopicModel>> {
+    class RequestTopicHelper implements HttpRequestHandler<ArrayList<TopicModel>> {
         boolean refresh;
 
         public RequestTopicHelper(boolean refresh) {
@@ -386,7 +387,7 @@ public class TopicFragment extends BaseFragment
     /**
      * 评论类
      */
-    class CommentHelper implements V2EXManager.HttpRequestHandler<Integer> {
+    class CommentHelper implements HttpRequestHandler<Integer> {
         @Override
         public void onSuccess(Integer data) {
             ((BaseActivity) getActivity()).showProgressBar(false);
@@ -417,7 +418,7 @@ public class TopicFragment extends BaseFragment
     /**
      * 话题收藏类
      */
-    class FavTopicHelper implements V2EXManager.HttpRequestHandler<Integer> {
+    class FavTopicHelper implements HttpRequestHandler<Integer> {
         @Override
         public void onSuccess(Integer data) {
             ((BaseActivity) getActivity()).showProgressBar(false);
