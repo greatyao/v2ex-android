@@ -39,4 +39,12 @@
     <color name="divide_15_e5">#ffe4e4e4</color>
     <color name="transparent">#00000000</color>
 
+    <color name="stand_bg">#fff6f6f6</color>
+    <item name="gray_drawable" type="drawable">#FF323A45</item>
+    <color name="font_black_2">#222222</color>
+    <color name="white">#ffffffff</color>
+    <drawable name="white">#ffffffff</drawable>
+    <color name="black">#ff000000</color>
+
+
 </resources>
