@@ -173,6 +173,7 @@ public class MainActivity extends BaseActivity
         Spinner spinner;
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(mActionbarCustom);
+        actionBar.setTitle("");
         spinner = (Spinner) mActionbarCustom.findViewById(R.id.spinner);
 
         boolean containFragment = false;
