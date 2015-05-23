@@ -45,6 +45,7 @@ public class SettingsFragment extends PreferenceFragment {
     Preference mAbout;
     CheckBoxPreference mHttps;
     CheckBoxPreference mLoadimage;
+    CheckBoxPreference mJsonAPI;
     Button mLogout;
     Application mApp = Application.getInstance();
 
@@ -101,9 +102,30 @@ public class SettingsFragment extends PreferenceFragment {
         // 加载图片loadimage
         mLoadimage = (CheckBoxPreference) findPreference("pref_noimage_nowifi");
         mLoadimage.setChecked(!mApp.isLoadImageInMobileNetwork());
+        mLoadimage.setSummary(mLoadimage.isChecked()
+                ? R.string.settings_noimage_nowifi_summary
+                : R.string.settings_image_nowifi_summary);
         mLoadimage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 mApp.setConfigLoadImageInMobileNetwork(!mLoadimage.isChecked());
+                mLoadimage.setSummary(mLoadimage.isChecked()
+                        ? R.string.settings_noimage_nowifi_summary
+                        : R.string.settings_image_nowifi_summary);
+                return true;
+            }
+        });
+
+        mJsonAPI = (CheckBoxPreference) findPreference("pref_jsonapi");
+        mJsonAPI.setChecked(mApp.isJsonAPI());
+        mJsonAPI.setSummary(getActivity().getString(mJsonAPI.isChecked()
+                ? R.string.settings_use_jsonapi_summary
+                : R.string.settings_use_browser_summary));
+        mJsonAPI.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                mApp.setConfigJsonAPI(mJsonAPI.isChecked());
+                mJsonAPI.setSummary(getActivity().getString(mJsonAPI.isChecked()
+                        ? R.string.settings_use_jsonapi_summary
+                        : R.string.settings_use_browser_summary));
                 return true;
             }
         });

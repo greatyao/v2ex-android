@@ -8,6 +8,12 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
+            android:key="pref_jsonapi"
+            android:title="@string/settings_use_jsonapi"
+            android:summary="@string/settings_use_jsonapi_summary"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
             android:key="pref_noimage_nowifi"
             android:summary="@string/settings_noimage_nowifi_summary"
             android:title="@string/settings_noimage_nowifi" />
