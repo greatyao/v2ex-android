@@ -122,6 +122,10 @@ public class HeaderViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         mHeaderViews.add(view);
     }
 
+    public void removeHeaderView(View view) {
+        mHeaderViews.remove(view);
+    }
+
     /**
      * Add a static view to appear at the end of the RecyclerView. Footers are displayed in the
      * order they were added.
@@ -130,6 +134,10 @@ public class HeaderViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
      */
     public void addFooterView(View view) {
         mFooterViews.add(view);
+    }
+
+    public void removeFooterView(View view){
+        mFooterViews.remove(view);
     }
 
     @Override

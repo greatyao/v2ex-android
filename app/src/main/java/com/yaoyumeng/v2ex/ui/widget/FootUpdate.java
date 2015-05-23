@@ -8,6 +8,7 @@ import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * Created by chaochen on 14-10-22.
@@ -17,6 +18,8 @@ public class FootUpdate {
     View mLayout;
     View mClick;
     View mLoading;
+    Object mListView;
+    boolean mAdd = false;
 
     public FootUpdate() {
     }
@@ -29,72 +32,63 @@ public class FootUpdate {
         return mLayout.getHeight();
     }
 
-    public void initToHead(Object listView, LayoutInflater inflater, final LoadMore loadMore) {
-        View v = inflater.inflate(R.layout.listview_foot, null);
-
-        // 为了防止触发listview的onListItemClick事件
-        mLayout = v.findViewById(R.id.layout);
-        mLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    private void removeFromListView(Object listView, View v){
+        if (listView instanceof ListView) {
+            try {
+                Method method = listView.getClass().getMethod("removeFooterView", View.class);
+                method.invoke(listView, v);
+                mAdd = false;
+            } catch (Exception e) {
             }
-        });
-
-        mClick = v.findViewById(R.id.textView);
-        mClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadMore.loadMore();
-                showLoading();
+        } else if (listView instanceof HeaderViewRecyclerAdapter) {
+            try {
+                Method method = listView.getClass().getMethod("removeFooterView", View.class);
+                method.invoke(listView, v);
+                mAdd = false;
+            } catch (Exception e) {
             }
-        });
-
-        mLoading = v.findViewById(R.id.progressBar);
-
-        try {
-            Method method = listView.getClass().getMethod("addHeaderView", View.class);
-            method.invoke(listView, v);
-        } catch (Exception e) {
         }
-
-        mLayout.setVisibility(View.GONE);
     }
 
-    public void init(Object listView, LayoutInflater inflater, final LoadMore loadMore) {
-        View v = inflater.inflate(R.layout.listview_foot, null, false);
-
-        // 为了防止触发listview的onListItemClick事件
-        mLayout = v.findViewById(R.id.layout);
-        mLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
-        mClick = v.findViewById(R.id.textView);
-        mClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadMore.loadMore();
-                showLoading();
-            }
-        });
-
-        mLoading = v.findViewById(R.id.progressBar);
-
+    private void addToListView(Object listView, View v){
         if (listView instanceof ListView) {
             try {
                 Method method = listView.getClass().getMethod("addFooterView", View.class);
                 method.invoke(listView, v);
+                mAdd = true;
             } catch (Exception e) {
             }
         } else if (listView instanceof HeaderViewRecyclerAdapter) {
             try {
                 Method method = listView.getClass().getMethod("addFooterView", View.class);
                 method.invoke(listView, v);
+                mAdd = true;
             } catch (Exception e) {
             }
         }
+    }
+
+    public void init(Object listView, LayoutInflater inflater, final LoadMore loadMore) {
+        mListView = listView;
+        mLayout = inflater.inflate(R.layout.listview_foot, null, false);
+        mLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
+        mClick = mLayout.findViewById(R.id.textView);
+        mClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadMore.loadMore();
+                showLoading();
+            }
+        });
+
+        mLoading = mLayout.findViewById(R.id.progressBar);
+
+        addToListView(listView, mLayout);
 
         mLayout.setVisibility(View.GONE);
     }
@@ -117,6 +111,8 @@ public class FootUpdate {
         }
 
         if (show) {
+            if(!mAdd) addToListView(mListView, mLayout);
+
             mLayout.setVisibility(View.VISIBLE);
             mLayout.setPadding(0, 0, 0, 0);
             if (loading) {
@@ -127,24 +123,9 @@ public class FootUpdate {
                 mLoading.setVisibility(View.INVISIBLE);
             }
         } else {
-            mLayout.setVisibility(View.INVISIBLE);
+            removeFromListView(mListView, mLayout);
+            mLayout.setVisibility(View.GONE);
             mLayout.setPadding(0, -mLayout.getHeight(), 0, 0);
-        }
-    }
-
-    public void updateState(int code, boolean isLastPage, int locatedSize) {
-        if (code == 0) {
-            if (isLastPage) {
-                dismiss();
-            } else {
-                showLoading();
-            }
-        } else {
-            if (locatedSize > 0) {
-                showFail();
-            } else {
-                dismiss();
-            }
         }
     }
 
