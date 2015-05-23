@@ -90,10 +90,12 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        if ((mNodeId > 0 || !mNodeName.isEmpty()) && mIsLogin)
+        if ((mNodeId > 0 || !mNodeName.isEmpty()) && mIsLogin) {
+            mAddButton.setVisibility(View.VISIBLE);
             mAddButton.attachToRecyclerView(mRecyclerView);
-        else
+        } else {
             mAddButton.hide(false);
+        }
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
