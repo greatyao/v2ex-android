@@ -122,9 +122,10 @@ public class TopicListModel extends ArrayList<TopicModel> {
 
                 Elements spanNodes = tdNode.getElementsByTag("span");
                 for (Element spanNode : spanNodes) {
-                    String ss = spanNode.toString();
-                    if (ss.indexOf("最后回复") >= 0 || ss.indexOf("前") >= 0) {
-                        String contentString = spanNode.text();
+                    String contentString = spanNode.text();
+                    if (contentString.indexOf("最后回复") >= 0
+                            || contentString.indexOf("前") >= 0
+                            || contentString.indexOf("  •  ") >= 0) {
                         String[] components = contentString.split("  •  ");
                         if (parseNode && components.length <= 2) continue;
                         String dateString = parseNode ? components[2] : components[1];
