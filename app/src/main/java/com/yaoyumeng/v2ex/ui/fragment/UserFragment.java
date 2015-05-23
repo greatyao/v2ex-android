@@ -107,7 +107,7 @@ public class UserFragment extends BaseFragment implements HttpRequestHandler<Arr
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new TopicsAdapter(getActivity());
+        mAdapter = new TopicsAdapter(getActivity(), null);
         mHeaderAdapter = new HeaderViewRecyclerAdapter(mAdapter);
         mHeaderAdapter.addHeaderView(mHeader);
         mRecyclerView.setAdapter(mHeaderAdapter);

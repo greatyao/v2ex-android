@@ -25,21 +25,27 @@ import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.BaseActivity;
 import com.yaoyumeng.v2ex.ui.TopicAddActivity;
+import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.TopicsAdapter;
+import com.yaoyumeng.v2ex.ui.widget.FootUpdate;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
+import com.yaoyumeng.v2ex.utils.OnScrollToBottomListener;
 
 import java.util.ArrayList;
 
 /**
  * 显示单个节点下的话题或最新/最热话题类
  */
-public class TopicsFragment extends BaseFragment implements HttpRequestHandler<ArrayList<TopicModel>> {
+public class TopicsFragment extends BaseFragment implements HttpRequestHandler<ArrayList<TopicModel>>,OnScrollToBottomListener {
     public static final int RESULT_ADD_TOPIC = 100;
     public static final String TAG = "TopicsFragment";
     public static final int LatestTopics = 0;
     public static final int HotTopics = -1;
     public static final int InvalidTopics = -2;
     int mNodeId = InvalidTopics;   //0表示最新话题,-1表示最热话题,其他表示节点下的话题
+    int mPage = 1;
+    boolean mNoMore = true;
+    HeaderViewRecyclerAdapter mHeaderAdapter;
     RecyclerView mRecyclerView;
     TopicsAdapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
@@ -100,13 +106,22 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
             }
         });
 
-        mAdapter = new TopicsAdapter(getActivity());
-        mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new TopicsAdapter(getActivity(), this);
+        mHeaderAdapter = new HeaderViewRecyclerAdapter(mAdapter);
+        mRecyclerView.setAdapter(mHeaderAdapter);
+
+        mFootUpdate.init(mHeaderAdapter, LayoutInflater.from(getActivity()), new FootUpdate.LoadMore() {
+            @Override
+            public void loadMore() {
+                requestMoreTopics();
+            }
+        });
 
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mPage = 1;
                 requestTopics(true);
             }
         });
@@ -184,9 +199,11 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
     }
 
     @Override
-    public void onSuccess(ArrayList<TopicModel> data) {
+    public void onSuccess(ArrayList<TopicModel> data, int totalPages, int currentPage) {
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
+        mPage = currentPage;
+        mNoMore = totalPages == currentPage;
         if (data.size() == 0) return;
 
         if (mNode == null)
@@ -195,12 +212,18 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
         if (!mAttachMain && mNodeName.isEmpty())
             mNodeName = data.get(0).node.name;
 
-        mAdapter.update(data, true);
+        mAdapter.insertAtBack(data, currentPage != 1);
+
+        if (mNoMore) {
+            mFootUpdate.dismiss();
+        } else {
+            mFootUpdate.showLoading();
+        }
     }
 
     @Override
-    public void onSuccess(ArrayList<TopicModel> data, int totalPages, int currentPage) {
-        onSuccess(data);
+    public void onSuccess(ArrayList<TopicModel> data) {
+        onSuccess(data, 1, 1);
     }
 
     @Override
@@ -208,6 +231,19 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
         MessageUtils.showErrorMessage(getActivity(), error);
+
+        if (mAdapter.getItemCount() > 0 && !mNoMore) {
+            mFootUpdate.showFail();
+        } else {
+            mFootUpdate.dismiss();
+        }
+    }
+
+    @Override
+    public void onLoadMore() {
+        if (!mNoMore && !mIsLoading) {
+            requestMoreTopics();
+        }
     }
 
     private void favoriteNode() {
@@ -215,8 +251,13 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
         V2EXManager.favNodeWithNodeName(getActivity(), mNodeName, new RequestFavNodeHelper());
     }
 
+    private void requestMoreTopics(){
+        mIsLoading = true;
+        V2EXManager.getTopicsByNodeName(getActivity(), mNodeName, mPage + 1, true, this);
+    }
+
     private void requestTopicsByName(boolean refresh) {
-        V2EXManager.getTopicsByNodeName(getActivity(), mNodeName, refresh, this);
+        V2EXManager.getTopicsByNodeName(getActivity(), mNodeName, mPage, refresh, this);
     }
 
     private void requestTopicsById(boolean refresh) {

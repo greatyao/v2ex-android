@@ -23,6 +23,7 @@ import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.NodeActivity;
 import com.yaoyumeng.v2ex.ui.TopicActivity;
 import com.yaoyumeng.v2ex.ui.UserActivity;
+import com.yaoyumeng.v2ex.utils.OnScrollToBottomListener;
 import com.yaoyumeng.v2ex.utils.SetReadTask;
 
 import java.util.ArrayList;
@@ -32,11 +33,13 @@ import java.util.ArrayList;
  */
 public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ViewHolder> {
     Context mContext;
+    OnScrollToBottomListener mListener;
     ArrayList<TopicModel> mTopics = new ArrayList<TopicModel>();
     V2EXDataSource mDataSource = Application.getDataSource();
 
-    public TopicsAdapter(Context context) {
+    public TopicsAdapter(Context context,  OnScrollToBottomListener listener) {
         mContext = context;
+        mListener = listener;
     }
 
     @Override
@@ -114,11 +117,23 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ViewHolder
         } else {
             viewHolder.replies.setVisibility(View.INVISIBLE);
         }
+
+        if (mTopics.size() - i <= 1 && mListener != null) {
+            mListener.onLoadMore();
+        }
     }
 
     @Override
     public int getItemCount() {
         return mTopics.size();
+    }
+
+    public void insertAtBack(ArrayList<TopicModel> data,  boolean merge){
+        if(merge)
+            mTopics.addAll(data);
+        else
+            mTopics = data;
+        notifyDataSetChanged();
     }
 
     public void update(ArrayList<TopicModel> data, boolean merge) {

@@ -18,6 +18,7 @@ import com.yaoyumeng.v2ex.model.NotificationModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.TopicActivity;
 import com.yaoyumeng.v2ex.ui.UserActivity;
+import com.yaoyumeng.v2ex.utils.OnScrollToBottomListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +30,9 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
     List<NotificationModel> mNotifications = new ArrayList<NotificationModel>();
     private Context mContext;
-    OnScrollToLastListener mListener;
+    OnScrollToBottomListener mListener;
 
-    public static interface OnScrollToLastListener {
-        public void onLoadMore();
-    }
-
-    public NotificationsAdapter(Context context, OnScrollToLastListener listen) {
+    public NotificationsAdapter(Context context, OnScrollToBottomListener listen) {
         this.mContext = context;
         this.mListener = listen;
     }

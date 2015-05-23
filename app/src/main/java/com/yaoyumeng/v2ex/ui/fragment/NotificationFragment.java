@@ -19,13 +19,14 @@ import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.NotificationsAdapter;
 import com.yaoyumeng.v2ex.ui.widget.FootUpdate;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
+import com.yaoyumeng.v2ex.utils.OnScrollToBottomListener;
 
 import java.util.ArrayList;
 
 /**
  * 显示单个节点下的话题或最新/最热话题类
  */
-public class NotificationFragment extends BaseFragment implements HttpRequestHandler<ArrayList<NotificationModel>>, NotificationsAdapter.OnScrollToLastListener {
+public class NotificationFragment extends BaseFragment implements HttpRequestHandler<ArrayList<NotificationModel>>, OnScrollToBottomListener {
     public static final String TAG = "NotificationFragment";
     RecyclerView mRecyclerView;
     HeaderViewRecyclerAdapter mHeaderAdapter;
