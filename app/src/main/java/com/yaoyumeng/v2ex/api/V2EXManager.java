@@ -51,11 +51,11 @@ public class V2EXManager {
     public static final String SIGN_IN_URL = HTTPS_BASE_URL + "/signin";
 
     public static String getBaseAPIUrl() {
-        return mApp.isHttps() ? HTTPS_API_URL : HTTP_API_URL;
+        return mApp.isHttpsFromCache() ? HTTPS_API_URL : HTTP_API_URL;
     }
 
     public static String getBaseUrl() {
-        return mApp.isHttps() ? HTTPS_BASE_URL : HTTP_BASE_URL;
+        return mApp.isHttpsFromCache() ? HTTPS_BASE_URL : HTTP_BASE_URL;
     }
 
     //获取最热话题
@@ -77,9 +77,13 @@ public class V2EXManager {
     }
 
     //根据节点名获取其话题
-    public static void getTopicsByNodeName(Context ctx, final String nodeName, boolean refresh,
+    public static void getTopicsByNodeName(Context ctx, final String nodeName,
+                                           int page, boolean refresh,
                                            final HttpRequestHandler<ArrayList<TopicModel>> handler) {
-        getTopics(ctx, getBaseAPIUrl() + API_TOPIC + "?node_name=" + nodeName, refresh, handler);
+        if(mApp.isJsonAPIFromCache())
+            getTopics(ctx, getBaseAPIUrl() + API_TOPIC + "?node_name=" + nodeName, refresh, handler);
+        else
+            getNodeTopicsFromBrowser(ctx, nodeName, page, refresh, handler);
     }
 
     //根据话题ID获取其内容
@@ -170,9 +174,39 @@ public class V2EXManager {
             public void onSuccess(int statusCode, Header[] headers, String responseBody) {
                 TopicListModel topics = new TopicListModel();
                 topics.parse(responseBody);
-                if(topics.size() > 0)
+                if (topics.size() > 0)
                     PersistenceHelper.saveModelList(ctx, topics, key);
                 SafeHandler.onSuccess(handler, topics);
+            }
+        });
+    }
+
+    /**
+     * 根据节点名获取其话题列表
+     *
+     * @param ctx
+     * @param nodeName 节点名
+     * @param page     页码
+     * @param refresh  是否从缓存加载
+     * @param handler
+     */
+    public static void getNodeTopicsFromBrowser(final Context ctx, final String nodeName, int page,
+                                                boolean refresh, final HttpRequestHandler<ArrayList<TopicModel>> handler) {
+        String urlString = String.format("%s/go/%s?p=%d", getBaseUrl(), nodeName, page);
+        final AsyncHttpClient client = getClient(ctx, false);
+        client.addHeader("Referer", getBaseUrl());
+        client.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        client.get(urlString, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorGetTopicListFailure));
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseBody) {
+                TopicListModel topics = new TopicListModel();
+                topics.parseFromNodeEntry(responseBody, nodeName);
+                SafeHandler.onSuccess(handler, topics, topics.getTotalPage(), topics.getCurrentPage());
             }
         });
     }
