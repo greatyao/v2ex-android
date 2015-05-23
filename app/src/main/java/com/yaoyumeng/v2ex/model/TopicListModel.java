@@ -128,6 +128,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
                             || contentString.indexOf("  •  ") >= 0) {
                         String[] components = contentString.split("  •  ");
                         if (parseNode && components.length <= 2) continue;
+                        else if (!parseNode && components.length <= 1) continue;
                         String dateString = parseNode ? components[2] : components[1];
                         long created = System.currentTimeMillis() / 1000;
                         String[] stringArray = dateString.split(" ");
