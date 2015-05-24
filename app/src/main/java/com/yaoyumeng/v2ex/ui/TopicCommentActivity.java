@@ -121,12 +121,6 @@ public class TopicCommentActivity extends BaseActivity
         if (mMenuAdd == null)
             return;
 
-        if (enable) {
-            mMenuAdd.setIcon(R.drawable.ic_menu_ok);
-            mMenuAdd.setEnabled(true);
-        } else {
-            mMenuAdd.setIcon(R.drawable.ic_menu_ok_unable);
-            mMenuAdd.setEnabled(false);
-        }
+        mMenuAdd.setEnabled(enable);
     }
 }
