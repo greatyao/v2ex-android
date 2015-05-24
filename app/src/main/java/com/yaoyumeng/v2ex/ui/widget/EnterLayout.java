@@ -17,19 +17,16 @@ public class EnterLayout {
 
     private Context mContext;
     private View mRootView;
-    public TextView sendText;
     public ImageButton send;
     public EditText content;
 
     public EnterLayout(Context context, View rootView, View.OnClickListener sendTextOnClick) {
         mRootView = rootView;
         mContext = context;
-        sendText = (TextView) mRootView.findViewById(R.id.sendText);
-        sendText.setOnClickListener(sendTextOnClick);
-        sendText.setVisibility(View.VISIBLE);
 
         send = (ImageButton) mRootView.findViewById(R.id.send);
-        send.setVisibility(View.GONE);
+        send.setOnClickListener(sendTextOnClick);
+        send.setVisibility(View.VISIBLE);
 
         content = (EditText) mRootView.findViewById(R.id.comment);
         content.addTextChangedListener(new SimpleTextWatcher() {
@@ -43,11 +40,9 @@ public class EnterLayout {
 
     public void updateSendButtonStyle() {
         if (sendButtonEnable()) {
-            sendText.setBackgroundResource(R.drawable.edit_send_green);
-            sendText.setTextColor(0xffffffff);
+            send.setEnabled(true);
         } else {
-            sendText.setBackgroundResource(R.drawable.edit_send);
-            sendText.setTextColor(0xff999999);
+            send.setEnabled(false);
         }
     }
 

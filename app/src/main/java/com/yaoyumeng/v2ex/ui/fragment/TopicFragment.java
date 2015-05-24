@@ -254,7 +254,7 @@ public class TopicFragment extends BaseFragment
                     content.setText(replyToWho_);
                     content.setSelection(content.getText().length());
                 }
-            }, 1500);
+            }, 500);
         } else {
             InputUtils.popSoftkeyboard(getActivity(), content, false);
         }

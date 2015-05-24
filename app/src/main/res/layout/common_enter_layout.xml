@@ -46,22 +46,9 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/message_button_add"
-
+                android:background="@drawable/ic_send"
                 android:padding="5dp" />
 
-
-            <TextView
-                android:id="@+id/sendText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:background="@drawable/edit_send_green"
-                android:textColor="#ffffffff"
-                android:gravity="center"
-                android:visibility="gone"
-                android:padding="5dp"
-                android:text="发送" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
