@@ -299,6 +299,9 @@ public class TopicFragment extends BaseFragment
      * 设置话题,将其设置为ListView的HeaderView
      */
     private void setupHeaderView() {
+        if(mHeader.getVisibility() != View.VISIBLE)
+            mHeader.setVisibility(View.VISIBLE);
+
         ImageView avatar = (ImageView) mHeader.findViewById(R.id.avatar);
         TextView titleTextView = (TextView) mHeader.findViewById(R.id.text_title);
         RichTextView contentTextView = (RichTextView) mHeader.findViewById(R.id.text_content);
