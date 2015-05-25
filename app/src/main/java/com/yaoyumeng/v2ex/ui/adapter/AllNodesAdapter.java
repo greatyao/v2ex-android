@@ -9,6 +9,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.yaoyumeng.v2ex.R;
@@ -28,10 +29,11 @@ import java.util.TreeMap;
 /**
  * Created by yw on 2015/4/28.
  */
-public class AllNodesAdapter extends RecyclerView.Adapter<AllNodesAdapter.ViewHolder> {
+public class AllNodesAdapter extends RecyclerView.Adapter<AllNodesAdapter.ViewHolder> implements SectionIndexer {
     Context mContext;
     List<NodeModel> mNodes = new ArrayList<NodeModel>();
     HashMap<String, Integer> mAlphaPosition = new HashMap<String, Integer>();
+    String mSections = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public AllNodesAdapter(Context context) {
         mContext = context;
@@ -106,6 +108,26 @@ public class AllNodesAdapter extends RecyclerView.Adapter<AllNodesAdapter.ViewHo
 
         notifyDataSetChanged();
     }
+
+    @Override
+    public int getPositionForSection(int i) {
+        return mAlphaPosition.get(mSections.substring(i, i+1));
+    }
+
+    @Override
+    public int getSectionForPosition(int i) {
+        return 0;
+    }
+
+    @Override
+    public Object[] getSections() {
+        String[] chars = new String[mSections.length()];
+        for (int i = 0; i < mSections.length(); i++) {
+            chars[i] = String.valueOf(mSections.charAt(i));
+        }
+        return chars;
+    }
+
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title;

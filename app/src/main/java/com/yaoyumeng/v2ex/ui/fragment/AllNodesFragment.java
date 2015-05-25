@@ -1,7 +1,6 @@
 package com.yaoyumeng.v2ex.ui.fragment;
 
 import android.content.Context;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,16 +10,14 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.ui.adapter.AllNodesAdapter;
-import com.yaoyumeng.v2ex.ui.widget.AlphaView;
+import com.yaoyumeng.v2ex.ui.widget.IndexableRecyclerView;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 
 import java.util.ArrayList;
@@ -29,22 +26,12 @@ import java.util.ArrayList;
  * Created by yw on 2015/4/28.
  */
 public class AllNodesFragment extends BaseFragment
-        implements AlphaView.OnAlphaChangedListener, HttpRequestHandler<ArrayList<NodeModel>> {
+        implements HttpRequestHandler<ArrayList<NodeModel>> {
     private static final String TAG = "AllNodesFragment";
-    RecyclerView mRecyclerView;
+    IndexableRecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     AllNodesAdapter mNodeAdapter;
-    AlphaView mAlphaView;
-    TextView mOverlay;
     SwipeRefreshLayout mSwipeLayout;
-    WindowManager mWindowManager;
-    private Handler handler = new Handler();
-    private Runnable overlayThread = new Runnable() {
-        @Override
-        public void run() {
-            mOverlay.setVisibility(View.GONE);
-        }
-    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,24 +39,12 @@ public class AllNodesFragment extends BaseFragment
 
         final Context context = getActivity();
         mNodeAdapter = new AllNodesAdapter(context);
-        mAlphaView = (AlphaView) layout.findViewById(R.id.alpha_view);
-        mAlphaView.setOnAlphaChangedListener(this);
-        mRecyclerView = (RecyclerView) layout.findViewById(R.id.grid_all_node);
+        mRecyclerView = (IndexableRecyclerView) layout.findViewById(R.id.grid_all_node);
 
         mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mNodeAdapter);
-
-        mOverlay = (TextView) inflater.inflate(R.layout.overlay, null);
-        mOverlay.setVisibility(View.INVISIBLE);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_APPLICATION,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                PixelFormat.TRANSLUCENT);
-        mWindowManager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
-        mWindowManager.addView(mOverlay, lp);
+        mRecyclerView.setFastScrollEnabled(true);
 
         mSwipeLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -89,12 +64,6 @@ public class AllNodesFragment extends BaseFragment
     }
 
     @Override
-    public void onDestroyView() {
-        mWindowManager.removeView(mOverlay);
-        super.onDestroyView();
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mSwipeLayout.setRefreshing(true);
@@ -105,14 +74,12 @@ public class AllNodesFragment extends BaseFragment
     public void onSuccess(ArrayList<NodeModel> data) {
         mNodeAdapter.update(data);
         mSwipeLayout.setRefreshing(false);
-        mAlphaView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onSuccess(ArrayList<NodeModel> data, int totalPages, int currentPage) {
         mNodeAdapter.update(data);
         mSwipeLayout.setRefreshing(false);
-        mAlphaView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -122,21 +89,6 @@ public class AllNodesFragment extends BaseFragment
     }
 
     private void requestNode(boolean refresh) {
-        mAlphaView.setVisibility(View.GONE);
         V2EXManager.getAllNodes(getActivity(), refresh, this);
-    }
-
-    @Override
-    public void OnAlphaChanged(String s, int index) {
-        if (s != null && s.trim().length() > 0) {
-            mOverlay.setText(s);
-            mOverlay.setVisibility(View.VISIBLE);
-            handler.removeCallbacks(overlayThread);
-            handler.postDelayed(overlayThread, 500);
-            if (mNodeAdapter.getAlphaPosition().get(s) != null) {
-                int position = mNodeAdapter.getAlphaPosition().get(s);
-                mLayoutManager.scrollToPosition(position);
-            }
-        }
     }
 }

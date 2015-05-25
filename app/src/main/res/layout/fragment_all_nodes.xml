@@ -8,29 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <!--com.etsy.android.grid.StaggeredGridView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:item_margin="8dp"
-        app:column_count_portrait="2"
-        app:column_count_landscape="3"
-        android:id="@+id/grid_all_node"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        /-->
-
-        <android.support.v7.widget.RecyclerView
+        <com.yaoyumeng.v2ex.ui.widget.IndexableRecyclerView
             android:id="@+id/grid_all_node"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
-    <com.yaoyumeng.v2ex.ui.widget.AlphaView
-        android:layout_width="30dip"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:textSize="20dip"
-        android:id="@+id/alpha_view" />
-
 </RelativeLayout>
