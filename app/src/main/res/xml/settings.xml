@@ -23,15 +23,20 @@
             android:key="pref_https"
             android:title="@string/settings_use_https"/>
 
-        <Preference
-            android:key="pref_cache"
-            android:title="@string/settings_clear_cache"
-            android:summary="0KB"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_effect"
+            android:title="@string/settings_use_effect"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/settings_more">
+
+        <Preference
+            android:key="pref_cache"
+            android:title="@string/settings_clear_cache"
+            android:summary="0KB"/>
 
         <Preference
             android:key="pref_check_update"

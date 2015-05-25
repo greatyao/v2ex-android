@@ -29,6 +29,8 @@ public class Application extends android.app.Application {
 
     private boolean mJsonAPI;
     private boolean mHttps;
+    private boolean mShowEffect;
+    private boolean mLoadImage;
 
     @Override
     public void onCreate() {
@@ -49,6 +51,8 @@ public class Application extends android.app.Application {
                 getSystemService(Activity.ACTIVITY_SERVICE);
         mHttps = isHttps();
         mJsonAPI = isJsonAPI();
+        mShowEffect = isShowEffect();
+        mLoadImage = isLoadImageInMobileNetwork();
     }
 
     private void initDatabase() {
@@ -94,9 +98,11 @@ public class Application extends android.app.Application {
         return mContext;
     }
 
+    public boolean isLoadImageInMobileNetworkFromCache() {
+        return mLoadImage;
+    }
     /**
      * 3G网络下是否加载显示文章图片
-     *
      * @return
      */
     public boolean isLoadImageInMobileNetwork() {
@@ -109,37 +115,45 @@ public class Application extends android.app.Application {
 
     /**
      * 设置3G网络下是否加载文章图片
-     *
      * @param b
      */
     public void setConfigLoadImageInMobileNetwork(boolean b) {
         setProperty(AppConfig.CONF_NOIMAGE_NOWIFI, String.valueOf(b));
+        mLoadImage = b;
     }
 
     /**
-     * 是否发出提示音
+     * 是否显示动画效果
      *
      * @return
      */
-    public boolean isVoice() {
-        String perf_voice = getProperty(AppConfig.CONF_VOICE);
-        //默认是开启提示声音
-        if (perf_voice == null || perf_voice.isEmpty())
-            return true;
-        else
-            return Boolean.parseBoolean(perf_voice);
+    public boolean isShowEffectFromCache() {
+        return mShowEffect;
     }
 
     /**
-     * 设置是否发出提示音
+     * 是否显示动画效果
+     *
+     * @return
+     */
+    public boolean isShowEffect() {
+        String perf_effect = getProperty(AppConfig.CONF_EFFECT);
+        //默认是开启动画效果
+        if (perf_effect == null || perf_effect.isEmpty())
+            return true;
+        else
+            return Boolean.parseBoolean(perf_effect);
+    }
+
+    /**
+     * 设置是否显示动画效果
      *
      * @param b
      */
-    public void setConfigVoice(boolean b) {
-        setProperty(AppConfig.CONF_VOICE, String.valueOf(b));
+    public void setConfigEffect(boolean b) {
+        setProperty(AppConfig.CONF_EFFECT, String.valueOf(b));
+        mShowEffect = b;
     }
-
-
 
     /**
      * 是否以JsonAPI的形式访问
@@ -149,7 +163,6 @@ public class Application extends android.app.Application {
     public boolean isJsonAPIFromCache() {
         return mJsonAPI;
     }
-
 
     /**
      * 是否以JsonAPI的形式访问

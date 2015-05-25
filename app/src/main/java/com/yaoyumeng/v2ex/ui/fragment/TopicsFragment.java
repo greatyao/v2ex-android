@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.twotoasters.jazzylistview.effects.CardsEffect;
+import com.twotoasters.jazzylistview.recyclerview.JazzyRecyclerViewScrollListener;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.HttpRequestHandler;
@@ -36,7 +38,7 @@ import java.util.ArrayList;
 /**
  * 显示单个节点下的话题或最新/最热话题类
  */
-public class TopicsFragment extends BaseFragment implements HttpRequestHandler<ArrayList<TopicModel>>,OnScrollToBottomListener {
+public class TopicsFragment extends BaseFragment implements HttpRequestHandler<ArrayList<TopicModel>>, OnScrollToBottomListener {
     public static final int RESULT_ADD_TOPIC = 100;
     public static final String TAG = "TopicsFragment";
     public static final int LatestTopics = 0;
@@ -89,6 +91,12 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_topics);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        if(Application.getInstance().isShowEffectFromCache()) {
+            JazzyRecyclerViewScrollListener scrollListener = new JazzyRecyclerViewScrollListener();
+            mRecyclerView.setOnScrollListener(scrollListener);
+            scrollListener.setTransitionEffect(new CardsEffect());
+        }
 
         if ((mNodeId > 0 || !mNodeName.isEmpty()) && mIsLogin) {
             mAddButton.setVisibility(View.VISIBLE);
@@ -253,7 +261,7 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
         V2EXManager.favNodeWithNodeName(getActivity(), mNodeName, new RequestFavNodeHelper());
     }
 
-    private void requestMoreTopics(){
+    private void requestMoreTopics() {
         mIsLoading = true;
         V2EXManager.getTopicsByNodeName(getActivity(), mNodeName, mPage + 1, true, this);
     }

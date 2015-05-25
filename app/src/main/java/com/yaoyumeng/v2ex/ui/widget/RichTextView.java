@@ -42,7 +42,7 @@ public class RichTextView extends TextView {
             htmlSpannable = new SpannableStringBuilder(spanned);
         }
 
-        if (NetWorkHelper.isMobile(getContext()) && !Application.getInstance().isLoadImageInMobileNetwork()) {
+        if (NetWorkHelper.isMobile(getContext()) && !Application.getInstance().isLoadImageInMobileNetworkFromCache()) {
             //移动网络情况下如果设置了不显示图片,则遵命
         } else {
             ImageSpan[] spans = htmlSpannable.getSpans(0, htmlSpannable.length(), ImageSpan.class);

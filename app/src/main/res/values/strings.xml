@@ -54,6 +54,7 @@
     <string name="settings_noimage_nowifi">无图模式</string>
     <string name="settings_noimage_nowifi_summary">2G/3G网络下不显示图片</string>
     <string name="settings_image_nowifi_summary">2G/3G网络下显示图片</string>
+    <string name="settings_use_effect">列表滚动显示动画效果</string>
     <string name="settings_check_update">检查更新</string>
     <string name="settings_check_update_summary">检测是否有新版本</string>
     <string name="settings_feedback">意见反馈</string>

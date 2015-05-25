@@ -44,6 +44,7 @@ public class SettingsFragment extends PreferenceFragment {
     Preference mUpdate;
     Preference mAbout;
     CheckBoxPreference mHttps;
+    CheckBoxPreference mEffect;
     CheckBoxPreference mLoadimage;
     CheckBoxPreference mJsonAPI;
     Button mLogout;
@@ -130,7 +131,17 @@ public class SettingsFragment extends PreferenceFragment {
             }
         });
 
-        // // 版本更新
+        // 动画效果
+        mEffect = (CheckBoxPreference) findPreference("pref_effect");
+        mEffect.setChecked(mApp.isShowEffect());
+        mEffect.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                mApp.setConfigEffect(mEffect.isChecked());
+                return true;
+            }
+        });
+
+        // 版本更新
         mUpdate = (Preference) findPreference("pref_check_update");
         mUpdate.setSummary("版本: " + PhoneUtils.getPackageInfo(getActivity()).versionName);
         mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

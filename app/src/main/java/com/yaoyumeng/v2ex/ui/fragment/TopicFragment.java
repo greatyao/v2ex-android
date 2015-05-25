@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twotoasters.jazzylistview.effects.CardsEffect;
+import com.twotoasters.jazzylistview.recyclerview.JazzyRecyclerViewScrollListener;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.HttpRequestHandler;
@@ -114,6 +116,12 @@ public class TopicFragment extends BaseFragment
         mHeaderAdapter = new HeaderViewRecyclerAdapter(mAdapter);
         mHeaderAdapter.addHeaderView(mHeader);
         mRecyclerView.setAdapter(mHeaderAdapter);
+
+        if(Application.getInstance().isShowEffectFromCache()) {
+            JazzyRecyclerViewScrollListener scrollListener = new JazzyRecyclerViewScrollListener();
+            mRecyclerView.setOnScrollListener(scrollListener);
+            scrollListener.setTransitionEffect(new CardsEffect());
+        }
 
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -299,7 +307,7 @@ public class TopicFragment extends BaseFragment
      * 设置话题,将其设置为ListView的HeaderView
      */
     private void setupHeaderView() {
-        if(mHeader.getVisibility() != View.VISIBLE)
+        if (mHeader.getVisibility() != View.VISIBLE)
             mHeader.setVisibility(View.VISIBLE);
 
         ImageView avatar = (ImageView) mHeader.findViewById(R.id.avatar);
