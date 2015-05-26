@@ -19,6 +19,9 @@
     <style name="V2EX.ActivityTheme" parent="V2EX.AppTheme.Base">
         <item name="windowActionBar">false</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:textColorPrimary">@drawable/white</item>
+        <item name="color">@color/white</item>
+        <item name="android:textColor">@color/font_black_2</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -61,8 +64,8 @@
     <style name="Coding.ActionbarSpannerTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorPrimary">@drawable/gray_drawable</item>
-        <item name="android:textColorPrimary">@drawable/white</item>
         <item name="colorPrimaryDark">@color/black</item>
+        <item name="android:textColorPrimary">@drawable/white</item>
         <item name="color">@color/white</item>
         <item name="android:windowBackground">@color/stand_bg</item>
         <item name="popupMenuStyle">@style/MyApp.PopupMenu</item>
@@ -70,6 +73,7 @@
         <item name="android:windowActionModeOverlay">true</item>
         <item name="android:itemTextAppearance">@style/myCustomMenuTextApearance</item>
         <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:textColor">@color/font_black_2</item>
 
         <!--抽屉导航的旋转箭头-->
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
