@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.twotoasters.jazzylistview.effects.CardsEffect;
+import com.twotoasters.jazzylistview.effects.FadeEffect;
 import com.twotoasters.jazzylistview.recyclerview.JazzyRecyclerViewScrollListener;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
@@ -117,10 +117,10 @@ public class TopicFragment extends BaseFragment
         mHeaderAdapter.addHeaderView(mHeader);
         mRecyclerView.setAdapter(mHeaderAdapter);
 
-        if(Application.getInstance().isShowEffectFromCache()) {
+        if (Application.getInstance().isShowEffectFromCache()) {
             JazzyRecyclerViewScrollListener scrollListener = new JazzyRecyclerViewScrollListener();
             mRecyclerView.setOnScrollListener(scrollListener);
-            scrollListener.setTransitionEffect(new CardsEffect());
+            scrollListener.setTransitionEffect(new FadeEffect());
         }
 
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);

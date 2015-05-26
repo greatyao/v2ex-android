@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.twotoasters.jazzylistview.effects.CardsEffect;
+import com.twotoasters.jazzylistview.effects.FadeEffect;
 import com.twotoasters.jazzylistview.recyclerview.JazzyRecyclerViewScrollListener;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
@@ -58,10 +58,10 @@ public class NotificationFragment extends BaseFragment implements HttpRequestHan
         mHeaderAdapter = new HeaderViewRecyclerAdapter(mAdapter);
         mRecyclerView.setAdapter(mHeaderAdapter);
 
-        if(Application.getInstance().isShowEffectFromCache()) {
+        if (Application.getInstance().isShowEffectFromCache()) {
             JazzyRecyclerViewScrollListener scrollListener = new JazzyRecyclerViewScrollListener();
             mRecyclerView.setOnScrollListener(scrollListener);
-            scrollListener.setTransitionEffect(new CardsEffect());
+            scrollListener.setTransitionEffect(new FadeEffect());
         }
 
         mEmptyText = (TextView) rootView.findViewById(R.id.txt_fragment_notification_empty);

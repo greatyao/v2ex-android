@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.melnykov.fab.FloatingActionButton;
-import com.twotoasters.jazzylistview.effects.CardsEffect;
+import com.twotoasters.jazzylistview.effects.FadeEffect;
 import com.twotoasters.jazzylistview.recyclerview.JazzyRecyclerViewScrollListener;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
@@ -92,10 +92,10 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        if(Application.getInstance().isShowEffectFromCache()) {
+        if (Application.getInstance().isShowEffectFromCache()) {
             JazzyRecyclerViewScrollListener scrollListener = new JazzyRecyclerViewScrollListener();
             mRecyclerView.setOnScrollListener(scrollListener);
-            scrollListener.setTransitionEffect(new CardsEffect());
+            scrollListener.setTransitionEffect(new FadeEffect());
         }
 
         if ((mNodeId > 0 || !mNodeName.isEmpty()) && mIsLogin) {
