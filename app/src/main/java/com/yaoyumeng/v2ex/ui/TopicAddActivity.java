@@ -35,6 +35,8 @@ public class TopicAddActivity extends BaseActivity implements HttpRequestHandler
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic_add);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
         mTitle = (EditText) findViewById(R.id.topic_add_title);
         mContent = (EditText) findViewById(R.id.topic_add_content);
 
