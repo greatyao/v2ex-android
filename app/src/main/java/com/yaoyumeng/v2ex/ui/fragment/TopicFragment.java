@@ -151,8 +151,6 @@ public class TopicFragment extends BaseFragment
         mSwipeLayout.setProgressViewOffset(false, 0,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
 
-        mSwipeLayout.setRefreshing(true);
-
         return rootView;
     }
 
@@ -164,9 +162,11 @@ public class TopicFragment extends BaseFragment
             mTopic = getArguments().getParcelable("model");
             mTopicId = mTopic.id;
             setupHeaderView();
+            mSwipeLayout.setRefreshing(true);
             getReplyData(false);
         } else if (getArguments().containsKey("topic_id")) {
             mTopicId = getArguments().getInt("topic_id");
+            mSwipeLayout.setRefreshing(true);
             getTopicData(false);
         } else {
             getActivity().finish();
@@ -210,6 +210,7 @@ public class TopicFragment extends BaseFragment
     public void onSuccess(ArrayList<ReplyModel> data) {
         mAdapter.update(data);
         mSwipeLayout.setRefreshing(false);
+        prepareAddComment(mTopic, false);
         if (!mIsLogin)
             mEnterLayout.hide();
         else
@@ -257,23 +258,35 @@ public class TopicFragment extends BaseFragment
         }
     }
 
+    Handler mHandler = new Handler();
+
     //获取该话题下的所有回复
-    private void getReplyData(boolean refresh) {
-        prepareAddComment(mTopic, false);
+    private void getReplyData(final boolean refresh) {
+        //prepareAddComment(mTopic, false);
         if (Application.getInstance().isJsonAPIFromCache())
             V2EXManager.getRepliesByTopicId(getActivity(), mTopicId, refresh, this);
         else
-            V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, 1, refresh, new RequestTopicAndReplyListHelper(refresh));
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage, refresh, new RequestTopicAndReplyListHelper(refresh));
+                }
+            }, 1000);
     }
 
     //获取该话题内容和其所有回复
-    private void getTopicData(boolean refresh) {
-        prepareAddComment(mTopic, false);
+    private void getTopicData(final boolean refresh) {
+        //prepareAddComment(mTopic, false);
 
         if (mApp.isJsonAPIFromCache())
             V2EXManager.getTopicByTopicId(getActivity(), mTopicId, refresh, new RequestTopicHelper(refresh));
         else
-            V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage, refresh, new RequestTopicAndReplyListHelper(refresh));
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage, refresh, new RequestTopicAndReplyListHelper(refresh));
+                }
+            }, 1000);
     }
 
     private void favTopic() {
