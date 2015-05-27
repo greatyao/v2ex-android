@@ -21,6 +21,8 @@ public class MessageUtils {
     }
 
     public static void showMiddleToast(Context cxt, String msg) {
+        if(cxt == null)
+            cxt = Application.getContext();
         Toast toast = Toast.makeText(cxt, msg, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
