@@ -148,7 +148,8 @@ public class TopicWithReplyListModel extends V2EXModel {
                 //android.util.Log.i("member", member);
 
                 Elements avatarNode = aNode.getElementsByTag("img");
-                if (avatarNode != null) {
+                if (avatarNode != null &&
+                        (topic.member.avatar == null || topic.member.avatar.isEmpty())) {
                     String avatar = avatarNode.attr("src");
                     if (avatar.startsWith("//"))
                         avatar = "http:" + avatar;

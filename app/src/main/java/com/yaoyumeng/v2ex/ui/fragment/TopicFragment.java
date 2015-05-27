@@ -270,7 +270,6 @@ public class TopicFragment extends BaseFragment
     private void getTopicData(boolean refresh) {
         prepareAddComment(mTopic, false);
 
-        android.util.Log.i("starting", "----");
         if (mApp.isJsonAPIFromCache())
             V2EXManager.getTopicByTopicId(getActivity(), mTopicId, refresh, new RequestTopicHelper(refresh));
         else
@@ -399,7 +398,6 @@ public class TopicFragment extends BaseFragment
 
         @Override
         public void onSuccess(TopicWithReplyListModel data, int total, int current) {
-            android.util.Log.i("begin", "---");
             mPage = current;
             mNoMore = total == current;
             mSwipeLayout.setRefreshing(false);
@@ -409,6 +407,7 @@ public class TopicFragment extends BaseFragment
                 mTopicId = mTopic.id;
 
                 if(mPage == 1) setupHeaderView();
+
                 prepareAddComment(mTopic, false);
             }
 
@@ -429,8 +428,6 @@ public class TopicFragment extends BaseFragment
             } else {
                 mFootUpdate.showLoading();
             }
-
-            android.util.Log.i("end", "---");
         }
 
         @Override
