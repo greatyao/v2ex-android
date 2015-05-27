@@ -57,8 +57,13 @@ public class NotificationModel extends V2EXModel {
                 int idx = topicURLString.indexOf('#');
                 String[] ss = topicURLString.substring(3).split("#");
 
-                notificationTopic.id = Integer.parseInt(ss[0]);
-                notificationTopic.replies = Integer.parseInt(ss[1].substring(5));
+                try {
+                    notificationTopic.id = Integer.parseInt(ss[0]);
+                    notificationTopic.replies = Integer.parseInt(ss[1].substring(5));
+                    break;
+                } catch (Exception e){
+                    continue;
+                }
             }
         }
 
