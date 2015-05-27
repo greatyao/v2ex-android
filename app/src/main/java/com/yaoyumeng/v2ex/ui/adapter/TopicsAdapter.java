@@ -20,6 +20,7 @@ import com.yaoyumeng.v2ex.database.V2EXDataSource;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
+import com.yaoyumeng.v2ex.model.V2EXDateModel;
 import com.yaoyumeng.v2ex.ui.NodeActivity;
 import com.yaoyumeng.v2ex.ui.TopicActivity;
 import com.yaoyumeng.v2ex.ui.UserActivity;
@@ -37,7 +38,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ViewHolder
     ArrayList<TopicModel> mTopics = new ArrayList<TopicModel>();
     V2EXDataSource mDataSource = Application.getDataSource();
 
-    public TopicsAdapter(Context context,  OnScrollToBottomListener listener) {
+    public TopicsAdapter(Context context, OnScrollToBottomListener listener) {
         mContext = context;
         mListener = listener;
     }
@@ -86,19 +87,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ViewHolder
                 mContext.getResources().getColor(R.color.list_item_read) :
                 mContext.getResources().getColor(R.color.list_item_unread));
 
-        if (topic.created > 0) {
-            long created = topic.created * 1000;
-            long now = System.currentTimeMillis();
-            long difference = now - created;
-            CharSequence text = (difference >= 0 && difference <= DateUtils.MINUTE_IN_MILLIS) ?
-                    mContext.getString(R.string.just_now) :
-                    DateUtils.getRelativeTimeSpanString(
-                            created,
-                            now,
-                            DateUtils.MINUTE_IN_MILLIS,
-                            DateUtils.FORMAT_ABBREV_RELATIVE);
-            viewHolder.time.setText(text);
-        }
+        viewHolder.time.setText(V2EXDateModel.toString(topic.created));
 
         final NodeModel node = topic.node;
         viewHolder.nodeTitle.setText(node.title);

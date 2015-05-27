@@ -8,7 +8,6 @@ import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +30,8 @@ import com.yaoyumeng.v2ex.database.V2EXDataSource;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.ReplyModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
+import com.yaoyumeng.v2ex.model.TopicWithReplyListModel;
+import com.yaoyumeng.v2ex.model.V2EXDateModel;
 import com.yaoyumeng.v2ex.model.V2EXModel;
 import com.yaoyumeng.v2ex.ui.BaseActivity;
 import com.yaoyumeng.v2ex.ui.NodeActivity;
@@ -40,14 +41,16 @@ import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.ReplyAdapter;
 import com.yaoyumeng.v2ex.ui.social.ShareHelper;
 import com.yaoyumeng.v2ex.ui.widget.EnterLayout;
+import com.yaoyumeng.v2ex.ui.widget.FootUpdate;
 import com.yaoyumeng.v2ex.ui.widget.RichTextView;
 import com.yaoyumeng.v2ex.utils.InputUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
+import com.yaoyumeng.v2ex.utils.OnScrollToBottomListener;
 
 import java.util.ArrayList;
 
 public class TopicFragment extends BaseFragment
-        implements HttpRequestHandler<ArrayList<ReplyModel>> {
+        implements HttpRequestHandler<ArrayList<ReplyModel>>, OnScrollToBottomListener {
 
     public static final int REQUEST_COMMENT = 100;
     RecyclerView mRecyclerView;
@@ -64,6 +67,9 @@ public class TopicFragment extends BaseFragment
     EnterLayout mEnterLayout;
     V2EXDataSource mDataSource = Application.getDataSource();
     boolean mIsStarred;
+    int mPage = 1;
+    boolean mNoMore = true;
+    Application mApp = Application.getInstance();
 
     View.OnClickListener onClickSend = new View.OnClickListener() {
         @Override
@@ -106,7 +112,7 @@ public class TopicFragment extends BaseFragment
         mEnterLayout.hide();
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_replies);
-        mAdapter = new ReplyAdapter(getActivity(), onItemCommentClick);
+        mAdapter = new ReplyAdapter(getActivity(), onItemCommentClick, this);
 
         RecyclerView.LayoutParams headerLayoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mHeader.setLayoutParams(headerLayoutParams);
@@ -117,16 +123,24 @@ public class TopicFragment extends BaseFragment
         mHeaderAdapter.addHeaderView(mHeader);
         mRecyclerView.setAdapter(mHeaderAdapter);
 
-        if (Application.getInstance().isShowEffectFromCache()) {
+        if (mApp.isShowEffectFromCache()) {
             JazzyRecyclerViewScrollListener scrollListener = new JazzyRecyclerViewScrollListener();
             mRecyclerView.setOnScrollListener(scrollListener);
             scrollListener.setTransitionEffect(new FadeEffect());
         }
 
+        mFootUpdate.init(mHeaderAdapter, LayoutInflater.from(getActivity()), new FootUpdate.LoadMore() {
+            @Override
+            public void loadMore() {
+                requestRepliesOfNextPage();
+            }
+        });
+
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mPage = 1;
                 getTopicData(true);
             }
         });
@@ -200,6 +214,7 @@ public class TopicFragment extends BaseFragment
             mEnterLayout.hide();
         else
             mEnterLayout.show();
+        mFootUpdate.dismiss();
     }
 
     @Override
@@ -218,21 +233,48 @@ public class TopicFragment extends BaseFragment
             return false;
         else {
             mEnterLayout.clearContent();
+            mEnterLayout.content.setHint("评论话题");
             return true;
+        }
+    }
+
+    @Override
+    public void onLoadMore() {
+        if (!mNoMore && !mApp.isJsonAPIFromCache()) {
+            requestRepliesOfNextPage();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_COMMENT) {
+            if (resultCode == Activity.RESULT_OK || data != null) {
+                MessageUtils.showMiddleToast(getActivity(),
+                        getActivity().getString(R.string.topic_comment_succeed));
+                ReplyModel reply = (ReplyModel) data.getParcelableExtra("reply_result");
+                mAdapter.insert(reply);
+            }
         }
     }
 
     //获取该话题下的所有回复
     private void getReplyData(boolean refresh) {
         prepareAddComment(mTopic, false);
-        V2EXManager.getRepliesByTopicId(getActivity(), mTopicId, refresh, this);
+        if (Application.getInstance().isJsonAPIFromCache())
+            V2EXManager.getRepliesByTopicId(getActivity(), mTopicId, refresh, this);
+        else
+            V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, 1, refresh, new RequestTopicAndReplyListHelper(refresh));
     }
 
     //获取该话题内容和其所有回复
     private void getTopicData(boolean refresh) {
         prepareAddComment(mTopic, false);
-        V2EXManager.getTopicByTopicId(getActivity(), mTopicId, refresh,
-                new RequestTopicHelper(refresh));
+
+        android.util.Log.i("starting", "----");
+        if (mApp.isJsonAPIFromCache())
+            V2EXManager.getTopicByTopicId(getActivity(), mTopicId, refresh, new RequestTopicHelper(refresh));
+        else
+            V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage, refresh, new RequestTopicAndReplyListHelper(refresh));
     }
 
     private void favTopic() {
@@ -279,11 +321,6 @@ public class TopicFragment extends BaseFragment
         reply(mTopic.member.username);
     }
 
-    //回复回帖的人
-    private void replyToReplier(ReplyModel model) {
-        reply(model.member.username);
-    }
-
     private void reply(String username) {
         Intent intent = new Intent(getActivity(), TopicCommentActivity.class);
         intent.putExtra("topic_id", mTopicId);
@@ -291,16 +328,11 @@ public class TopicFragment extends BaseFragment
         startActivityForResult(intent, REQUEST_COMMENT);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_COMMENT) {
-            if (resultCode == Activity.RESULT_OK || data != null) {
-                MessageUtils.showMiddleToast(getActivity(),
-                        getActivity().getString(R.string.topic_comment_succeed));
-                ReplyModel reply = (ReplyModel) data.getParcelableExtra("reply_result");
-                mAdapter.insert(reply);
-            }
-        }
+    /**
+     * 请求更多的回复 (翻页)
+     */
+    private void requestRepliesOfNextPage(){
+        V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage + 1, true, new RequestTopicAndReplyListHelper(true));
     }
 
     /**
@@ -347,18 +379,70 @@ public class TopicFragment extends BaseFragment
             }
         });
 
-        if (mTopic.created > 0) {
-            long created = mTopic.created * 1000;
-            long now = System.currentTimeMillis();
-            long difference = now - created;
-            CharSequence text = (difference >= 0 && difference <= DateUtils.MINUTE_IN_MILLIS) ?
-                    getString(R.string.just_now) :
-                    DateUtils.getRelativeTimeSpanString(
-                            created,
-                            now,
-                            DateUtils.MINUTE_IN_MILLIS,
-                            DateUtils.FORMAT_ABBREV_RELATIVE);
-            timeTextView.setText(text);
+        timeTextView.setText(V2EXDateModel.toString(mTopic.created));
+    }
+
+    /**
+     * 一次性获取话题正文和回复
+     */
+    class RequestTopicAndReplyListHelper implements HttpRequestHandler<TopicWithReplyListModel> {
+        boolean refresh;
+
+        public RequestTopicAndReplyListHelper(boolean refresh) {
+            this.refresh = refresh;
+        }
+
+        @Override
+        public void onSuccess(TopicWithReplyListModel data) {
+            onSuccess(data, 1, 1);
+        }
+
+        @Override
+        public void onSuccess(TopicWithReplyListModel data, int total, int current) {
+            android.util.Log.i("begin", "---");
+            mPage = current;
+            mNoMore = total == current;
+            mSwipeLayout.setRefreshing(false);
+
+            if (data.topic != null) {
+                mTopic = data.topic;
+                mTopicId = mTopic.id;
+
+                if(mPage == 1) setupHeaderView();
+                prepareAddComment(mTopic, false);
+            }
+
+            if (data.replies != null) {
+                if(mPage == 1)
+                    mAdapter.update(data.replies);
+                else
+                    mAdapter.insert(data.replies);
+            }
+
+            if (!mIsLogin)
+                mEnterLayout.hide();
+            else
+                mEnterLayout.show();
+
+            if (mNoMore) {
+                mFootUpdate.dismiss();
+            } else {
+                mFootUpdate.showLoading();
+            }
+
+            android.util.Log.i("end", "---");
+        }
+
+        @Override
+        public void onFailure(String error) {
+            mSwipeLayout.setRefreshing(false);
+            MessageUtils.showErrorMessage(getActivity(), error);
+
+            if (mAdapter.getItemCount() > 0 && !mNoMore) {
+                mFootUpdate.showFail();
+            } else {
+                mFootUpdate.dismiss();
+            }
         }
     }
 

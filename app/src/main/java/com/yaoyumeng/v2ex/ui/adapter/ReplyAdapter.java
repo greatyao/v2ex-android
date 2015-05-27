@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +15,11 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.model.ReplyModel;
+import com.yaoyumeng.v2ex.model.V2EXDateModel;
 import com.yaoyumeng.v2ex.ui.UserActivity;
 import com.yaoyumeng.v2ex.ui.widget.RichTextView;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
+import com.yaoyumeng.v2ex.utils.OnScrollToBottomListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +33,12 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
     List<ReplyModel> mReplies = new ArrayList<ReplyModel>();
     boolean mLogin;
     OnItemCommentClickListener mListener;
+    OnScrollToBottomListener mScrollListener;
 
-    public ReplyAdapter(Context context, OnItemCommentClickListener listener) {
+    public ReplyAdapter(Context context, OnItemCommentClickListener listener, OnScrollToBottomListener scrollListener) {
         mContext = context;
         mListener = listener;
+        mScrollListener = scrollListener;
         mLogin = AccountUtils.isLogined(mContext);
     }
 
@@ -81,22 +84,16 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
 
         viewHolder.replier.setText(reply.member.username);
 
-        long created = reply.created * 1000;
-        long now = System.currentTimeMillis();
-        long difference = now - created;
-        CharSequence text = (difference >= 0 && difference <= DateUtils.MINUTE_IN_MILLIS) ?
-                mContext.getString(R.string.just_now) :
-                DateUtils.getRelativeTimeSpanString(
-                        created,
-                        now,
-                        DateUtils.MINUTE_IN_MILLIS,
-                        DateUtils.FORMAT_ABBREV_RELATIVE);
-        viewHolder.time.setText(text);
+        viewHolder.time.setText(V2EXDateModel.toString(reply.created));
 
         viewHolder.floor.setText(String.format("第%d楼", i + 1));
 
         if (viewHolder.divide != null)
             viewHolder.divide.setVisibility(i == mReplies.size() - 1 ? View.GONE : View.VISIBLE);
+
+        if (mReplies.size() - i <= 1 && mScrollListener != null) {
+            mScrollListener.onLoadMore();
+        }
     }
 
     @Override
@@ -106,6 +103,11 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
 
     public void update(ArrayList<ReplyModel> data) {
         mReplies = data;
+        notifyDataSetChanged();
+    }
+
+    public void insert(ArrayList<ReplyModel> replies) {
+        mReplies.addAll(replies);
         notifyDataSetChanged();
     }
 

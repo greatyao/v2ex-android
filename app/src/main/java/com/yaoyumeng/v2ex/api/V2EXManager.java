@@ -18,6 +18,7 @@ import com.yaoyumeng.v2ex.model.PersistenceHelper;
 import com.yaoyumeng.v2ex.model.ReplyModel;
 import com.yaoyumeng.v2ex.model.TopicListModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
+import com.yaoyumeng.v2ex.model.TopicWithReplyListModel;
 
 import org.apache.http.Header;
 import org.jsoup.Jsoup;
@@ -226,6 +227,28 @@ public class V2EXManager {
 
         new AsyncHttpClient().get(ctx, getBaseAPIUrl() + API_ALL_NODE,
                 new WrappedJsonHttpResponseHandler<NodeModel>(ctx, NodeModel.class, key, handler));
+    }
+
+    public static void getTopicAndRepliesByTopicId(final Context ctx, final int topicId, final int page,
+                                                   boolean refresh,
+                                                   final HttpRequestHandler<TopicWithReplyListModel> handler){
+        String urlString = String.format("%s/t/%d?p=%d", getBaseUrl(), topicId, page);
+        final AsyncHttpClient client = getClient(ctx, false);
+        client.addHeader("Referer", getBaseUrl());
+        client.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        client.get(urlString, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorGetTopicListFailure));
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseBody) {
+                TopicWithReplyListModel model = new TopicWithReplyListModel();
+                model.parse(responseBody, page == 1, topicId);
+                SafeHandler.onSuccess(handler, model, model.totalPage, model.currentPage);
+            }
+        });
     }
 
     //根据话题ID获取其所有回复内容
