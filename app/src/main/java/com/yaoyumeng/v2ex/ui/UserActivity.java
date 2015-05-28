@@ -16,15 +16,14 @@ import java.util.List;
 /**
  * Created by yw on 2015/5/2.
  */
-public class UserActivity extends BaseActivity {
+public class UserActivity extends SwipeBackActivity {
     MemberModel mMember;
     String mUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSwipeContentView(R.layout.activity_user);
 
         if (savedInstanceState == null) {
             /**

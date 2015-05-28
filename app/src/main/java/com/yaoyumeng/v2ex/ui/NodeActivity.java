@@ -13,7 +13,7 @@ import com.yaoyumeng.v2ex.ui.fragment.TopicsFragment;
 
 import java.util.List;
 
-public class NodeActivity extends BaseActivity {
+public class NodeActivity extends SwipeBackActivity {
     private static String TAG = "TopicActivity";
     int mNodeId;
     String mNodeName;
@@ -22,9 +22,7 @@ public class NodeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_node);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSwipeContentView(R.layout.activity_node);
 
         TopicsFragment fragment = new TopicsFragment();
         Bundle bundle = new Bundle();

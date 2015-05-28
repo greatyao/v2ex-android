@@ -20,7 +20,7 @@ import com.yaoyumeng.v2ex.utils.InputUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.SimpleTextWatcher;
 
-public class TopicCommentActivity extends BaseActivity
+public class TopicCommentActivity extends SwipeBackActivity
         implements HttpRequestHandler<Integer> {
 
     EditText mContent;
@@ -31,8 +31,7 @@ public class TopicCommentActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_topic_comment);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSwipeContentView(R.layout.activity_topic_comment);
 
         mContent = (EditText) findViewById(R.id.topic_add_content);
         mContent.addTextChangedListener(textWatcher);

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * Created by yugy on 14-2-26.
  */
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class LoginActivity extends SwipeBackActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
     private EditText mUsername;
@@ -36,8 +36,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSwipeContentView(R.layout.activity_login);
 
         mUsername = (EditText) findViewById(R.id.login_username_edit);
         mPassword = (EditText) findViewById(R.id.login_password_edit);

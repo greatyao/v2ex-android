@@ -27,7 +27,6 @@ public class BaseActivity extends ActionBarActivity
         if (mIsLogin)
             mLoginProfile = AccountUtils.readLoginMember(this);
         AccountUtils.registerAccountListener(this);
-        //overridePendingTransition(R.anim.activity_open_enter, R.anim.activity_open_exit);
     }
 
     @Override

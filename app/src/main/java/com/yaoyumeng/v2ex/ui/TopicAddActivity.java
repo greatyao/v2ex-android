@@ -23,7 +23,7 @@ import com.yaoyumeng.v2ex.utils.InputUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.SimpleTextWatcher;
 
-public class TopicAddActivity extends BaseActivity implements HttpRequestHandler<Integer> {
+public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHandler<Integer> {
 
     EditText mTitle;
     EditText mContent;
@@ -34,8 +34,7 @@ public class TopicAddActivity extends BaseActivity implements HttpRequestHandler
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_topic_add);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSwipeContentView(R.layout.activity_topic_add);
         
         mTitle = (EditText) findViewById(R.id.topic_add_title);
         mContent = (EditText) findViewById(R.id.topic_add_content);

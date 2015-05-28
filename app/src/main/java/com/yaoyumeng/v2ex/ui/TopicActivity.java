@@ -14,15 +14,14 @@ import com.yaoyumeng.v2ex.ui.fragment.TopicFragment;
 
 import java.util.List;
 
-public class TopicActivity extends BaseActivity {
+public class TopicActivity extends SwipeBackActivity {
     TopicModel mTopic;
     int mTopicId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_topic);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSwipeContentView(R.layout.activity_topic);
 
         TopicFragment fragment = new TopicFragment();
         Bundle bundle = new Bundle();
