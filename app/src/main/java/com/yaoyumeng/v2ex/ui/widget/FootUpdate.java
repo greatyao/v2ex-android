@@ -88,8 +88,6 @@ public class FootUpdate {
 
         mLoading = mLayout.findViewById(R.id.progressBar);
 
-        addToListView(listView, mLayout);
-
         mLayout.setVisibility(View.GONE);
     }
 
