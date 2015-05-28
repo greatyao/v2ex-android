@@ -8,8 +8,8 @@ android {
         applicationId "com.yaoyumeng.v2ex"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 37
-        versionName "1.2.4"
+        versionCode 38
+        versionName "1.2.5"
     }
     buildTypes {
         release {
@@ -34,4 +34,5 @@ dependencies {
 	compile 'de.hdodenhof:circleimageview:1.3.0'
     compile 'com.twotoasters.jazzylistview:library:1.2.1'
     compile 'com.twotoasters.jazzylistview:library-recyclerview:1.2.1'
+    compile 'com.hannesdorfmann:swipeback:1.0.0'
 }
