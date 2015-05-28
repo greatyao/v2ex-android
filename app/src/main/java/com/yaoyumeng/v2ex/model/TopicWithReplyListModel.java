@@ -1,5 +1,7 @@
 package com.yaoyumeng.v2ex.model;
 
+import com.yaoyumeng.v2ex.utils.ContentUtils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -110,7 +112,7 @@ public class TopicWithReplyListModel extends V2EXModel {
 
                 Elements replyElements = tdNode.getElementsByClass("reply_content");
                 reply.content = replyElements.text();
-                reply.contentRendered = replyElements.html();
+                reply.contentRendered = ContentUtils.formatContent(replyElements.html());
                 //android.util.Log.i("reply_content",  reply.content);
 
                 Elements spanNodes = tdNode.getElementsByTag("span");
@@ -181,7 +183,7 @@ public class TopicWithReplyListModel extends V2EXModel {
         Elements contentNodes = body.getElementsByClass("topic_content");
         if (contentNodes != null && contentNodes.size() > 0) {
             topic.content = contentNodes.get(0).text();
-            topic.contentRendered = contentNodes.get(0).html();
+            topic.contentRendered = ContentUtils.formatContent(contentNodes.get(0).html());
             //android.util.Log.i("content", topic.contentRendered);
         } else {
             topic.content = topic.contentRendered = "";

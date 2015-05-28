@@ -2,7 +2,8 @@ package com.yaoyumeng.v2ex.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
+
+import com.yaoyumeng.v2ex.utils.ContentUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,11 +23,7 @@ public class ReplyModel extends V2EXModel implements Parcelable {
         id = jsonObject.getInt("id");
         thanks = jsonObject.getInt("thanks");
         content = jsonObject.getString("content");
-        contentRendered = jsonObject.getString("content_rendered")
-                .replace("href=\"/member/", "href=\"http://www.v2ex.com/member/")
-                .replace("href=\"/i/", "href=\"https://i.v2ex.co/")
-                .replace("href=\"/t/", "href=\"http://www.v2ex.com/t/")
-                .replace("href=\"/go/", "href=\"http://www.v2ex.com/go/");
+        contentRendered = ContentUtils.formatContent(jsonObject.getString("content_rendered"));
         member = new MemberModel();
         member.parse(jsonObject.getJSONObject("member"));
         created = jsonObject.getLong("created");

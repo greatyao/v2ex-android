@@ -1,5 +1,7 @@
 package com.yaoyumeng.v2ex.model;
 
+import com.yaoyumeng.v2ex.utils.ContentUtils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.nodes.Element;
@@ -71,8 +73,9 @@ public class NotificationModel extends V2EXModel {
         dateString = dateString.replace("ago", "");
         notificationTopic.url = dateString;
 
-        String content = second.getElementsByClass("payload").html();
-        notificationTopic.content = notificationTopic.contentRendered = content;
+        Elements contentNodes = second.getElementsByClass("payload");
+        notificationTopic.content = contentNodes.text();
+        notificationTopic.contentRendered = ContentUtils.formatContent(contentNodes.html());
 
         if (rawContents.indexOf("里提到了你") >= 0) {
             notificationDescriptionBefore = " 在 ";

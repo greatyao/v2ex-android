@@ -3,6 +3,8 @@ package com.yaoyumeng.v2ex.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.yaoyumeng.v2ex.utils.ContentUtils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,11 +28,7 @@ public class TopicModel extends V2EXModel implements Parcelable{
         title = jsonObject.getString("title");
         url = jsonObject.getString("url");
         content = jsonObject.getString("content");
-        contentRendered = jsonObject.getString("content_rendered")
-                .replace("href=\"/member/", "href=\"http://www.v2ex.com/member/")
-                .replace("href=\"/i/", "href=\"https://i.v2ex.co/")
-                .replace("href=\"/go/", "href=\"http://www.v2ex.com/go/")
-                .replace("href=\"/t/", "href=\"http://www.v2ex.com/t/");
+        contentRendered = ContentUtils.formatContent(jsonObject.getString("content_rendered"));
         replies = jsonObject.getInt("replies");
         member = new MemberModel();
         member.parse(jsonObject.getJSONObject("member"));
