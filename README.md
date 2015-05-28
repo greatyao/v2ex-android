@@ -7,7 +7,7 @@ V2EX社区客户端，非官方。
 
 #### 其他下载链接
 
-[**Github**](https://github.com/greatyao/v2ex-android/releases/download/1.2.0/v2ex-android-v1.2.0.apk)
+[**Github**](https://github.com/greatyao/v2ex-android/releases/download/1.2.5/v2ex-android-v1.2.5.apk)
 
 
 ### 支持功能
