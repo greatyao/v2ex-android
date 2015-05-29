@@ -23,7 +23,7 @@ public class UserActivity extends SwipeBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSwipeContentView(R.layout.activity_user);
+        setSwipeContentView(R.layout.activity_container);
 
         if (savedInstanceState == null) {
             /**

@@ -21,7 +21,7 @@ public class TopicActivity extends SwipeBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSwipeContentView(R.layout.activity_topic);
+        setSwipeContentView(R.layout.activity_container);
 
         TopicFragment fragment = new TopicFragment();
         Bundle bundle = new Bundle();

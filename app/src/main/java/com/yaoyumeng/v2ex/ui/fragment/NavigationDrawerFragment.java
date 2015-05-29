@@ -29,6 +29,7 @@ import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.ui.LoginActivity;
 import com.yaoyumeng.v2ex.ui.MainActivity;
+import com.yaoyumeng.v2ex.ui.SettingsActivity;
 import com.yaoyumeng.v2ex.ui.UserActivity;
 import com.yaoyumeng.v2ex.ui.adapter.DrawerAdapter;
 
@@ -70,6 +71,8 @@ public class NavigationDrawerFragment extends BaseFragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+
+    private final int REQUEST_SETTINGS = 88;
 
     public NavigationDrawerFragment() {
     }
@@ -138,6 +141,13 @@ public class NavigationDrawerFragment extends BaseFragment {
             }
         });
         return rootView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == REQUEST_SETTINGS){
+            selectItem(mCurrentSelectedPosition);
+        }
     }
 
     @Override
@@ -250,6 +260,14 @@ public class NavigationDrawerFragment extends BaseFragment {
     }
 
     private void selectItem(int position) {
+        if(mDrawerListView != null && position > 0 &&
+                position == mDrawerListView.getAdapter().getCount() - 1){
+            mDrawerLayout.closeDrawer(mFragmentContainerView);
+            Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            startActivityForResult(intent, REQUEST_SETTINGS);
+            return;
+        }
+
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);

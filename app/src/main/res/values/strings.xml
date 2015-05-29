@@ -43,7 +43,7 @@
     <string name="fav_topic_ok">话题加入收藏</string>
     <string name="unfav_topic_ok">话题取消收藏</string>
 
-    <string name="title_activity_settings">设置</string>
+    <string name="title_activity_settings">偏好设置</string>
     <string name="settings_nomal">常规设置</string>
     <string name="settings_more">其他</string>
     <string name="settings_use_https">使用HTTPS</string>

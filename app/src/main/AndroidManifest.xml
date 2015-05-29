@@ -114,6 +114,11 @@
             android:label="@string/title_activity_topic_comment"
             android:parentActivityName=".ui.TopicActivity">
         </activity>
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.MainActivity">
+        </activity>
 
         <service
             android:name="com.umeng.update.net.DownloadingService"
