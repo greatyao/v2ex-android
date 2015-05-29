@@ -30,7 +30,6 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
     private EditText mUsername;
     private EditText mPassword;
     private Button mLogin;
-    private ProgressDialog mProgressDialog;
     private MemberModel mProfile;
 
     @Override
@@ -65,8 +64,7 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
     }
 
     private void login() {
-        mProgressDialog = ProgressDialog.show(LoginActivity.this, null,
-                getString(R.string.login_loging), true, true);
+        showProgressBar(true, getString(R.string.login_loging));
 
         V2EXManager.loginWithUsername(this,
                 mUsername.getText().toString(),
@@ -85,7 +83,7 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
                     @Override
                     public void onFailure(String error) {
                         MessageUtils.showErrorMessage(LoginActivity.this, error);
-                        mProgressDialog.dismiss();
+                       showProgressBar(false);
                     }
                 });
     }
@@ -94,14 +92,14 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
             new HttpRequestHandler<ArrayList<MemberModel>>() {
                 @Override
                 public void onSuccess(ArrayList<MemberModel> data) {
-                    mProgressDialog.dismiss();
+                    showProgressBar(false);
                     if (data.size() == 0) {
                         onFailure("");
                         return;
                     }
                     mProfile = data.get(0);
                     AccountUtils.writeLoginMember(LoginActivity.this, mProfile);
-                    mProgressDialog.dismiss();
+                    showProgressBar(false);
                     Intent intent = new Intent();
                     intent.putExtra("profile", (Parcelable) mProfile);
                     setResult(RESULT_OK, intent);
@@ -114,13 +112,13 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
 
                 @Override
                 public void onFailure(String error) {
-                    mProgressDialog.dismiss();
+                    showProgressBar(false);
                     MessageUtils.showErrorMessage(LoginActivity.this, error);
                 }
             };
 
     private void getProfile() {
-        mProgressDialog.setMessage(getString(R.string.login_obtain_profile));
+        showProgressBar(true, getString(R.string.login_obtain_profile));
         V2EXManager.getProfile(this, profileHandler);
     }
 
