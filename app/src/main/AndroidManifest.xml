@@ -119,6 +119,11 @@
             android:label="@string/title_activity_settings"
             android:parentActivityName=".ui.MainActivity">
         </activity>
+        <activity
+            android:name=".ui.AboutActivity"
+            android:label="@string/settings_about"
+            android:parentActivityName=".ui.SettingsActivity">
+        </activity>
 
         <service
             android:name="com.umeng.update.net.DownloadingService"

@@ -39,19 +39,8 @@
             android:summary="0KB"/>
 
         <Preference
-            android:key="pref_check_update"
-            android:title="@string/settings_check_update"
-            android:summary="@string/settings_check_update_summary"/>
-
-        <Preference
-            android:key="pref_feedback"
-            android:title="@string/settings_feedback"
-            android:summary="@string/settings_feedback_summary"/>
-
-        <Preference
             android:key="pref_about"
-            android:title="@string/settings_about"
-            android:summary="@string/settings_about_summary"/>
+            android:title="@string/settings_about" />
 
     </PreferenceCategory>
 

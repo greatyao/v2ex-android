@@ -4,6 +4,7 @@
     <string name="app_name">掌上V2EX</string>
     <string name="app_sub_name">发掘你的潜能</string>
     <string name="app_author">njustyw</string>
+    <string name="github_project">https://github.com/greatyao/v2ex-android</string>
 
     <string name="topic">话题</string>
     <string name="just_now">刚刚</string>
@@ -56,12 +57,8 @@
     <string name="settings_image_nowifi_summary">2G/3G网络下显示图片</string>
     <string name="settings_use_effect">列表滚动显示动画效果</string>
     <string name="settings_check_update">检查更新</string>
-    <string name="settings_check_update_summary">检测是否有新版本</string>
-    <string name="settings_feedback">意见反馈</string>
-    <string name="settings_feedback_summary">去软件市场上给个好评</string>
+    <string name="settings_feedback">给个好评</string>
     <string name="settings_about">关于我们</string>
-    <string name="settings_about_summary">关于我们、版权信息</string>
-    <string name="settings_aboutme_format">%1$s%2$s%3$sby %4$s</string>
 
     <string name="notification_message">没有任何提醒消息</string>
     <string name="notification_empty">无法显示提醒消息,请登录</string>
