@@ -286,6 +286,9 @@ public class V2EXManager {
     }
 
     private static AsyncHttpClient getClient(Context context, boolean mobile) {
+        if (context == null)
+            context = mApp.getBaseContext();
+
         if (sClient == null) {
             sClient = new AsyncHttpClient();
             sClient.setEnableRedirects(false);

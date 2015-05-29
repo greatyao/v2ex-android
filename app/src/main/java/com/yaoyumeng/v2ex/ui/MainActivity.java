@@ -159,9 +159,6 @@ public class MainActivity extends BaseActivity
                 }
                 fragmentTransaction.replace(R.id.container, mNotificationFragment).commit();
                 break;
-            case 6:
-                fragmentTransaction.replace(R.id.container, new SettingsFragment()).commit();
-                break;
         }
 
         if (position == 2) {

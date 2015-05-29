@@ -40,7 +40,7 @@
 
     <string-array name="v2ex_nav_main_titles">
         <item>最新话题</item>
-        <item>热门话题</item>
+        <item>今日热议</item>
         <item />
         <item>所有节点</item>
         <item>节点收藏</item>
