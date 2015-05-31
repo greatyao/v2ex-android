@@ -18,6 +18,7 @@ public enum V2EXErrorType {
     ErrorGetNotificationFailure,
     ErrorCreateNewFailure,
     ErrorFavNodeFailure,
+    ErrorCheckInFailure,
     ErrorFavTopicFailure,
     ErrorGetProfileFailure;
 
@@ -53,6 +54,9 @@ public enum V2EXErrorType {
 
             case ErrorGetProfileFailure:
                 return cxt.getResources().getString(R.string.error_get_profile);
+
+            case ErrorCheckInFailure:
+                return cxt.getResources().getString(R.string.error_check_in);
 
             default:
                 return cxt.getResources().getString(R.string.error_unknown);

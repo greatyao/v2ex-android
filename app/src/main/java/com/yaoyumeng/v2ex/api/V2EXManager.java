@@ -444,6 +444,69 @@ public class V2EXManager {
         return collections;
     }
 
+    private static String getRedeemURLFromResponse(String response){
+        Document doc = Jsoup.parse(response);
+        Elements elements = doc.getElementsByTag("input");
+        if(elements == null || elements.size() <= 0)
+            return "";
+
+        String url = elements.attr("onclick");
+        url = url.replace("location.href = '", "").replace("';","").trim();
+        return getBaseUrl() + url;
+    }
+
+    /**
+     * 每日签到
+     * @param ctx
+     * @param handler
+     */
+    public static void dailyCheckIn(final Context ctx,
+                                    final HttpRequestHandler<Integer> handler){
+        getClient(ctx, false).get(getBaseUrl() + "/mission/daily", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorCheckInFailure));
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseBody) {
+                String url = getRedeemURLFromResponse(responseBody);
+                if(url.isEmpty()){
+                    SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorCheckInFailure));
+                    return;
+                }
+
+                if(url.contains("/balance")){
+                    SafeHandler.onFailure(handler, "每日登录奖励已领取");
+                    return;
+                }
+
+                AsyncHttpClient client = getClient(ctx, false);
+                client.addHeader("Origin", getBaseUrl());
+                client.addHeader("Referer", url);
+                client.addHeader("Content-Type", "application/x-www-form-urlencoded");
+                client.get(url, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Log.i("onsuccess", new String(responseBody));
+                        String errorContent = getProblemFromHtmlResponse(ctx, new String(responseBody));
+                        SafeHandler.onFailure(handler, errorContent);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        if (statusCode == 302) {
+                            SafeHandler.onSuccess(handler, 200);
+                        } else {
+                            SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorCheckInFailure));
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+
     /**
      * 获取自己的收藏的节点
      *
