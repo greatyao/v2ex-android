@@ -260,23 +260,27 @@ public class NavigationDrawerFragment extends BaseFragment {
     }
 
     private void selectItem(int position) {
-        if(mDrawerListView != null && position > 0 &&
-                position == mDrawerListView.getAdapter().getCount() - 1){
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
-            Intent intent = new Intent(getActivity(), SettingsActivity.class);
-            startActivityForResult(intent, REQUEST_SETTINGS);
-            return;
-        }
+        try {
+            if (mDrawerListView != null && position > 0 &&
+                    position == mDrawerListView.getAdapter().getCount() - 1) {
+                mDrawerLayout.closeDrawer(mFragmentContainerView);
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                startActivityForResult(intent, REQUEST_SETTINGS);
+                return;
+            }
 
-        mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
-        }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
-        }
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
+            mCurrentSelectedPosition = position;
+            if (mDrawerListView != null) {
+                mDrawerListView.setItemChecked(position, true);
+            }
+            if (mCallbacks != null) {
+                mCallbacks.onNavigationDrawerItemSelected(position);
+            }
+            if (mDrawerLayout != null) {
+                mDrawerLayout.closeDrawer(mFragmentContainerView);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
