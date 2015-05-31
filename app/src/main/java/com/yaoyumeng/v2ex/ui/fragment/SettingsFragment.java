@@ -25,6 +25,7 @@ import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
+import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.ui.AboutActivity;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
@@ -42,6 +43,7 @@ public class SettingsFragment extends PreferenceFragment {
     SharedPreferences mPreferences;
     Preference mCache;
     Preference mAbout;
+    Preference mCheckIn;
     CheckBoxPreference mHttps;
     CheckBoxPreference mEffect;
     CheckBoxPreference mLoadimage;
@@ -75,7 +77,8 @@ public class SettingsFragment extends PreferenceFragment {
 
         //退出登录
         mLogout = (Button) localViewGroup.findViewById(R.id.setting_logout);
-        if (AccountUtils.isLogined(getActivity())) {
+        boolean isLogin = AccountUtils.isLogined(getActivity());
+        if (isLogin) {
             mLogout.setVisibility(View.VISIBLE);
         } else {
             mLogout.setVisibility(View.GONE);
@@ -151,6 +154,16 @@ public class SettingsFragment extends PreferenceFragment {
             }
         });
 
+        //签到
+        mCheckIn = (Preference) findPreference("pref_check_in");
+        mCheckIn.setEnabled(isLogin);
+        mCheckIn.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                checkIn();
+                return true;
+            }
+        });
+
         // 关于我们
         mAbout = (Preference) findPreference("pref_about");
         mAbout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -164,5 +177,24 @@ public class SettingsFragment extends PreferenceFragment {
     private void showAboutMe() {
         Intent intent = new Intent(getActivity(), AboutActivity.class);
         startActivity(intent);
+    }
+
+    private void checkIn(){
+        V2EXManager.dailyCheckIn(getActivity(), new HttpRequestHandler<Integer>() {
+            @Override
+            public void onSuccess(Integer data) {
+                MessageUtils.showMiddleToast(getActivity(), "签到成功");
+            }
+
+            @Override
+            public void onSuccess(Integer data, int totalPages, int currentPage) {
+
+            }
+
+            @Override
+            public void onFailure(String error) {
+                MessageUtils.showMiddleToast(getActivity(), error);
+            }
+        });
     }
 }

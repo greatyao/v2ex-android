@@ -53,6 +53,7 @@
     <string name="settings_use_jsonapi_summary">使用JsonAPI访问，访问次数有限制</string>
     <string name="settings_use_browser_summary">模拟浏览器访问，访问次数无限制</string>
     <string name="settings_clear_cache">清除缓存</string>
+    <string name="settings_check_in">每日签到</string>
     <string name="settings_noimage_nowifi">无图模式</string>
     <string name="settings_noimage_nowifi_summary">2G/3G网络下不显示图片</string>
     <string name="settings_image_nowifi_summary">2G/3G网络下显示图片</string>

@@ -488,7 +488,6 @@ public class V2EXManager {
                 client.get(url, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Log.i("onsuccess", new String(responseBody));
                         String errorContent = getProblemFromHtmlResponse(ctx, new String(responseBody));
                         SafeHandler.onFailure(handler, errorContent);
                     }

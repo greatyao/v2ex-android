@@ -39,6 +39,10 @@
             android:summary="0KB"/>
 
         <Preference
+            android:key="pref_check_in"
+            android:title="@string/settings_check_in" />
+
+        <Preference
             android:key="pref_about"
             android:title="@string/settings_about" />
 
