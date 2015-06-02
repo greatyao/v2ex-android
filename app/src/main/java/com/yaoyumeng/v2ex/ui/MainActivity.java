@@ -4,11 +4,8 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,6 +19,7 @@ import com.yaoyumeng.v2ex.ui.fragment.AllNodesFragment;
 import com.yaoyumeng.v2ex.ui.fragment.FavNodesFragment;
 import com.yaoyumeng.v2ex.ui.fragment.NavigationDrawerFragment;
 import com.yaoyumeng.v2ex.ui.fragment.NotificationFragment;
+import com.yaoyumeng.v2ex.ui.fragment.SettingsFragment;
 import com.yaoyumeng.v2ex.ui.fragment.TopicsFragment;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
@@ -29,24 +27,25 @@ import com.yaoyumeng.v2ex.utils.MessageUtils;
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    int mSelectPos = 0;
     private SpinnerAdapter mSpinnerAdapter;
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private DrawerLayout mDrawerLayout;
+    private ViewGroup mDrawerLayout;
     private View mActionbarCustom;
+
     private TopicsFragment mNewestTopicsFragment;
     private TopicsFragment mHotTopicsFragment;
     private AllNodesFragment mAllNodesFragment;
     private FavNodesFragment mFavNodesFragment;
     private NotificationFragment mNotificationFragment;
+
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
     private String[] mFavoriteTabTitles;
     private String[] mFavoriteTabPaths;
     private String[] mMainTitles;
-    private long exitTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,35 +55,9 @@ public class MainActivity extends BaseActivity
         UmengUpdateAgent.update(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        //使用系统自带的DrawerLayout来控制相关动画
-        //Added by Jimmy Xue at 2015-6-2
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                invalidateOptionsMenu();
-                syncState();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                invalidateOptionsMenu();
-                syncState();
-            }
-        };
-
-        mDrawerLayout.setDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-
-        //这个方法要放在setDrawerListener之后才有效。
-        //Added by Jimmy Xue at 2015-6-2
         setSupportActionBar(toolbar);
 
-
+        mDrawerLayout = (ViewGroup) findViewById(R.id.drawer_layout);
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.left_drawer);
         mTitle = getTitle();
@@ -122,9 +95,9 @@ public class MainActivity extends BaseActivity
         });
 
         // Set up the drawer.
-//        mNavigationDrawerFragment.setUp(
-//                R.id.left_drawer,
-//                (DrawerLayout) findViewById(R.id.drawer_layout));
+        mNavigationDrawerFragment.setUp(
+                R.id.left_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
 
         //ActionBar actionBar = getSupportActionBar();
         //actionBar.setDisplayHomeAsUpEnabled(true);
@@ -134,10 +107,11 @@ public class MainActivity extends BaseActivity
         if (mIsLogin) initAccount();
     }
 
+    int mSelectPos = 0;
+
     @Override
     public void onNavigationDrawerItemSelected(final int position) {
         mSelectPos = position;
-        mDrawerLayout.closeDrawers();
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -231,6 +205,8 @@ public class MainActivity extends BaseActivity
         return super.onCreateOptionsMenu(menu);
     }
 
+    private long exitTime = 0;
+
     @Override
     public void onBackPressed() {
         if (mNavigationDrawerFragment.isDrawerOpen()) {
@@ -258,30 +234,5 @@ public class MainActivity extends BaseActivity
             }
         });
 
-    }
-
-    /**
-     * 将相应的事件从NavigationDrawerFragment中移出来，从而解决动画无法使用的问题
-     * @param item
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            if (isDrawerStatus()) {
-                mDrawerLayout.closeDrawers();
-            } else {
-                mDrawerLayout.openDrawer(Gravity.LEFT);
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * 判断当前DrawerLayout的状态
-     * @return
-     */
-    private boolean isDrawerStatus() {
-        return mDrawerLayout.isDrawerOpen(Gravity.LEFT);
     }
 }
