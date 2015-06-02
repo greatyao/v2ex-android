@@ -58,6 +58,7 @@ public class MainActivity extends BaseActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
 
         //使用系统自带的DrawerLayout来控制相关动画
         //Added by Jimmy Xue at 2015-6-2
@@ -88,6 +89,8 @@ public class MainActivity extends BaseActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.left_drawer);
+
+        mNavigationDrawerFragment.setDrawerLayout(mDrawerLayout);
         mTitle = getTitle();
 
         mFavoriteTabTitles = getResources().getStringArray(R.array.v2ex_favorite_tab_titles);
@@ -138,6 +141,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void onNavigationDrawerItemSelected(final int position) {
         mSelectPos = position;
+
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -191,6 +195,8 @@ public class MainActivity extends BaseActivity
             onSpinnerSelected();
             return;
         }
+
+        mDrawerLayout.closeDrawers();
     }
 
     private void onSpinnerSelected() {
@@ -233,10 +239,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (mNavigationDrawerFragment.isDrawerOpen()) {
-            mNavigationDrawerFragment.closeDrawer();
-            return;
-        }
+        mDrawerLayout.closeDrawers();
 
         if ((System.currentTimeMillis() - exitTime) > 2000) {
             Toast.makeText(this, "再按一次退出V2EX", Toast.LENGTH_LONG).show();

@@ -61,7 +61,7 @@ public class NavigationDrawerFragment extends BaseFragment {
      */
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private DrawerLayout mDrawerLayout;
+//    private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
     private RelativeLayout mProfileLayout;
@@ -170,12 +170,12 @@ public class NavigationDrawerFragment extends BaseFragment {
     }
 
     public boolean isDrawerOpen() {
-        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.LEFT);
     }
-
-    public void closeDrawer() {
-        mDrawerLayout.closeDrawer(Gravity.LEFT);
-    }
+//
+//    public void closeDrawer() {
+//        mDrawerLayout.closeDrawer(Gravity.LEFT);
+//    }
 
     public ActionBarActivity getActionBarActivity() {
         return (ActionBarActivity) getActivity();
@@ -192,7 +192,7 @@ public class NavigationDrawerFragment extends BaseFragment {
         mDrawerLayout = drawerLayout;
 
         // set a custom shadow that overlays the main content when the drawer opens
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
+//        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
         // set up the drawer's list view with items and click listener
 
         android.support.v7.app.ActionBar actionBar = getActionBarActivity().getSupportActionBar();
@@ -258,6 +258,11 @@ public class NavigationDrawerFragment extends BaseFragment {
         mDrawerToggle.syncState();
     }
 
+    private DrawerLayout mDrawerLayout;
+    public void setDrawerLayout(DrawerLayout drawerLayout) {
+        mDrawerLayout = drawerLayout;
+    }
+
     public int getCurrentSelectedPosition() {
         return mCurrentSelectedPosition;
     }
@@ -266,7 +271,8 @@ public class NavigationDrawerFragment extends BaseFragment {
         try {
             if (mDrawerListView != null && position > 0 &&
                     position == mDrawerListView.getAdapter().getCount() - 1) {
-                mDrawerLayout.closeDrawer(mFragmentContainerView);
+//                mDrawerLayout.closeDrawer(mFragmentContainerView);
+                mDrawerLayout.closeDrawers();
                 Intent intent = new Intent(getActivity(), SettingsActivity.class);
                 startActivityForResult(intent, REQUEST_SETTINGS);
                 return;
@@ -280,7 +286,8 @@ public class NavigationDrawerFragment extends BaseFragment {
                 mCallbacks.onNavigationDrawerItemSelected(position);
             }
             if (mDrawerLayout != null) {
-                mDrawerLayout.closeDrawer(mFragmentContainerView);
+//                mDrawerLayout.closeDrawer(mFragmentContainerView);
+                mDrawerLayout.closeDrawers();
             }
         } catch (Exception e){
             e.printStackTrace();
