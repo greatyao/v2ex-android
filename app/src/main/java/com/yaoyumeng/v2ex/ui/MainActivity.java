@@ -78,11 +78,12 @@ public class MainActivity extends BaseActivity
         };
 
         mDrawerLayout.setDrawerListener(drawerToggle);
-        drawerToggle.syncState();
+
 
         //这个方法要放在setDrawerListener之后才有效。
         //Added by Jimmy Xue at 2015-6-2
         setSupportActionBar(toolbar);
+        drawerToggle.syncState();
 
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -137,12 +138,11 @@ public class MainActivity extends BaseActivity
     @Override
     public void onNavigationDrawerItemSelected(final int position) {
         mSelectPos = position;
-        mDrawerLayout.closeDrawers();
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         switch (position) {
-            case 0:
+            default:
                 if (mNewestTopicsFragment == null) {
                     mNewestTopicsFragment = new TopicsFragment();
                     Bundle bundle = new Bundle();
