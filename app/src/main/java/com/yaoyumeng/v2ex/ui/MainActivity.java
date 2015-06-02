@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         switch (position) {
-            default:
+            case 0:
                 if (mNewestTopicsFragment == null) {
                     mNewestTopicsFragment = new TopicsFragment();
                     Bundle bundle = new Bundle();
