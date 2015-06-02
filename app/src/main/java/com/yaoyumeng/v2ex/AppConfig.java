@@ -22,7 +22,7 @@ public class AppConfig {
 
     public final static String CONF_NOIMAGE_NOWIFI = "perf_noimage_nowif";
     public final static String CONF_USE_HTTPS = "perf_https";
-    public final static String CONF_EFFECT= "perf_effect";
+    public final static String CONF_EFFECT= "perf_list_effect";
     public final static String CONF_JSONAPI = "perf_jsonapi";
 
     private Context mContext;

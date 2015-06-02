@@ -138,9 +138,9 @@ public class Application extends android.app.Application {
      */
     public boolean isShowEffect() {
         String perf_effect = getProperty(AppConfig.CONF_EFFECT);
-        //默认是开启动画效果
+        //默认是关闭动画效果
         if (perf_effect == null || perf_effect.isEmpty())
-            return true;
+            return false;
         else
             return Boolean.parseBoolean(perf_effect);
     }
