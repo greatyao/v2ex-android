@@ -2,6 +2,7 @@ package com.yaoyumeng.v2ex.api;
 
 import android.content.Context;
 
+import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.utils.NetWorkHelper;
 
@@ -23,6 +24,8 @@ public enum V2EXErrorType {
     ErrorGetProfileFailure;
 
     public static String errorMessage(Context cxt, V2EXErrorType type) {
+        if(cxt == null)
+            cxt = Application.getContext();
         boolean isNetAvailable = NetWorkHelper.isNetAvailable(cxt);
         if (!isNetAvailable)
             return cxt.getResources().getString(R.string.error_network_disconnect);

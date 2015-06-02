@@ -323,9 +323,13 @@ public class TopicFragment extends BaseFragment
     }
 
     private void share() {
-        ShareHelper helper = new ShareHelper(getActivity());
-        helper.setContent(getString(R.string.app_name), mTopic.title, V2EXManager.getBaseUrl() + "/t/" + mTopicId);
-        helper.handleShare();
+        try {
+            ShareHelper helper = new ShareHelper(getActivity());
+            helper.setContent(getString(R.string.app_name), mTopic.title, V2EXManager.getBaseUrl() + "/t/" + mTopicId);
+            helper.handleShare();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //回复话题作者
@@ -343,7 +347,7 @@ public class TopicFragment extends BaseFragment
     /**
      * 请求更多的回复 (翻页)
      */
-    private void requestRepliesOfNextPage(){
+    private void requestRepliesOfNextPage() {
         V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage + 1, true, new RequestTopicAndReplyListHelper(true));
     }
 
@@ -419,13 +423,13 @@ public class TopicFragment extends BaseFragment
                 mTopic = data.topic;
                 mTopicId = mTopic.id;
 
-                if(mPage == 1) setupHeaderView();
+                if (mPage == 1) setupHeaderView();
 
                 prepareAddComment(mTopic, false);
             }
 
             if (data.replies != null) {
-                if(mPage == 1)
+                if (mPage == 1)
                     mAdapter.update(data.replies);
                 else
                     mAdapter.insert(data.replies);
