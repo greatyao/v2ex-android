@@ -216,7 +216,6 @@ public class NavigationDrawerFragment extends BaseFragment {
                 }
 
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-                syncState();
             }
 
             @Override
@@ -236,7 +235,6 @@ public class NavigationDrawerFragment extends BaseFragment {
                 }
 
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-                syncState();
             }
         };
 
@@ -255,7 +253,6 @@ public class NavigationDrawerFragment extends BaseFragment {
         });
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerToggle.syncState();
     }
 
     public int getCurrentSelectedPosition() {
@@ -326,14 +323,14 @@ public class NavigationDrawerFragment extends BaseFragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (mDrawerToggle.onOptionsItemSelected(item)) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * Per the navigation drawer design guidelines, updates the action bar to show the global app
