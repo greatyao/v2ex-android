@@ -14,6 +14,7 @@ import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.NotificationModel;
+import com.yaoyumeng.v2ex.model.AsyncTaskWithCallback;
 import com.yaoyumeng.v2ex.model.PersistenceHelper;
 import com.yaoyumeng.v2ex.model.ReplyModel;
 import com.yaoyumeng.v2ex.model.TopicListModel;
@@ -243,10 +244,19 @@ public class V2EXManager {
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseBody) {
-                TopicWithReplyListModel model = new TopicWithReplyListModel();
-                model.parse(responseBody, page == 1, topicId);
-                SafeHandler.onSuccess(handler, model, model.totalPage, model.currentPage);
+            public void onSuccess(int statusCode, Header[] headers, final String responseBody) {
+                final TopicWithReplyListModel model = new TopicWithReplyListModel();
+                new AsyncTaskWithCallback(new Runnable() {
+                    @Override
+                    public void run() {
+                        model.parse(responseBody, page==1, topicId);
+                    }
+                }, new AsyncTaskWithCallback.Callback() {
+                    @Override
+                    public void onFinish() {
+                        SafeHandler.onSuccess(handler,model,model.totalPage,model.currentPage);
+                    }
+                }).execute();
             }
         });
     }
