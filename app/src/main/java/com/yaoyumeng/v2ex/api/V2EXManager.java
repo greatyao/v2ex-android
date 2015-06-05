@@ -2,6 +2,7 @@ package com.yaoyumeng.v2ex.api;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -243,10 +244,19 @@ public class V2EXManager {
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseBody) {
-                TopicWithReplyListModel model = new TopicWithReplyListModel();
-                model.parse(responseBody, page == 1, topicId);
-                SafeHandler.onSuccess(handler, model, model.totalPage, model.currentPage);
+            public void onSuccess(int statusCode, Header[] headers, final String responseBody) {
+                final TopicWithReplyListModel model = new TopicWithReplyListModel();
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        model.parse(responseBody, page==1, topicId);
+                        return null;
+                    }
+                    @Override
+                    protected void onPostExecute(Void o) {
+                        SafeHandler.onSuccess(handler, model, model.totalPage, model.currentPage);
+                    }
+                }.execute();
             }
         });
     }
