@@ -16,6 +16,7 @@ public enum V2EXErrorType {
     ErrorLoginFailure,
     ErrorCommentFailure,
     ErrorGetTopicListFailure,
+    ErrorGetTopicDetailsFailure,
     ErrorGetNotificationFailure,
     ErrorCreateNewFailure,
     ErrorFavNodeFailure,
@@ -51,6 +52,13 @@ public enum V2EXErrorType {
 
             case ErrorFavNodeFailure:
                 return cxt.getResources().getString(R.string.error_fav_nodes);
+
+
+            case ErrorGetTopicListFailure:
+                return  cxt.getResources().getString(R.string.error_get_topic_list);
+
+            case ErrorGetTopicDetailsFailure:
+                return  cxt.getResources().getString(R.string.error_get_topic_details);
 
             case ErrorFavTopicFailure:
                 return cxt.getResources().getString(R.string.error_fav_topic);
