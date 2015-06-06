@@ -27,7 +27,7 @@ public class TopicWithReplyListModel extends V2EXModel {
 
     }
 
-    public void parse(String responseBody, boolean parseTopic, int id) {
+    public void parse(String responseBody, boolean parseTopic, int id) throws Exception {
         Document doc = Jsoup.parse(responseBody);
         Element body = doc.body();
 
@@ -74,7 +74,7 @@ public class TopicWithReplyListModel extends V2EXModel {
                     int p = Integer.parseInt(stringArray[1]);
                     if (totalPage < p)
                         totalPage = p;
-                } catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }

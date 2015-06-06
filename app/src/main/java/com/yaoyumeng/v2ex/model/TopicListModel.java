@@ -7,7 +7,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +36,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
         }
     }
 
-    public void parseFromNodeEntry(String responseBody, String nodeName) {
+    public void parseFromNodeEntry(String responseBody, String nodeName) throws Exception {
         Document doc = Jsoup.parse(responseBody);
         String title = doc.title();
         title = title.replace("V2EX ›", "").trim();
@@ -140,7 +139,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
                                 created = date.getTime() / 1000;
                                 topic.created = created;
                                 break;
-                            } catch (Exception e){
+                            } catch (Exception e) {
                             }
 
                             int how = Integer.parseInt(stringArray[0]);
