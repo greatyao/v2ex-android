@@ -14,6 +14,7 @@ import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NodeModel;
+import com.yaoyumeng.v2ex.model.NotificationListModel;
 import com.yaoyumeng.v2ex.model.NotificationModel;
 import com.yaoyumeng.v2ex.model.PersistenceHelper;
 import com.yaoyumeng.v2ex.model.ReplyModel;
@@ -82,7 +83,7 @@ public class V2EXManager {
     public static void getTopicsByNodeName(Context ctx, final String nodeName,
                                            int page, boolean refresh,
                                            final HttpRequestHandler<ArrayList<TopicModel>> handler) {
-        if(mApp.isJsonAPIFromCache())
+        if (mApp.isJsonAPIFromCache())
             getTopics(ctx, getBaseAPIUrl() + API_TOPIC + "?node_name=" + nodeName, refresh, handler);
         else
             getNodeTopicsFromBrowser(ctx, nodeName, page, refresh, handler);
@@ -151,7 +152,7 @@ public class V2EXManager {
      * @param refresh
      * @param handler
      */
-    public static void getCategoryTopics(final Context ctx, String urlString, boolean refresh,
+    public static void getCategoryTopics(final Context ctx, final String urlString, boolean refresh,
                                          final HttpRequestHandler<ArrayList<TopicModel>> handler) {
         final String key = Uri.parse(urlString).getEncodedQuery();
         if (!refresh) {
@@ -173,12 +174,22 @@ public class V2EXManager {
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseBody) {
-                TopicListModel topics = new TopicListModel();
-                topics.parse(responseBody);
-                if (topics.size() > 0)
-                    PersistenceHelper.saveModelList(ctx, topics, key);
-                SafeHandler.onSuccess(handler, topics);
+            public void onSuccess(int statusCode, Header[] headers, final String responseBody) {
+                new AsyncTask<Void, Void, TopicListModel>(){
+                    @Override
+                    protected TopicListModel doInBackground(Void... params){
+                        TopicListModel topics = new TopicListModel();
+                        topics.parse(responseBody);
+                        if (topics.size() > 0)
+                            PersistenceHelper.saveModelList(ctx, topics, key);
+                        return topics;
+                    }
+
+                    @Override
+                    protected void onPostExecute(TopicListModel topics) {
+                        SafeHandler.onSuccess(handler, topics);
+                    }
+                }.execute();
             }
         });
     }
@@ -205,10 +216,27 @@ public class V2EXManager {
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseBody) {
-                TopicListModel topics = new TopicListModel();
-                topics.parseFromNodeEntry(responseBody, nodeName);
-                SafeHandler.onSuccess(handler, topics, topics.getTotalPage(), topics.getCurrentPage());
+            public void onSuccess(int statusCode, Header[] headers, final String responseBody) {
+                new AsyncTask<Void, Void, TopicListModel>() {
+                    @Override
+                    protected TopicListModel doInBackground(Void... params){
+                        TopicListModel topics = new TopicListModel();
+                        try {
+                            topics.parseFromNodeEntry(responseBody, nodeName);
+                            return topics;
+                        } catch ( Exception e){
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    protected void onPostExecute(TopicListModel topics) {
+                        if(topics != null)
+                            SafeHandler.onSuccess(handler, topics, topics.getTotalPage(), topics.getCurrentPage());
+                        else
+                            SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorGetTopicListFailure));
+                    }
+                }.execute();
             }
         });
     }
@@ -232,7 +260,7 @@ public class V2EXManager {
 
     public static void getTopicAndRepliesByTopicId(final Context ctx, final int topicId, final int page,
                                                    boolean refresh,
-                                                   final HttpRequestHandler<TopicWithReplyListModel> handler){
+                                                   final HttpRequestHandler<TopicWithReplyListModel> handler) {
         String urlString = String.format("%s/t/%d?p=%d", getBaseUrl(), topicId, page);
         final AsyncHttpClient client = getClient(ctx, false);
         client.addHeader("Referer", getBaseUrl());
@@ -240,21 +268,29 @@ public class V2EXManager {
         client.get(urlString, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorGetTopicListFailure));
+                SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorGetTopicDetailsFailure));
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, final String responseBody) {
-                final TopicWithReplyListModel model = new TopicWithReplyListModel();
-                new AsyncTask<Void, Void, Void>() {
+                new AsyncTask<Void, Void, TopicWithReplyListModel>() {
                     @Override
-                    protected Void doInBackground(Void... params) {
-                        model.parse(responseBody, page==1, topicId);
-                        return null;
+                    protected TopicWithReplyListModel doInBackground(Void... params) {
+                        TopicWithReplyListModel model = new TopicWithReplyListModel();
+                        try {
+                            model.parse(responseBody, page == 1, topicId);
+                        } catch (Exception e) {
+                            return null;
+                        }
+                        return model;
                     }
+
                     @Override
-                    protected void onPostExecute(Void o) {
-                        SafeHandler.onSuccess(handler, model, model.totalPage, model.currentPage);
+                    protected void onPostExecute(TopicWithReplyListModel m) {
+                        if (m != null)
+                            SafeHandler.onSuccess(handler, m, m.totalPage, m.currentPage);
+                        else
+                            SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorGetTopicDetailsFailure));
                     }
                 }.execute();
             }
@@ -454,24 +490,25 @@ public class V2EXManager {
         return collections;
     }
 
-    private static String getRedeemURLFromResponse(String response){
+    private static String getRedeemURLFromResponse(String response) {
         Document doc = Jsoup.parse(response);
         Elements elements = doc.getElementsByTag("input");
-        if(elements == null || elements.size() <= 0)
+        if (elements == null || elements.size() <= 0)
             return "";
 
         String url = elements.attr("onclick");
-        url = url.replace("location.href = '", "").replace("';","").trim();
+        url = url.replace("location.href = '", "").replace("';", "").trim();
         return getBaseUrl() + url;
     }
 
     /**
      * 每日签到
+     *
      * @param ctx
      * @param handler
      */
     public static void dailyCheckIn(final Context ctx,
-                                    final HttpRequestHandler<Integer> handler){
+                                    final HttpRequestHandler<Integer> handler) {
         getClient(ctx, false).get(getBaseUrl() + "/mission/daily", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -481,12 +518,12 @@ public class V2EXManager {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseBody) {
                 String url = getRedeemURLFromResponse(responseBody);
-                if(url.isEmpty()){
+                if (url.isEmpty()) {
                     SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorCheckInFailure));
                     return;
                 }
 
-                if(url.contains("/balance")){
+                if (url.contains("/balance")) {
                     SafeHandler.onFailure(handler, "每日登录奖励已领取");
                     return;
                 }
@@ -820,39 +857,31 @@ public class V2EXManager {
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseBody) {
-                ArrayList<NotificationModel> notifications = new ArrayList<NotificationModel>();
-                Document doc = Jsoup.parse(responseBody);
-                Element body = doc.body();
-                Elements elements = body.getElementsByAttributeValue("class", "cell");
-                for (Element el : elements) {
-                    NotificationModel notification = new NotificationModel();
-                    if (notification.parse(el))
-                        notifications.add(notification);
-                }
-
-                elements = body.getElementsByAttributeValue("class", "inner");
-                int total = 1, current = 1;
-                for (Element el : elements) {
-                    Elements tds = el.getElementsByTag("td");
-                    if (tds.size() != 3) continue;
-
-                    String pageString = el.getElementsByAttributeValue("align", "center").text();
-                    String[] arrayString = pageString.split("/");
-                    if (arrayString.length != 2) continue;
-
-                    try {
-                        total = Integer.parseInt(arrayString[1]);
-                        current = Integer.parseInt(arrayString[0]);
-                    } catch (Exception e) {
+            public void onSuccess(int statusCode, Header[] headers, final String responseBody) {
+                new AsyncTask<Void, Void, NotificationListModel>(){
+                    @Override
+                    protected NotificationListModel doInBackground(Void... params){
+                        NotificationListModel notifications = new NotificationListModel();
+                        try{
+                            notifications.parse(responseBody);
+                            return notifications;
+                        } catch (Exception e){
+                            return null;
+                        }
                     }
-                    break;
-                }
-                SafeHandler.onSuccess(handler, notifications, total, current);
+
+                    @Override
+                    protected void onPostExecute(NotificationListModel notifies){
+                        if(notifies != null)
+                            SafeHandler.onSuccess(handler, notifies, notifies.totalPage, notifies.currentPage);
+                        else
+                            SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(context, V2EXErrorType.ErrorGetNotificationFailure));
+
+                    }
+                }.execute();
             }
         });
     }
-
 
     /**
      * 退出登录

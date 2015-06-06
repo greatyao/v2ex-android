@@ -258,20 +258,13 @@ public class TopicFragment extends BaseFragment
         }
     }
 
-    Handler mHandler = new Handler();
-
     //获取该话题下的所有回复
     private void getReplyData(final boolean refresh) {
         //prepareAddComment(mTopic, false);
         if (Application.getInstance().isJsonAPIFromCache())
             V2EXManager.getRepliesByTopicId(getActivity(), mTopicId, refresh, this);
         else
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage, refresh, new RequestTopicAndReplyListHelper(refresh));
-                }
-            }, 1000);
+           V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage, refresh, new RequestTopicAndReplyListHelper(refresh));
     }
 
     //获取该话题内容和其所有回复
@@ -281,12 +274,7 @@ public class TopicFragment extends BaseFragment
         if (mApp.isJsonAPIFromCache())
             V2EXManager.getTopicByTopicId(getActivity(), mTopicId, refresh, new RequestTopicHelper(refresh));
         else
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage, refresh, new RequestTopicAndReplyListHelper(refresh));
-                }
-            }, 1000);
+            V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage, refresh, new RequestTopicAndReplyListHelper(refresh));
     }
 
     private void favTopic() {
