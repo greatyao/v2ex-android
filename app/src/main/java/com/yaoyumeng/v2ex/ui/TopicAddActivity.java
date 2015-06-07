@@ -44,7 +44,7 @@ public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHa
 
         Intent intent = getIntent();
         if (intent.hasExtra("model")) {
-            mNode = (NodeModel) intent.getParcelableExtra("model");
+            mNode = intent.getParcelableExtra("model");
             mNodeName = mNode.name;
         } else {
             mNodeName = intent.getStringExtra("node_name");

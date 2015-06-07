@@ -252,7 +252,7 @@ public class TopicFragment extends BaseFragment
             if (resultCode == Activity.RESULT_OK || data != null) {
                 MessageUtils.showMiddleToast(getActivity(),
                         getActivity().getString(R.string.topic_comment_succeed));
-                ReplyModel reply = (ReplyModel) data.getParcelableExtra("reply_result");
+                ReplyModel reply = data.getParcelableExtra("reply_result");
                 mAdapter.insert(reply);
             }
         }

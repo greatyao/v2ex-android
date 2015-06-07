@@ -44,7 +44,7 @@ public class UserActivity extends SwipeBackActivity {
                 setTitle(mUsername);
             } else {
                 if (intent.hasExtra("model")) {
-                    mMember = (MemberModel) intent.getParcelableExtra("model");
+                    mMember = intent.getParcelableExtra("model");
                     mUsername = mMember.username;
                     setTitle(mUsername);
                 } else {

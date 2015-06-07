@@ -46,9 +46,9 @@ public class TopicActivity extends SwipeBackActivity {
                 bundle.putInt("topic_id", mTopicId);
             } else {
                 if (intent.hasExtra("model")) {
-                    mTopic = (TopicModel) intent.getParcelableExtra("model");
+                    mTopic = intent.getParcelableExtra("model");
                     mTopicId = mTopic.id;
-                    bundle.putParcelable("model", (Parcelable) mTopic);
+                    bundle.putParcelable("model", mTopic);
                 } else {
                     mTopicId = intent.getIntExtra("topic_id", 0);
                     bundle.putInt("topic_id", mTopicId);

@@ -20,7 +20,7 @@ public class PinyinAlpha {
                 firstChar -= 32;
             }
             if (firstChar >= 65 && firstChar <= 90) {
-                first = String.valueOf((char) firstChar);
+                first = String.valueOf(firstChar);
             } else {
                 // 认为首字符为数字或者特殊字符
                 first = "#";

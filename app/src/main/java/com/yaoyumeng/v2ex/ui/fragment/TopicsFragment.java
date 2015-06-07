@@ -157,7 +157,7 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
             mNodeId = args.getInt("node_id");
             requestTopicsById(false);
         } else if (args.containsKey("model")) {
-            mNode = (NodeModel) args.getParcelable("model");
+            mNode = args.getParcelable("model");
             mNodeId = mNode.id;
             mNodeName = mNode.name;
             requestTopicsById(false);
@@ -173,7 +173,7 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_ADD_TOPIC) {
             if (resultCode == Activity.RESULT_OK || data != null) {
-                final TopicModel topic = (TopicModel) data.getParcelableExtra("create_result");
+                final TopicModel topic = data.getParcelableExtra("create_result");
                 mAdapter.update(new ArrayList<TopicModel>() {{
                     add(topic);
                 }}, true);
