@@ -23,7 +23,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
     private int mPage = 1;
     private int mTotalPage = 1;
 
-    public void parse(String responseBody) {
+    public void parse(String responseBody) throws Exception {
         Document doc = Jsoup.parse(responseBody);
         Element body = doc.body();
         Elements elements = body.getElementsByAttributeValue("class", "cell item");

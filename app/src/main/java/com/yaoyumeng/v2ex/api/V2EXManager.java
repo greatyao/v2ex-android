@@ -25,7 +25,6 @@ import com.yaoyumeng.v2ex.model.TopicWithReplyListModel;
 import org.apache.http.Header;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -175,19 +174,26 @@ public class V2EXManager {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, final String responseBody) {
-                new AsyncTask<Void, Void, TopicListModel>(){
+                new AsyncTask<Void, Void, TopicListModel>() {
                     @Override
-                    protected TopicListModel doInBackground(Void... params){
+                    protected TopicListModel doInBackground(Void... params) {
                         TopicListModel topics = new TopicListModel();
-                        topics.parse(responseBody);
-                        if (topics.size() > 0)
-                            PersistenceHelper.saveModelList(ctx, topics, key);
-                        return topics;
+                        try {
+                            topics.parse(responseBody);
+                            if (topics.size() > 0)
+                                PersistenceHelper.saveModelList(ctx, topics, key);
+                            return topics;
+                        } catch (Exception e) {
+                            return null;
+                        }
                     }
 
                     @Override
                     protected void onPostExecute(TopicListModel topics) {
-                        SafeHandler.onSuccess(handler, topics);
+                        if (topics != null)
+                            SafeHandler.onSuccess(handler, topics);
+                        else
+                            SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorGetTopicListFailure));
                     }
                 }.execute();
             }
@@ -219,19 +225,19 @@ public class V2EXManager {
             public void onSuccess(int statusCode, Header[] headers, final String responseBody) {
                 new AsyncTask<Void, Void, TopicListModel>() {
                     @Override
-                    protected TopicListModel doInBackground(Void... params){
+                    protected TopicListModel doInBackground(Void... params) {
                         TopicListModel topics = new TopicListModel();
                         try {
                             topics.parseFromNodeEntry(responseBody, nodeName);
                             return topics;
-                        } catch ( Exception e){
+                        } catch (Exception e) {
                             return null;
                         }
                     }
 
                     @Override
                     protected void onPostExecute(TopicListModel topics) {
-                        if(topics != null)
+                        if (topics != null)
                             SafeHandler.onSuccess(handler, topics, topics.getTotalPage(), topics.getCurrentPage());
                         else
                             SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorGetTopicListFailure));
@@ -858,21 +864,21 @@ public class V2EXManager {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, final String responseBody) {
-                new AsyncTask<Void, Void, NotificationListModel>(){
+                new AsyncTask<Void, Void, NotificationListModel>() {
                     @Override
-                    protected NotificationListModel doInBackground(Void... params){
+                    protected NotificationListModel doInBackground(Void... params) {
                         NotificationListModel notifications = new NotificationListModel();
-                        try{
+                        try {
                             notifications.parse(responseBody);
                             return notifications;
-                        } catch (Exception e){
+                        } catch (Exception e) {
                             return null;
                         }
                     }
 
                     @Override
-                    protected void onPostExecute(NotificationListModel notifies){
-                        if(notifies != null)
+                    protected void onPostExecute(NotificationListModel notifies) {
+                        if (notifies != null)
                             SafeHandler.onSuccess(handler, notifies, notifies.totalPage, notifies.currentPage);
                         else
                             SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(context, V2EXErrorType.ErrorGetNotificationFailure));
