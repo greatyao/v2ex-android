@@ -4,8 +4,6 @@ import com.yaoyumeng.v2ex.model.NodeModel;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 
-import org.json.JSONObject;
-
 import java.util.Comparator;
 
 /**

@@ -19,7 +19,6 @@ import com.yaoyumeng.v2ex.ui.fragment.AllNodesFragment;
 import com.yaoyumeng.v2ex.ui.fragment.FavNodesFragment;
 import com.yaoyumeng.v2ex.ui.fragment.NavigationDrawerFragment;
 import com.yaoyumeng.v2ex.ui.fragment.NotificationFragment;
-import com.yaoyumeng.v2ex.ui.fragment.SettingsFragment;
 import com.yaoyumeng.v2ex.ui.fragment.TopicsFragment;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;

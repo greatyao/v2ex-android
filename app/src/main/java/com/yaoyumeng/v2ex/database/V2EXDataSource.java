@@ -1,14 +1,13 @@
 package com.yaoyumeng.v2ex.database;
 
-import java.util.ArrayList;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
+
+import java.util.ArrayList;
 
 /**
  * 类说明： 话题已读/未读,收藏/未收藏数据表，数据库帮助类
@@ -24,9 +23,9 @@ public class V2EXDataSource {
         database = dbHelper.getWritableDatabase();
     }
 
-    private String[] allColumns = { DatabaseHelper.TOPIC_COLUMN_TOPICID,
+    private String[] allColumns = {DatabaseHelper.TOPIC_COLUMN_TOPICID,
             DatabaseHelper.TOPIC_COLUMN_READ,
-            DatabaseHelper.TOPIC_COLUMN_FAVOR };
+            DatabaseHelper.TOPIC_COLUMN_FAVOR};
 
     private void insertTopic(TopicModel model, boolean read, boolean favor) {
         ContentValues values = new ContentValues();
@@ -46,7 +45,7 @@ public class V2EXDataSource {
             return false;
 
         //数据项不存在,插入
-        if(!isTopicExisted(topicId)){
+        if (!isTopicExisted(topicId)) {
             insertTopic(model, true, false);
             return true;
         }
@@ -100,6 +99,7 @@ public class V2EXDataSource {
 
     /**
      * 话题是否存在数据表中
+     *
      * @param topicId
      * @return
      */
@@ -118,6 +118,7 @@ public class V2EXDataSource {
 
     /**
      * 获取状态
+     *
      * @param topicId
      * @param column
      * @return
@@ -139,7 +140,7 @@ public class V2EXDataSource {
 
 
     private String[] allNodeColumns = {DatabaseHelper.NODE_COLUMN_NODENAME,
-            DatabaseHelper.NODE_COLUMN_ISFAVOR };
+            DatabaseHelper.NODE_COLUMN_ISFAVOR};
 
     private void insertNode(String nodeName, boolean favor) {
         ContentValues values = new ContentValues();
@@ -175,15 +176,15 @@ public class V2EXDataSource {
             cursor.close();
         }
 
-        Log.i(TAG, nodeName+result);
+        Log.i(TAG, nodeName + result);
         return result == 1;
     }
 
     /**
      * 将某个节点加入收藏或者取消收藏
      */
-    public boolean favoriteNode(String nodeName, boolean favor){
-        if(!isNodeExisted(nodeName)){
+    public boolean favoriteNode(String nodeName, boolean favor) {
+        if (!isNodeExisted(nodeName)) {
             insertNode(nodeName, favor);
             return true;
         }
@@ -196,13 +197,13 @@ public class V2EXDataSource {
         return true;
     }
 
-    ArrayList<String> getAllFavorNodes(){
+    ArrayList<String> getAllFavorNodes() {
         ArrayList<String> nodes = new ArrayList<String>();
         Cursor cursor = database.query(DatabaseHelper.NODE_TABLE_NAME, allNodeColumns,
                 DatabaseHelper.NODE_COLUMN_ISFAVOR + " = " + 1, null, null, null,
                 null);
-        if (cursor != null && cursor.getCount() > 0 ){
-            while(cursor.moveToFirst()) {
+        if (cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToFirst()) {
                 nodes.add(cursor.getString(cursor.getColumnIndex(DatabaseHelper.NODE_TABLE_NAME)));
             }
             cursor.close();

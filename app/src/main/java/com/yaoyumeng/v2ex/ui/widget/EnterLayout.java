@@ -7,7 +7,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.utils.InputUtils;

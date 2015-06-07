@@ -1,14 +1,11 @@
 package com.yaoyumeng.v2ex.ui;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -82,9 +79,5 @@ public class AboutActivity extends SwipeBackActivity {
             }
         });
         UmengUpdateAgent.update(this);
-    }
-
-    void codingWebsite() {
-        //WebActivity_.intent(this).url(Global.HOST).start();
     }
 }

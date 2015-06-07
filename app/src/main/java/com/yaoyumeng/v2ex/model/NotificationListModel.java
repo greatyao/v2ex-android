@@ -1,8 +1,5 @@
 package com.yaoyumeng.v2ex.model;
 
-import com.yaoyumeng.v2ex.api.SafeHandler;
-import com.yaoyumeng.v2ex.api.V2EXErrorType;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

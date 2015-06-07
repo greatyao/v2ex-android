@@ -2,7 +2,6 @@ package com.yaoyumeng.v2ex.utils;
 
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
-import android.widget.BaseAdapter;
 
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.database.V2EXDataSource;

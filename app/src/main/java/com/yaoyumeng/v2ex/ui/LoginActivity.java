@@ -1,6 +1,5 @@
 package com.yaoyumeng.v2ex.ui;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -83,7 +82,7 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
                     @Override
                     public void onFailure(String error) {
                         MessageUtils.showErrorMessage(LoginActivity.this, error);
-                       showProgressBar(false);
+                        showProgressBar(false);
                     }
                 });
     }

@@ -2,7 +2,6 @@ package com.yaoyumeng.v2ex.model;
 
 import android.content.Context;
 
-import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.utils.FileUtils;
 
 import java.io.File;
@@ -21,74 +20,78 @@ import java.util.ArrayList;
 public class PersistenceHelper {
     private static final String TAG = "PersistenceHelper";
 
-    public static boolean saveObject(Context cxt, Serializable obj, String file){
+    public static boolean saveObject(Context cxt, Serializable obj, String file) {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
 
-        try{
+        try {
             fos = cxt.openFileOutput(file, Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(obj);
             oos.flush();
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }finally{
+        } finally {
             try {
                 oos.close();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
             try {
                 fos.close();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
     }
 
-    public static <T extends V2EXModel> boolean saveModel(Context cxt, T obj, String file){
+    public static <T extends V2EXModel> boolean saveModel(Context cxt, T obj, String file) {
         return saveObject(cxt, obj, file);
     }
 
-    public static <T extends V2EXModel> boolean saveModelList(Context cxt, ArrayList<T> objs, String file){
+    public static <T extends V2EXModel> boolean saveModelList(Context cxt, ArrayList<T> objs, String file) {
         return saveObject(cxt, objs, file);
     }
 
-    public static Serializable loadObject(Context cxt, String file){
-        if(!FileUtils.isExistDataCache(cxt, file))
+    public static Serializable loadObject(Context cxt, String file) {
+        if (!FileUtils.isExistDataCache(cxt, file))
             return null;
 
         FileInputStream fis = null;
         ObjectInputStream ois = null;
-        try{
+        try {
             fis = cxt.openFileInput(file);
             ois = new ObjectInputStream(fis);
             Object obj = ois.readObject();
-            return (Serializable)obj;
-        }catch(FileNotFoundException e){
-        }catch(Exception e){
+            return (Serializable) obj;
+        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             //反序列化失败 - 删除缓存文件
-            if(e instanceof InvalidClassException){
+            if (e instanceof InvalidClassException) {
                 File data = cxt.getFileStreamPath(file);
                 data.delete();
             }
-        }finally{
+        } finally {
             try {
                 ois.close();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
             try {
                 fis.close();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
 
         return null;
     }
 
     public static <T extends V2EXModel> T loadModel(Context cxt, String file) {
-        return (T)loadObject(cxt, file);
+        return (T) loadObject(cxt, file);
     }
 
     public static <T extends V2EXModel> ArrayList<T> loadModelList(Context cxt, String file) {
-        return (ArrayList<T>)loadObject(cxt, file);
+        return (ArrayList<T>) loadObject(cxt, file);
     }
 
 }

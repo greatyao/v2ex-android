@@ -1,28 +1,18 @@
 package com.yaoyumeng.v2ex.ui.fragment;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateResponse;
-import com.umeng.update.UpdateStatus;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.HttpRequestHandler;
@@ -31,7 +21,6 @@ import com.yaoyumeng.v2ex.ui.AboutActivity;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 import com.yaoyumeng.v2ex.utils.FileUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
-import com.yaoyumeng.v2ex.utils.PhoneUtils;
 
 /**
  * 设置
@@ -179,7 +168,7 @@ public class SettingsFragment extends PreferenceFragment {
         startActivity(intent);
     }
 
-    private void checkIn(){
+    private void checkIn() {
         V2EXManager.dailyCheckIn(getActivity(), new HttpRequestHandler<Integer>() {
             @Override
             public void onSuccess(Integer data) {

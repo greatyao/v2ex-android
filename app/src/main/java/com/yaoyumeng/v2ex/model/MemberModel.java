@@ -2,7 +2,6 @@ package com.yaoyumeng.v2ex.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;

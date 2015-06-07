@@ -8,7 +8,6 @@ import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 
 import java.lang.reflect.Method;
-import java.util.Objects;
 
 /**
  * Created by chaochen on 14-10-22.
@@ -32,7 +31,7 @@ public class FootUpdate {
         return mLayout.getHeight();
     }
 
-    private void removeFromListView(Object listView, View v){
+    private void removeFromListView(Object listView, View v) {
         if (listView instanceof ListView) {
             try {
                 Method method = listView.getClass().getMethod("removeFooterView", View.class);
@@ -50,7 +49,7 @@ public class FootUpdate {
         }
     }
 
-    private void addToListView(Object listView, View v){
+    private void addToListView(Object listView, View v) {
         if (listView instanceof ListView) {
             try {
                 Method method = listView.getClass().getMethod("addFooterView", View.class);
@@ -109,7 +108,7 @@ public class FootUpdate {
         }
 
         if (show) {
-            if(!mAdd) addToListView(mListView, mLayout);
+            if (!mAdd) addToListView(mListView, mLayout);
 
             mLayout.setVisibility(View.VISIBLE);
             mLayout.setPadding(0, 0, 0, 0);
