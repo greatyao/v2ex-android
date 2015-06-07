@@ -22,7 +22,7 @@ class WrappedJsonHttpResponseHandler<T extends V2EXModel> extends JsonHttpRespon
     String key;
 
     public WrappedJsonHttpResponseHandler(Context cxt, Class c, String key,
-                                         HttpRequestHandler<ArrayList<T>> handler) {
+                                          HttpRequestHandler<ArrayList<T>> handler) {
         this.handler = handler;
         this.c = c;
         this.context = cxt;
@@ -40,11 +40,7 @@ class WrappedJsonHttpResponseHandler<T extends V2EXModel> extends JsonHttpRespon
         } catch (Exception e) {
         }
         PersistenceHelper.saveModelList(context, models, key);
-        try {
-            handler.onSuccess(models);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SafeHandler.onSuccess(handler, models);
     }
 
     @Override
