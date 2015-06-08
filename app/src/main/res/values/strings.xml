@@ -51,8 +51,8 @@
     <string name="settings_nomal">常规设置</string>
     <string name="settings_more">其他</string>
     <string name="settings_use_https">使用HTTPS</string>
-    <string name="settings_use_jsonapi">访问方式</string>
-    <string name="settings_use_jsonapi_summary">使用JsonAPI访问，访问次数有限制</string>
+    <string name="settings_use_jsonapi">使用Json API</string>
+    <string name="settings_use_jsonapi_summary">使用Json API访问，访问次数有限制</string>
     <string name="settings_use_browser_summary">模拟浏览器访问，访问次数无限制</string>
     <string name="settings_clear_cache">清除缓存</string>
     <string name="settings_check_in">每日签到</string>
