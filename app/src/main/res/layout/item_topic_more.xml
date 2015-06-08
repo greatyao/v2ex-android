@@ -18,39 +18,11 @@
             android:layout_height="wrap_content"
             android:paddingBottom="14dp">
 
-            <TextView
-                android:id="@+id/text_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="@string/topic"
-                android:textColor="#de000000"
-                android:textSize="18sp" />
-
-            <com.yaoyumeng.v2ex.ui.widget.RichTextView
-                android:id="@+id/text_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/text_title"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:lineSpacingExtra="1.5dp"
-                android:text="帖子内容"/>
-
-            <View xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/divide_line"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#ffe4e4e4"
-                android:layout_marginTop="8dp"
-                android:layout_below="@+id/text_content"/>
-
-            <de.hdodenhof.circleimageview.CircleImageView    
-				xmlns:app="http://schemas.android.com/apk/res-auto"
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/avatar_normal_size"
                 android:layout_height="@dimen/avatar_normal_size"
-                android:layout_below="@+id/divide_line"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/ic_avatar" />
@@ -89,17 +61,6 @@
                 android:textColor="#aaa"
                 android:textSize="12sp" />
 
-            <!--TextView
-                android:id="@+id/text_node"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@id/avatar"
-                android:background="@drawable/bg_node"
-                android:padding="8dp"
-                android:text="node"
-                android:textColor="#aaa" /-->
-
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/nodeCard"
                 android:layout_width="wrap_content"
@@ -125,6 +86,34 @@
                     android:paddingRight="10dp"
                     android:paddingTop="5dp" />
             </android.support.v7.widget.CardView>
+
+            <View xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/divide_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ffe4e4e4"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/avatar"/>
+
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_below="@+id/divide_line"
+                android:text="@string/topic"
+                android:textColor="#de000000"
+                android:textSize="18sp" />
+
+            <com.yaoyumeng.v2ex.ui.widget.RichTextView
+                android:id="@+id/text_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_title"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:lineSpacingExtra="1.25dp"
+                android:text="帖子内容"/>
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
