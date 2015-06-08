@@ -34,6 +34,12 @@ public class RichTextView extends TextView {
 
     public void setRichText(String text) {
 
+        //移动网络情况下如果设置了不显示图片,则遵命
+        if (NetWorkHelper.isMobile(getContext()) && !Application.getInstance().isLoadImageInMobileNetworkFromCache()) {
+            super.setText(Html.fromHtml(text));
+            return;
+        }
+
         Spanned spanned = Html.fromHtml(text, new AsyncImageGetter(getContext(), this), null);
         SpannableStringBuilder htmlSpannable;
         if (spanned instanceof SpannableStringBuilder) {
@@ -42,19 +48,15 @@ public class RichTextView extends TextView {
             htmlSpannable = new SpannableStringBuilder(spanned);
         }
 
-        if (NetWorkHelper.isMobile(getContext()) && !Application.getInstance().isLoadImageInMobileNetworkFromCache()) {
-            //移动网络情况下如果设置了不显示图片,则遵命
-        } else {
-            ImageSpan[] spans = htmlSpannable.getSpans(0, htmlSpannable.length(), ImageSpan.class);
-            final ArrayList<String> imageUrls = new ArrayList<String>();
-            final ArrayList<String> imagePositions = new ArrayList<String>();
-            for (ImageSpan currentSpan : spans) {
-                final String imageUrl = currentSpan.getSource();
-                final int start = htmlSpannable.getSpanStart(currentSpan);
-                final int end = htmlSpannable.getSpanEnd(currentSpan);
-                imagePositions.add(start + "," + end);
-                imageUrls.add(imageUrl);
-            }
+        ImageSpan[] spans = htmlSpannable.getSpans(0, htmlSpannable.length(), ImageSpan.class);
+        final ArrayList<String> imageUrls = new ArrayList<String>();
+        final ArrayList<String> imagePositions = new ArrayList<String>();
+        for (ImageSpan currentSpan : spans) {
+            final String imageUrl = currentSpan.getSource();
+            final int start = htmlSpannable.getSpanStart(currentSpan);
+            final int end = htmlSpannable.getSpanEnd(currentSpan);
+            imagePositions.add(start + "," + end);
+            imageUrls.add(imageUrl);
         }
 
         super.setText(spanned);
