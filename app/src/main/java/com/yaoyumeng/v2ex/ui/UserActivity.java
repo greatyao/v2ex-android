@@ -60,7 +60,7 @@ public class UserActivity extends SwipeBackActivity {
         Bundle bundle = new Bundle();
         bundle.putString("username", mUsername);
         fragment.setArguments(bundle);
-        getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     @Override

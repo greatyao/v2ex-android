@@ -58,7 +58,7 @@ public class NodeActivity extends SwipeBackActivity {
         bundle.putBoolean("show_menu", true);
 
         fragment.setArguments(bundle);
-        getFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
     }
 
     @Override

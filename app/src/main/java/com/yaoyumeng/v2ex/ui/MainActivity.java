@@ -1,6 +1,6 @@
 package com.yaoyumeng.v2ex.ui;
 
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity
 
         mDrawerLayout = (ViewGroup) findViewById(R.id.drawer_layout);
         mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.left_drawer);
+                getSupportFragmentManager().findFragmentById(R.id.left_drawer);
         mTitle = getTitle();
 
         mFavoriteTabTitles = getResources().getStringArray(R.array.v2ex_favorite_tab_titles);
@@ -83,7 +83,7 @@ public class MainActivity extends BaseActivity
                 bundle.putBoolean("show_menu", false);
                 fragment.setArguments(bundle);
 
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container, fragment, mFavoriteTabTitles[position]).commit();
             }
 
@@ -112,7 +112,7 @@ public class MainActivity extends BaseActivity
     public void onNavigationDrawerItemSelected(final int position) {
         mSelectPos = position;
 
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         switch (position) {
             case 0:

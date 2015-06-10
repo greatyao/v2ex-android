@@ -60,7 +60,7 @@ public class TopicActivity extends SwipeBackActivity {
         }
 
         fragment.setArguments(bundle);
-        getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     @Override
