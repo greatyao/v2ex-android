@@ -3,14 +3,14 @@ package com.yaoyumeng.v2ex.ui.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.ui.fragment.TopicsFragment;
 
 import java.util.ArrayList;
 
-public class FavNodesAdapter extends FragmentPagerAdapter {
+public class FavNodesAdapter extends FragmentStatePagerAdapter {
 
     private ArrayList<NodeModel> mNodes;
 
