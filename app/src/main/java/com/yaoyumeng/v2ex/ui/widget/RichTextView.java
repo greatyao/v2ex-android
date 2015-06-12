@@ -37,6 +37,7 @@ public class RichTextView extends TextView {
         //移动网络情况下如果设置了不显示图片,则遵命
         if (NetWorkHelper.isMobile(getContext()) && !Application.getInstance().isLoadImageInMobileNetworkFromCache()) {
             super.setText(Html.fromHtml(text));
+            setMovementMethod(LinkMovementMethod.getInstance());
             return;
         }
 
