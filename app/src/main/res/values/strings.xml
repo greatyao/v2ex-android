@@ -63,7 +63,7 @@
     <string name="myinfo_nodes">节点收藏</string>
     <string name="myinfo_topics">主题收藏</string>
     <string name="myinfo_notifications">未读提醒</string>
-    <string name="myinfo_settings">未读提醒</string>
+    <string name="myinfo_settings">设置</string>
 
     <string name="settings_nomal">常规设置</string>
     <string name="settings_more">其他</string>
