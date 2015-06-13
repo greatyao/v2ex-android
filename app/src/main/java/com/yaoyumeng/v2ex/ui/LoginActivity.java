@@ -87,7 +87,7 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
                 public void onSuccess(ProfileModel data) {
                     showProgressBar(false);
                     mLoginProfile = data;
-                    AccountUtils.writeLoginMember(LoginActivity.this, data);
+                    AccountUtils.writeLoginMember(LoginActivity.this, data, true);
                     showProgressBar(false);
                     Intent intent = new Intent();
                     intent.putExtra("profile", (Parcelable) data);

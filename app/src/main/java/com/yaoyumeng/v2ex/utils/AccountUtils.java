@@ -68,12 +68,14 @@ public class AccountUtils {
      * @param cxt
      * @param profile
      */
-    public static void writeLoginMember(Context cxt, ProfileModel profile) {
+    public static void writeLoginMember(Context cxt, ProfileModel profile, boolean broadcast) {
         PersistenceHelper.saveModel(cxt, profile, key_login_member);
 
         //通知所有页面,登录成功,更新用户信息
-        for (OnAccountListener listener : listeners) {
-            listener.onLogin(profile);
+        if(broadcast) {
+            for (OnAccountListener listener : listeners) {
+                listener.onLogin(profile);
+            }
         }
     }
 
@@ -155,7 +157,7 @@ public class AccountUtils {
         V2EXManager.getProfile(cxt, new HttpRequestHandler<ProfileModel>() {
             @Override
             public void onSuccess(ProfileModel data) {
-                writeLoginMember(cxt, data);
+                writeLoginMember(cxt, data, true);
             }
 
             @Override

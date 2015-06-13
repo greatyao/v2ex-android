@@ -72,6 +72,8 @@ public class MyInfoFragment extends BaseFragment implements View.OnClickListener
 
         if (mIsLogin) {
             updateProfileUi(mLoginProfile);
+            
+            refreshProfile();
         }
     }
 
@@ -123,7 +125,7 @@ public class MyInfoFragment extends BaseFragment implements View.OnClickListener
                     //将未读消息清零,并持久化
                     mNotifyCount.setVisibility(View.INVISIBLE);
                     mLoginProfile.notifications = 0;
-                    AccountUtils.writeLoginMember(getActivity(), mLoginProfile);
+                    AccountUtils.writeLoginMember(getActivity(), mLoginProfile, false);
 
                     //显示未读消息
                     Intent intent = new Intent(getActivity(), MyInfoActivity.class);
