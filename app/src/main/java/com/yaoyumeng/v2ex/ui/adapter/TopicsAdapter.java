@@ -73,7 +73,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, UserActivity.class);
-                intent.putExtra("model", (Parcelable) topic.member);
+                intent.putExtra("model", (Parcelable) member);
                 mContext.startActivity(intent);
             }
         });

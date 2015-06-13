@@ -56,7 +56,6 @@ public class NotificationModel extends V2EXModel {
                 notificationTopic.title = aNode.html();
 
                 String topicURLString = aNode.attr("href");
-                int idx = topicURLString.indexOf('#');
                 String[] ss = topicURLString.substring(3).split("#");
 
                 try {

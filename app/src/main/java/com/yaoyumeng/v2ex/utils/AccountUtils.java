@@ -160,7 +160,7 @@ public class AccountUtils {
 
             @Override
             public void onSuccess(ProfileModel data, int totalPages, int currentPage) {
-                onSuccess(data, 1, 1);
+                onSuccess(data);
             }
 
             @Override

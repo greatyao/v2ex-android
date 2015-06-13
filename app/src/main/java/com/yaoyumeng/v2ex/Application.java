@@ -47,8 +47,6 @@ public class Application extends android.app.Application {
     }
 
     private void initAppConfig() {
-        final ActivityManager mgr = (ActivityManager) getApplicationContext().
-                getSystemService(Activity.ACTIVITY_SERVICE);
         mHttps = isHttps();
         mJsonAPI = isJsonAPI();
         mShowEffect = isShowEffect();
