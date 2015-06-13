@@ -136,7 +136,7 @@ public class HeaderViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         mFooterViews.add(view);
     }
 
-    public void removeFooterView(View view){
+    public void removeFooterView(View view) {
         mFooterViews.remove(view);
     }
 

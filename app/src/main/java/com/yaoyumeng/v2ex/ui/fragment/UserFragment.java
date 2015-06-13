@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -142,8 +141,6 @@ public class UserFragment extends BaseFragment implements HttpRequestHandler<Arr
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
         mSwipeLayout.setRefreshing(true);
 
-        setupActionBar();
-
         if (getArguments().containsKey("model")) {
             mMember = getArguments().getParcelable("model");
             showData();
@@ -190,12 +187,6 @@ public class UserFragment extends BaseFragment implements HttpRequestHandler<Arr
 
     private void getTopicsData(boolean refresh) {
         V2EXManager.getTopicsByUsername(getActivity(), mUserName, refresh, new RequestTopicHelper());
-    }
-
-    private void setupActionBar() {
-        android.support.v7.app.ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
-        //actionBar.setIcon(R.drawable.ic_avatar);
-        //getActionBarTitleView().setAlpha(0f);
     }
 
     class RequestTopicHelper implements HttpRequestHandler<ArrayList<TopicModel>> {

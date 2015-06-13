@@ -1,10 +1,10 @@
 package com.yaoyumeng.v2ex.ui.fragment;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.umeng.analytics.MobclickAgent;
-import com.yaoyumeng.v2ex.model.MemberModel;
+import com.yaoyumeng.v2ex.model.ProfileModel;
 import com.yaoyumeng.v2ex.ui.BaseActivity;
 import com.yaoyumeng.v2ex.ui.widget.FootUpdate;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
@@ -15,7 +15,7 @@ import com.yaoyumeng.v2ex.utils.AccountUtils;
 public class BaseFragment extends Fragment implements AccountUtils.OnAccountListener {
 
     protected boolean mIsLogin;
-    protected MemberModel mLoginProfile;
+    protected ProfileModel mLoginProfile;
     protected BackHandledInterface mBackHandledInterface;
 
     protected FootUpdate mFootUpdate = new FootUpdate();
@@ -66,9 +66,9 @@ public class BaseFragment extends Fragment implements AccountUtils.OnAccountList
     }
 
     @Override
-    public void onLogin(MemberModel member) {
+    public void onLogin(ProfileModel profile) {
         mIsLogin = true;
-        mLoginProfile = member;
+        mLoginProfile = profile;
     }
 
     public boolean onBackPressed() {

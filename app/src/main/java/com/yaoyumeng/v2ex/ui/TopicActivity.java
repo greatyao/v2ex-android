@@ -3,9 +3,6 @@ package com.yaoyumeng.v2ex.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.view.MenuItem;
 
 import com.yaoyumeng.v2ex.R;
@@ -66,7 +63,7 @@ public class TopicActivity extends SwipeBackActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
+            /*case android.R.id.home:
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
                 if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
                     TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
@@ -75,6 +72,7 @@ public class TopicActivity extends SwipeBackActivity {
                     NavUtils.navigateUpTo(this, upIntent);
                 }
                 return true;
+            */
             default:
                 return super.onOptionsItemSelected(item);
         }

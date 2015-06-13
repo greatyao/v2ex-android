@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,8 +12,8 @@ import android.widget.EditText;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
+import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.ReplyModel;
-import com.yaoyumeng.v2ex.utils.AccountUtils;
 import com.yaoyumeng.v2ex.utils.InputUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.SimpleTextWatcher;
@@ -59,15 +57,6 @@ public class TopicCommentActivity extends SwipeBackActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                } else {
-                    upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
-                return true;
             case R.id.action_add:
                 createComment();
                 return true;
@@ -90,7 +79,9 @@ public class TopicCommentActivity extends SwipeBackActivity
         ReplyModel reply = new ReplyModel();
         reply.content = reply.contentRendered = mContent.getText().toString();
         reply.created = System.currentTimeMillis() / 1000;
-        reply.member = AccountUtils.readLoginMember(this);
+        reply.member = new MemberModel();
+        reply.member.username = mLoginProfile.username;
+        reply.member.avatar = mLoginProfile.avatar;
         intent.putExtra("reply_result", (Parcelable) reply);
         setResult(Activity.RESULT_OK, intent);
         finish();

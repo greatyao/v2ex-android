@@ -15,12 +15,10 @@ import android.widget.ListView;
 
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
-import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.ui.AboutActivity;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 import com.yaoyumeng.v2ex.utils.FileUtils;
-import com.yaoyumeng.v2ex.utils.MessageUtils;
 
 /**
  * 设置
@@ -143,16 +141,6 @@ public class SettingsFragment extends PreferenceFragment {
             }
         });
 
-        //签到
-        mCheckIn = (Preference) findPreference("pref_check_in");
-        mCheckIn.setEnabled(isLogin);
-        mCheckIn.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
-                checkIn();
-                return true;
-            }
-        });
-
         // 关于我们
         mAbout = (Preference) findPreference("pref_about");
         mAbout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -166,24 +154,5 @@ public class SettingsFragment extends PreferenceFragment {
     private void showAboutMe() {
         Intent intent = new Intent(getActivity(), AboutActivity.class);
         startActivity(intent);
-    }
-
-    private void checkIn() {
-        V2EXManager.dailyCheckIn(getActivity(), new HttpRequestHandler<Integer>() {
-            @Override
-            public void onSuccess(Integer data) {
-                MessageUtils.showMiddleToast(getActivity(), "签到成功");
-            }
-
-            @Override
-            public void onSuccess(Integer data, int totalPages, int currentPage) {
-
-            }
-
-            @Override
-            public void onFailure(String error) {
-                MessageUtils.showMiddleToast(getActivity(), error);
-            }
-        });
     }
 }

@@ -1,5 +1,6 @@
 package com.yaoyumeng.v2ex.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -11,10 +12,11 @@ import com.hannesdorfmann.swipeback.transformer.SlideSwipeBackTransformer;
 /**
  * Created by yw on 2015/5/28.
  */
-public class SwipeBackActivity extends BaseActivity{
+public class SwipeBackActivity extends BaseActivity {
+    protected SwipeBack mSwipeBack;
 
     @Override
-    protected void onCreate(Bundle saved){
+    protected void onCreate(Bundle saved) {
         super.onCreate(saved);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -24,8 +26,16 @@ public class SwipeBackActivity extends BaseActivity{
                 R.anim.swipeback_stack_to_back);
     }
 
+    public void setSwipeContentViewForViewPager(int layoutResID){
+        mSwipeBack = SwipeBack.attach(this, Position.LEFT)
+                .setContentView(layoutResID)
+                .setSwipeBackView(com.yaoyumeng.v2ex.R.layout.layout_swipeback_default)
+                .setDividerAsSolidColor(Color.WHITE)
+                .setDividerSize(2);
+    }
+
     public void setSwipeContentView(int layoutResID) {
-        SwipeBack.attach(this, Position.LEFT)
+        mSwipeBack = SwipeBack.attach(this, Position.LEFT)
                 .setDrawOverlay(true)
                 .setDividerEnabled(true) // Must be called to enable, setDivider() is not enough
                 .setSwipeBackTransformer(new SlideSwipeBackTransformer())
@@ -34,7 +44,7 @@ public class SwipeBackActivity extends BaseActivity{
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.swipeback_stack_to_front,
                 R.anim.swipeback_stack_right_out);
@@ -42,8 +52,8 @@ public class SwipeBackActivity extends BaseActivity{
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        if (item.getItemId() == android.R.id.home){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
         }

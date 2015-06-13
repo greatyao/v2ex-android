@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,11 +11,9 @@ import android.widget.EditText;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
-import com.yaoyumeng.v2ex.model.MemberModel;
+import com.yaoyumeng.v2ex.model.ProfileModel;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
-
-import java.util.ArrayList;
 
 /**
  * Created by yugy on 14-2-26.
@@ -29,7 +24,6 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
     private EditText mUsername;
     private EditText mPassword;
     private Button mLogin;
-    private MemberModel mProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,26 +81,22 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
                 });
     }
 
-    private HttpRequestHandler<ArrayList<MemberModel>> profileHandler =
-            new HttpRequestHandler<ArrayList<MemberModel>>() {
+    private HttpRequestHandler<ProfileModel> profileHandler =
+            new HttpRequestHandler<ProfileModel>() {
                 @Override
-                public void onSuccess(ArrayList<MemberModel> data) {
+                public void onSuccess(ProfileModel data) {
                     showProgressBar(false);
-                    if (data.size() == 0) {
-                        onFailure("");
-                        return;
-                    }
-                    mProfile = data.get(0);
-                    AccountUtils.writeLoginMember(LoginActivity.this, mProfile);
+                    mLoginProfile = data;
+                    AccountUtils.writeLoginMember(LoginActivity.this, data);
                     showProgressBar(false);
                     Intent intent = new Intent();
-                    intent.putExtra("profile", (Parcelable) mProfile);
+                    intent.putExtra("profile", (Parcelable) data);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
 
                 @Override
-                public void onSuccess(ArrayList<MemberModel> data, int totalPages, int currentPage) {
+                public void onSuccess(ProfileModel data, int totalPages, int currentPage) {
                 }
 
                 @Override
@@ -118,23 +108,6 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
 
     private void getProfile() {
         showProgressBar(true, getString(R.string.login_obtain_profile));
-        V2EXManager.getProfile(this, profileHandler);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                } else {
-                    upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        V2EXManager.getProfile(this, profileHandler, false);
     }
 }

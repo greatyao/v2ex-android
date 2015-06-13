@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
 import com.umeng.analytics.MobclickAgent;
-import com.yaoyumeng.v2ex.model.MemberModel;
+import com.yaoyumeng.v2ex.model.ProfileModel;
 import com.yaoyumeng.v2ex.ui.fragment.BaseFragment;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 
@@ -18,7 +18,7 @@ public class BaseActivity extends ActionBarActivity
 
     private ProgressDialog mProgressDialog;
     protected boolean mIsLogin;
-    protected MemberModel mLoginProfile;
+    protected ProfileModel mLoginProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class BaseActivity extends ActionBarActivity
     }
 
     @Override
-    public void onLogin(MemberModel member) {
+    public void onLogin(ProfileModel member) {
         mIsLogin = true;
         mLoginProfile = member;
     }

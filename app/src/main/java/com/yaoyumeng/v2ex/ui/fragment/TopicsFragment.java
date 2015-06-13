@@ -43,8 +43,9 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
     public static final String TAG = "TopicsFragment";
     public static final int LatestTopics = 0;
     public static final int HotTopics = -1;
-    public static final int InvalidTopics = -2;
-    int mNodeId = InvalidTopics;   //0表示最新话题,-1表示最热话题,其他表示节点下的话题
+    public static final int MyFavoriteTopics = -2;
+    public static final int InvalidTopics = -3;
+    int mNodeId = InvalidTopics;   //0表示最新话题,-1表示最热话题,-2表示收藏的话题,其他表示节点下的话题
     int mPage = 1;
     boolean mNoMore = true;
     HeaderViewRecyclerAdapter mHeaderAdapter;
@@ -263,7 +264,10 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
 
     private void requestMoreTopics() {
         mIsLoading = true;
-        V2EXManager.getTopicsByNodeName(getActivity(), mNodeName, mPage + 1, true, this);
+        if (mNodeId == MyFavoriteTopics)
+            V2EXManager.getMyFavoriteTopics(getActivity(), mPage + 1, true, this);
+        else
+            V2EXManager.getTopicsByNodeName(getActivity(), mNodeName, mPage + 1, true, this);
     }
 
     private void requestTopicsByName(boolean refresh) {
@@ -275,6 +279,8 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
             V2EXManager.getLatestTopics(getActivity(), refresh, this);
         else if (mNodeId == HotTopics)
             V2EXManager.getHotTopics(getActivity(), refresh, this);
+        else if (mNodeId == MyFavoriteTopics)
+            V2EXManager.getMyFavoriteTopics(getActivity(), mPage, true, this);
         else if (mNodeId > 0)
             V2EXManager.getTopicsByNodeId(getActivity(), mNodeId, refresh, this);
     }

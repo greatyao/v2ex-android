@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +14,7 @@ import android.widget.EditText;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
+import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.widget.CustomDialog;
@@ -35,7 +34,7 @@ public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSwipeContentView(R.layout.activity_topic_add);
-        
+
         mTitle = (EditText) findViewById(R.id.topic_add_title);
         mContent = (EditText) findViewById(R.id.topic_add_content);
 
@@ -65,15 +64,6 @@ public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                } else {
-                    upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
-                return true;
             case R.id.action_add:
                 createTopic();
                 return true;
@@ -92,7 +82,9 @@ public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHa
         topic.title = mTitle.getText().toString();
         topic.content = topic.contentRendered = mContent.getText().toString();
         topic.created = System.currentTimeMillis() / 1000;
-        topic.member = mLoginProfile;
+        topic.member = new MemberModel();
+        topic.member.username = mLoginProfile.username;
+        topic.member.avatar = mLoginProfile.avatar;
         intent.putExtra("create_result", (Parcelable) topic);
         setResult(Activity.RESULT_OK, intent);
         finish();

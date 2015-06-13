@@ -27,6 +27,7 @@ import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.database.V2EXDataSource;
+import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.ReplyModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
@@ -264,7 +265,7 @@ public class TopicFragment extends BaseFragment
         if (Application.getInstance().isJsonAPIFromCache())
             V2EXManager.getRepliesByTopicId(getActivity(), mTopicId, refresh, this);
         else
-           V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage, refresh, new RequestTopicAndReplyListHelper(refresh));
+            V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage, refresh, new RequestTopicAndReplyListHelper(refresh));
     }
 
     //获取该话题内容和其所有回复
@@ -496,7 +497,9 @@ public class TopicFragment extends BaseFragment
             ReplyModel reply = new ReplyModel();
             reply.content = reply.contentRendered = content;
             reply.created = System.currentTimeMillis() / 1000;
-            reply.member = mLoginProfile;
+            reply.member = new MemberModel();
+            reply.member.username = mLoginProfile.username;
+            reply.member.avatar = mLoginProfile.avatar;
             intent.putExtra("reply_result", (Parcelable) reply);
             onActivityResult(REQUEST_COMMENT, Activity.RESULT_OK, intent);
         }

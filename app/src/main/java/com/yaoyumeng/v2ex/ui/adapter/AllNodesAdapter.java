@@ -69,7 +69,7 @@ public class AllNodesAdapter extends RecyclerView.Adapter<AllNodesAdapter.ViewHo
         } else {
             viewHolder.header.setVisibility(View.GONE);
         }
-        viewHolder.topics.setText(node.topics + " 个话题");
+        viewHolder.topics.setText(node.topics + " 个主题");
     }
 
     @Override
@@ -111,7 +111,7 @@ public class AllNodesAdapter extends RecyclerView.Adapter<AllNodesAdapter.ViewHo
 
     @Override
     public int getPositionForSection(int i) {
-        return mAlphaPosition.get(mSections.substring(i, i+1));
+        return mAlphaPosition.get(mSections.substring(i, i + 1));
     }
 
     @Override

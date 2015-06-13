@@ -16,8 +16,8 @@ import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
-import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NotificationModel;
+import com.yaoyumeng.v2ex.model.ProfileModel;
 import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.NotificationsAdapter;
 import com.yaoyumeng.v2ex.ui.widget.FootUpdate;
@@ -111,8 +111,8 @@ public class NotificationFragment extends BaseFragment implements HttpRequestHan
     }
 
     @Override
-    public void onLogin(MemberModel member) {
-        super.onLogin(member);
+    public void onLogin(ProfileModel profile) {
+        super.onLogin(profile);
 
         //登录,刷新信息
         mEmptyText.setVisibility(View.GONE);
