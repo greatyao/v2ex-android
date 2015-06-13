@@ -20,8 +20,8 @@ public class TopicListModel extends ArrayList<TopicModel> {
 
     private static final long serialVersionUID = 2015050107L;
 
-    private int mPage = 1;
-    private int mTotalPage = 1;
+    public int mCurrentPage = 1;
+    public int mTotalPage = 1;
 
     public void parse(String responseBody) throws Exception {
         Document doc = Jsoup.parse(responseBody);
@@ -34,12 +34,15 @@ public class TopicListModel extends ArrayList<TopicModel> {
             } catch (Exception e) {
             }
         }
+
+        parsePage(body);
     }
 
     public void parseFromNodeEntry(String responseBody, String nodeName) throws Exception {
         Document doc = Jsoup.parse(responseBody);
         String title = doc.title();
         title = title.replace("V2EX ›", "").trim();
+        title = title.split(" ")[0];
         NodeModel node = new NodeModel();
         node.name = nodeName;
         node.title = title;
@@ -57,8 +60,12 @@ public class TopicListModel extends ArrayList<TopicModel> {
             }
         }
 
-        elements = body.getElementsByAttributeValue("class", "inner");
-        mPage = mTotalPage = 1;
+        parsePage(body);
+    }
+
+    private void parsePage(Element body){
+        Elements elements = body.getElementsByAttributeValue("class", "inner");
+        mCurrentPage = mTotalPage = 1;
         for (Element el : elements) {
             Elements tds = el.getElementsByTag("td");
             if (tds.size() != 3) continue;
@@ -70,13 +77,13 @@ public class TopicListModel extends ArrayList<TopicModel> {
 
             try {
                 mTotalPage = Integer.parseInt(arrayString[1]);
-                mPage = Integer.parseInt(arrayString[0]);
+                mCurrentPage = Integer.parseInt(arrayString[0]);
             } catch (Exception e) {
             }
             break;
         }
 
-        Log.i("page", String.format("%d/%d", mPage, mTotalPage));
+        Log.i("page", String.format("%d/%d", mCurrentPage, mTotalPage));
     }
 
     private TopicModel parseTopicModel(Element el, boolean parseNode, NodeModel node) throws Exception {
@@ -105,6 +112,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
                 Elements aNodes = tdNode.getElementsByTag("a");
                 for (Element aNode : aNodes) {
                     if (parseNode && aNode.attr("class").equals("node")) {
+                        android.util.Log.i("parse", aNode.toString());
                         String nodeUrlString = aNode.attr("href");
                         node.name = nodeUrlString.replace("/go/", "");
                         node.title = aNode.text();
@@ -168,13 +176,5 @@ public class TopicListModel extends ArrayList<TopicModel> {
         topic.node = node;
 
         return topic;
-    }
-
-    public int getCurrentPage() {
-        return mPage;
-    }
-
-    public int getTotalPage() {
-        return mTotalPage;
     }
 }
