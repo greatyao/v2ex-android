@@ -24,7 +24,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Coding.ActionbarSpannerTheme" >
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,12 +34,10 @@
         <activity
             android:name=".ui.LoginActivity"
             android:screenOrientation="portrait"
-            android:label="@string/login_login"
-            android:parentActivityName=".ui.MainActivity" >
+            android:label="@string/title_activity_login" >
         </activity>
         <activity
-            android:name=".ui.NodeActivity"
-            android:parentActivityName=".ui.MainActivity" >
+            android:name=".ui.NodeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -56,11 +54,15 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.MyInfoActivity" >
+        </activity>
+
         <activity
             android:name=".ui.TopicActivity"
             android:label="@string/title_activity_topic"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:parentActivityName=".ui.MainActivity" >
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -76,14 +78,9 @@
                     android:pathPattern="/t/.*"
                     android:scheme="https" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.yaoyumeng.v2ex.ui.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.UserActivity"
-            android:parentActivityName=".ui.MainActivity" >
+            android:name=".ui.UserActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -99,30 +96,22 @@
                     android:pathPattern="/member/.*"
                     android:scheme="https" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.yaoyumeng.v2ex.ui.MainActivity" />
         </activity>
         <activity
             android:name=".ui.TopicAddActivity"
-            android:label="@string/title_activity_topic_add"
-            android:parentActivityName=".ui.NodeActivity" >
+            android:label="@string/title_activity_topic_add">
         </activity>
         <activity
             android:name=".ui.TopicCommentActivity"
-            android:label="@string/title_activity_topic_comment"
-            android:parentActivityName=".ui.TopicActivity">
+            android:label="@string/title_activity_topic_comment">
         </activity>
         <activity
             android:name=".ui.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".ui.MainActivity">
+            android:label="@string/title_activity_settings">
         </activity>
         <activity
             android:name=".ui.AboutActivity"
-            android:label="@string/settings_about"
-            android:parentActivityName=".ui.SettingsActivity">
+            android:label="@string/settings_about">
         </activity>
 
         <service
