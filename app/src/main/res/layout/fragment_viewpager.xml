@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <com.astuetz.PagerSlidingTabStrip xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/tab_fragment_collection"
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/pager_tabstrip"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="#FFF"
@@ -15,13 +17,13 @@
         app:pstsIndicatorHeight="3dp" />
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager_fragment_collection"
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="48dp" />
+        android:layout_below="@id/pager_tabstrip" />
 
     <TextView
-        android:id="@+id/txt_fragment_collection_empty"
+        android:id="@+id/empty_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -30,4 +32,4 @@
         android:textSize="16sp"
         android:visibility="gone" />
 
-</FrameLayout>
+</RelativeLayout>

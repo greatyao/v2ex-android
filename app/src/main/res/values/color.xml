@@ -7,32 +7,21 @@
 
     <color name="window_background">#e6e6e6</color>
     <color name="holo_selector_pressed">#8033b5e5</color>
-
-    <color name="photo_crop_dim_color">#cc000000</color>
-    <color name="photo_crop_highlight_color">#fff</color>
-
-    <color name="left_drawer_background">#222222</color>
-
     <color name="theme_window_background">#E2E2E2</color>
 
-    <!--<color name="theme_default_primary">#9E9E9E</color>-->
-    <!--<color name="theme_default_primary_dark">#616161</color>-->
-    <!--<color name="theme_default_primary_text">#FFFFFF</color>-->
-    <!--<color name="theme_accent">#FAFAFA</color>-->
+    <color name="common_item_click">#ffd6f0fa</color>
+    <color name="bg_f9">#fff9f9f9</color>
+    <color name="gray_b2">#ffb2b2b2</color>
+    <color name="gray_22">#ff222222</color>
 
     <color name="list_item_unread">#ff222222</color>
     <color name="list_item_read">#ffb7b7b7</color>
 
-    <color name="theme_default_primary">#3F51B5</color>
-    <color name="theme_default_primary_dark">#303F9F</color>
-    <color name="theme_default_primary_text">#222222</color>
-    <color name="theme_accent">#1A237E</color>
-    <color name="theme_default_secondary_text">#757575</color>
-
-    <color name="actionbar_color">#bf360c</color>
     <color name="drawer_arrow_second_color">#303f9f</color>
-    <color name="colorPrimary">@color/material_deep_teal_500</color>
-    <color name="colorPrimaryLight">@color/material_deep_teal_200</color>
+    <color name="colorPrimary">#3bbd79</color>
+    <color name="colorPrimaryLight">#09b058</color>
+    <!--color name="colorPrimary">@color/material_deep_teal_500</color>
+    <color name="colorPrimaryLight">@color/material_deep_teal_200</color-->
     <color name="colorPrimaryDark">@color/material_deep_teal_500</color>
 
     <color name="share_dialog_item">#9A9A9A</color>

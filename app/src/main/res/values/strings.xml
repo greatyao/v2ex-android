@@ -6,8 +6,24 @@
     <string name="app_author">njustyw</string>
     <string name="github_project">https://github.com/greatyao/v2ex-android</string>
 
-    <string name="topic">话题</string>
+    <string name="topic">主题</string>
     <string name="just_now">刚刚</string>
+
+    <string name="title_activity_main_discovery">发现</string>
+    <string name="title_activity_main_nodes">节点</string>
+    <string name="title_activity_main_myinfo">我的</string>
+    <string name="title_activity_login">登录</string>
+    <string name="title_activity_myinfo_topicsfav">主题收藏</string>
+    <string name="title_activity_myinfo_nodesfav">节点收藏</string>
+    <string name="title_activity_settings">偏好设置</string>
+    <string name="title_activity_myinfo_notification">提醒系统</string>
+    <string name="title_activity_topic">主题详情</string>
+    <string name="title_activity_topic_add">创作新主题</string>
+    <string name="title_activity_topic_comment">回复主题</string>
+
+    <string name="main_discovery_newest">最新</string>
+    <string name="main_discovery_top10">Top 10</string>
+    <string name="main_exitapp_hint">再按一次退出掌上V2EX</string>
 
     <string name="login_user_hint">用户名</string>
     <string name="login_passwd_hint">密码</string>
@@ -25,29 +41,31 @@
     <string name="error_network_exception">网络通信异常，请稍后重试</string>
     <string name="error_network_disconnect">网络不可达,请开启Wifi或者移动数据网络</string>
     <string name="error_reply">无法回复</string>
-    <string name="error_create_topic">无法创建新话题</string>
+    <string name="error_create_topic">无法创建新主题</string>
     <string name="error_login">无法登录</string>
     <string name="error_fav_nodes">无法收藏节点,请稍后重试</string>
-    <string name="error_fav_topic">无法收藏话题,请稍后重试</string>
-    <string name="error_get_topic_list">无法获取话题列表,请稍后重试</string>
-    <string name="error_get_topic_details">无法获取话题详情,请稍后重试</string>
+    <string name="error_fav_topic">无法收藏主题,请稍后重试</string>
+    <string name="error_get_topic_list">无法获取主题列表,请稍后重试</string>
+    <string name="error_get_topic_details">无法获取主题详情,请稍后重试</string>
     <string name="error_get_notification">无法获取未读提醒,请稍后重试</string>
     <string name="error_get_profile">无法获取用户个人资料</string>
     <string name="error_check_in">无法签到</string>
     <string name="error_unknown">未知错误</string>
 
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
-
-    <string name="fav_nodes_empty">没有收藏的节点,请登录或者到所有节点页面下添加节点</string>
+    <string name="fav_nodes_empty">您还没有收藏任何节点</string>
     <string name="fav_nodes_working">节点收藏中...</string>
     <string name="fav_nodes_ok">节点加入收藏</string>
     <string name="unfav_nodes_ok">节点取消收藏</string>
-    <string name="fav_topic_working">话题收藏中...</string>
-    <string name="fav_topic_ok">话题加入收藏</string>
-    <string name="unfav_topic_ok">话题取消收藏</string>
+    <string name="fav_topic_working">主题收藏中...</string>
+    <string name="fav_topic_ok">主题加入收藏</string>
+    <string name="unfav_topic_ok">主题取消收藏</string>
 
-    <string name="title_activity_settings">偏好设置</string>
+    <string name="myinfo_check_in">每日签到</string>
+    <string name="myinfo_nodes">节点收藏</string>
+    <string name="myinfo_topics">主题收藏</string>
+    <string name="myinfo_notifications">未读提醒</string>
+    <string name="myinfo_settings">未读提醒</string>
+
     <string name="settings_nomal">常规设置</string>
     <string name="settings_more">其他</string>
     <string name="settings_use_https">使用HTTPS</string>
@@ -55,7 +73,6 @@
     <string name="settings_use_jsonapi_summary">使用Json API访问，访问次数有限制</string>
     <string name="settings_use_browser_summary">模拟浏览器访问，访问次数无限制</string>
     <string name="settings_clear_cache">清除缓存</string>
-    <string name="settings_check_in">每日签到</string>
     <string name="settings_noimage_nowifi">无图模式</string>
     <string name="settings_noimage_nowifi_summary">2G/3G网络下不显示图片</string>
     <string name="settings_image_nowifi_summary">2G/3G网络下显示图片</string>
@@ -67,28 +84,23 @@
     <string name="notification_message">没有任何提醒消息</string>
     <string name="notification_empty">无法显示提醒消息,请登录</string>
 
-    <string name="memu_title_share">分享</string>
-    <string name="memu_title_star">收藏</string>
-    <string name="memu_title_unstar">取消收藏</string>
-    <string name="memu_title_reply">回复</string>
-
-    <string name="title_activity_topic">话题详情</string>
+    <string name="menu_title_share">分享</string>
+    <string name="menu_title_star">收藏</string>
+    <string name="menu_title_unstar">取消收藏</string>
+    <string name="menu_title_reply">回复</string>
 
     <string name="title_fragment_comment_hint">这里输入你的回复内容</string>
     <string name="title_fragment_comment_yes">回复</string>
     <string name="title_fragment_comment_cancel">取消</string>
 
-    <string name="title_activity_topic_add">创作新话题</string>
     <string name="topic_add_title_hint">输入标题</string>
     <string name="topic_add_content_hint">来，写点内容吧</string>
-    <string name="topic_add_quit_or_not">放弃此次创建话题机会？</string>
-    <string name="topic_add_working">创建话题中...</string>
-
+    <string name="topic_add_quit_or_not">放弃此次创建主题机会？</string>
+    <string name="topic_add_working">创建主题中...</string>
 
     <string name="title_confirm_yes">确定</string>
     <string name="title_confirm_cancel">取消</string>
 
-    <string name="title_activity_topic_comment">回复话题</string>
     <string name="topic_comment_content_hint">来，写点回复吧</string>
     <string name="topic_comment_working">正在发表回复...</string>
     <string name="topic_comment_succeed">回复成功</string>
@@ -105,6 +117,32 @@
     <string name="tip_start_share">开始分享…</string>
     <string name="tip_share_done">分享完成</string>
 
-    <string name="action_settings">Settings</string>
+    <string-array name="v2ex_favorite_tab_titles">
+        <item>技术</item>
+        <item>创意</item>
+        <item>好玩</item>
+        <item>Apple</item>
+        <item>酷工作</item>
+        <item>交易</item>
+        <item>城市</item>
+        <item>问与答</item>
+        <item>最热</item>
+        <item>全部</item>
+        <item>R2</item>
+    </string-array>
+
+    <string-array name="v2ex_favorite_tab_paths">
+        <item>tech</item>
+        <item>creative</item>
+        <item>play</item>
+        <item>apple</item>
+        <item>jobs</item>
+        <item>deals</item>
+        <item>city</item>
+        <item>qna</item>
+        <item>hot</item>
+        <item>all</item>
+        <item>r2</item>
+    </string-array>
 
 </resources>

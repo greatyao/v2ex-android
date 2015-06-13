@@ -6,25 +6,25 @@
     <item android:id="@+id/menu_topic_share"
           android:icon="@drawable/ic_share"
           app:showAsAction="ifRoom"
-          android:title="@string/memu_title_share"
+          android:title="@string/menu_title_share"
           />
 
     <item android:id="@+id/menu_topic_star"
         android:icon="@drawable/ic_star"
         app:showAsAction="ifRoom"
-        android:title="@string/memu_title_star"
+        android:title="@string/menu_title_star"
         />
 
     <item android:id="@+id/menu_topic_unstar"
         android:icon="@drawable/ic_start_active"
         app:showAsAction="ifRoom"
-        android:title="@string/memu_title_unstar"
+        android:title="@string/menu_title_unstar"
         />
 
     <item android:id="@+id/menu_topic_reply"
         android:icon="@drawable/ic_reply"
         app:showAsAction="never"
-        android:title="@string/memu_title_reply"
+        android:title="@string/menu_title_reply"
         />
 
 </menu>

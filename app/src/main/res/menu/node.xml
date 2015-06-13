@@ -6,13 +6,13 @@
     <item android:id="@+id/menu_node_star"
         android:icon="@drawable/ic_star"
         app:showAsAction="ifRoom"
-        android:title="@string/memu_title_star"
+        android:title="@string/menu_title_star"
         />
 
     <item android:id="@+id/menu_node_unstar"
         android:icon="@drawable/ic_start_active"
         app:showAsAction="ifRoom"
-        android:title="@string/memu_title_star"
+        android:title="@string/menu_title_star"
         />
 
 </menu>

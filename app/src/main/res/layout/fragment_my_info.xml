@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#fff0f0f0"
+    android:fadingEdge="none"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/user_layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#fff9f9f9"
+        android:padding="12dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_avatar" />
+
+        <TextView
+            android:id="@+id/user_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/user_avatar"
+            android:text="@string/login_please_login"
+            android:textColor="@color/gray_b2"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/divide_15_top_bottom" />
+
+    <RelativeLayout
+        android:id="@+id/nodesFavorite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/common_item_click_selector"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/myinfo_nodes"
+            android:textColor="@color/gray_22"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/countOfNodes"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:gravity="center"
+            android:text="10"
+            android:textColor="@color/gray_b2"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <include layout="@layout/divide_1_12" />
+
+
+    <RelativeLayout
+        android:id="@+id/topicsFavorite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/common_item_click_selector"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/myinfo_topics"
+            android:textColor="@color/gray_22"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/countOfTopics"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:gravity="center"
+            android:text="10"
+            android:textColor="@color/gray_b2"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <include layout="@layout/divide_1_12" />
+
+    <include layout="@layout/divide_15_top_bottom" />
+
+    <!--LinearLayout
+        android:id="@+id/notificationLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/common_item_click_selector"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="未读提醒"
+                android:textColor="@color/gray_22"
+                android:textSize="16sp" />
+
+            <com.readystatesoftware.viewbadger.BadgeView
+                android:id="@+id/badgeOfNotification"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="top|right"
+                android:gravity="center"
+                android:visibility="invisible" />
+        </FrameLayout>
+    </LinearLayout-->
+
+    <RelativeLayout
+        android:id="@+id/notificationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/common_item_click_selector"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/myinfo_notifications"
+            android:textColor="@color/gray_22"
+            android:textSize="16sp" />
+
+        <com.readystatesoftware.viewbadger.BadgeView
+            android:id="@+id/badgeOfNotification"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:gravity="center"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/divide_1_12" />
+
+    <TextView
+        android:id="@+id/checkIn"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/common_item_click_selector"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="@string/myinfo_check_in"
+        android:textColor="@color/gray_22"
+        android:textSize="16sp" />
+
+    <include layout="@layout/divide_1_12" />
+
+    <include layout="@layout/divide_15_top_bottom" />
+
+    <TextView
+        android:id="@+id/settings"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/common_item_click_selector"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="@string/myinfo_settings"
+        android:textColor="@color/gray_22"
+        android:textSize="16sp" />
+
+</LinearLayout>

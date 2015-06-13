@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="tx_icon" format="reference"></attr>
+    <attr name="tx_color" format="color"></attr>
+    <attr name="tx_text" format="string"></attr>
+    <attr name="tx_text_size" format="dimension"></attr>
+
+    <declare-styleable name="ChangeColorIconWithText">
+        <attr name="tx_icon"></attr>
+        <attr name="tx_color"></attr>
+        <attr name="tx_text"></attr>
+        <attr name="tx_text_size"></attr>
+    </declare-styleable>
+
+</resources>
