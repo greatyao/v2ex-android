@@ -82,8 +82,6 @@ public class TopicListModel extends ArrayList<TopicModel> {
             }
             break;
         }
-
-        Log.i("page", String.format("%d/%d", mCurrentPage, mTotalPage));
     }
 
     private TopicModel parseTopicModel(Element el, boolean parseNode, NodeModel node) throws Exception {
@@ -112,7 +110,6 @@ public class TopicListModel extends ArrayList<TopicModel> {
                 Elements aNodes = tdNode.getElementsByTag("a");
                 for (Element aNode : aNodes) {
                     if (parseNode && aNode.attr("class").equals("node")) {
-                        android.util.Log.i("parse", aNode.toString());
                         String nodeUrlString = aNode.attr("href");
                         node.name = nodeUrlString.replace("/go/", "");
                         node.title = aNode.text();
