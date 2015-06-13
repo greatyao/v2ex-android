@@ -17,6 +17,7 @@ import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.NotificationListModel;
 import com.yaoyumeng.v2ex.model.NotificationModel;
 import com.yaoyumeng.v2ex.model.PersistenceHelper;
+import com.yaoyumeng.v2ex.model.ProfileModel;
 import com.yaoyumeng.v2ex.model.ReplyModel;
 import com.yaoyumeng.v2ex.model.TopicListModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
@@ -143,6 +144,19 @@ public class V2EXManager {
         getCategoryTopics(ctx, getBaseUrl() + "/?tab=" + tab, refresh, handler);
     }
 
+
+    /**
+     * 获取我的收藏的话题
+     *
+     * @param ctx
+     * @param refresh
+     * @param handler
+     */
+    public static void getMyFavoriteTopics(Context ctx, int page, boolean refresh,
+                                           final HttpRequestHandler<ArrayList<TopicModel>> handler) {
+        getCategoryTopics(ctx, getBaseUrl() + "/my/topics?p=" + page, refresh, handler);
+    }
+
     /**
      * 获取首页分类话题列表 (包括技术,创意,好玩,Apple,酷工作,交易,城市,问与答,R2)
      *
@@ -180,7 +194,7 @@ public class V2EXManager {
                         TopicListModel topics = new TopicListModel();
                         try {
                             topics.parse(responseBody);
-                            if (topics.size() > 0)
+                            if (topics.size() > 0 && topics.mCurrentPage == 1)
                                 PersistenceHelper.saveModelList(ctx, topics, key);
                             return topics;
                         } catch (Exception e) {
@@ -191,7 +205,7 @@ public class V2EXManager {
                     @Override
                     protected void onPostExecute(TopicListModel topics) {
                         if (topics != null)
-                            SafeHandler.onSuccess(handler, topics);
+                            SafeHandler.onSuccess(handler, topics, topics.mTotalPage, topics.mCurrentPage);
                         else
                             SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorGetTopicListFailure));
                     }
@@ -238,7 +252,7 @@ public class V2EXManager {
                     @Override
                     protected void onPostExecute(TopicListModel topics) {
                         if (topics != null)
-                            SafeHandler.onSuccess(handler, topics, topics.getTotalPage(), topics.getCurrentPage());
+                            SafeHandler.onSuccess(handler, topics, topics.mTotalPage, topics.mCurrentPage);
                         else
                             SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(ctx, V2EXErrorType.ErrorGetTopicListFailure));
                     }
@@ -349,14 +363,15 @@ public class V2EXManager {
             sClient.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
             sClient.addHeader("Accept-Charset", "utf-8, iso-8859-1, utf-16, *;q=0.7");
             sClient.addHeader("Accept-Language", "zh-CN, en-US");
-            sClient.addHeader("X-Requested-With", "com.android.browser");
             sClient.addHeader("Host", "www.v2ex.com");
         }
 
-        if (mobile)
+        if (mobile) {
+            sClient.addHeader("X-Requested-With", "com.android.browser");
             sClient.setUserAgent("Mozilla/5.0 (Linux; U; Android 4.2.1; en-us; M040 Build/JOP40D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
-        else
+        } else {
             sClient.setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko");
+        }
 
         return sClient;
     }
@@ -459,24 +474,6 @@ public class V2EXManager {
             }
         });
     }
-
-    private static String getUsernameFromResponse(String content) {
-        Pattern userPattern = Pattern.compile("<a href=\"/member/([^\"]+)\" class=\"top\">");
-        Matcher userMatcher = userPattern.matcher(content);
-        if (userMatcher.find())
-            return userMatcher.group(1);
-        return null;
-    }
-
-    private static int getNotificationCountFromResponse(String content) {
-        Pattern pattern = Pattern.compile("<a href=\"/notifications\"([^>]*)>([0-9]+) 条未读提醒</a>");
-        Matcher matcher = pattern.matcher(content);
-        if (matcher.find()) {
-            return Integer.parseInt(matcher.group(2));
-        }
-        return -1;
-    }
-
 
     private static ArrayList<NodeModel> getNodeModelsFromResponse(String content) {
         Pattern pattern = Pattern.compile("<a class=\"grid_item\" href=\"/go/([^\"]+)\" id=([^>]+)><div([^>]+)><img src=\"([^\"]+)([^>]+)><([^>]+)></div>([^<]+)");
@@ -588,42 +585,37 @@ public class V2EXManager {
      * @param handler 用户基本资料的结果处理
      */
     public static void getProfile(final Context context,
-                                  final HttpRequestHandler<ArrayList<MemberModel>> handler) {
-        getClient(context).get(getBaseUrl(), new TextHttpResponseHandler() {
+                                  final HttpRequestHandler<ProfileModel> handler, boolean direct) {
+        //在登录之后立即访问主页可以获取主题收藏数
+        //但是直接访问主页却无法获取收藏数(返回的是移动端的界面),但是访问/my/nodes或/my/topics却可以
+        getClient(context, false).get(getBaseUrl() + (direct ? "/my/nodes" : ""), new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(context, V2EXErrorType.ErrorGetProfileFailure));
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseBody) {
-                String username = getUsernameFromResponse(responseBody);
-                if (username != null) {
-                    getMemberInfoByUsername(context, username, true, handler);
-                }
-            }
-        });
-    }
+            public void onSuccess(int statusCode, Header[] headers, final String responseBody) {
+                new AsyncTask<Void, Void, ProfileModel>() {
+                    @Override
+                    public ProfileModel doInBackground(Void... params) {
+                        ProfileModel profile = new ProfileModel();
+                        try {
+                            profile.parse(responseBody);
+                            return profile;
+                        } catch (Exception e) {
+                            return null;
+                        }
+                    }
 
-    /**
-     * 获取未读提醒数目(只在>0的情况下才唤醒处理事件)
-     *
-     * @param cxt
-     * @param handler
-     */
-    public static void getNotificationCount(final Context cxt, final HttpRequestHandler<Integer> handler) {
-        getClient(cxt, false).get(getBaseUrl(), new TextHttpResponseHandler() {
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(cxt, V2EXErrorType.ErrorGetNotificationFailure));
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseBody) {
-                int count = getNotificationCountFromResponse(responseBody);
-                if (count > 0) {
-                    SafeHandler.onSuccess(handler, count);
-                }
+                    @Override
+                    protected void onPostExecute(ProfileModel profile) {
+                        if (profile != null)
+                            SafeHandler.onSuccess(handler, profile);
+                        else
+                            SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(context, V2EXErrorType.ErrorGetProfileFailure));
+                    }
+                }.execute();
             }
         });
     }
@@ -733,6 +725,20 @@ public class V2EXManager {
         });
     }
 
+    private static String getFavUrlStringFromEnResponse(String response) {
+        Pattern pattern = Pattern.compile("<a href=\"(.*)\">Favorite This Node</a>");
+        Matcher matcher = pattern.matcher(response);
+        if (matcher.find())
+            return matcher.group(1);
+
+        pattern = Pattern.compile("<a href=\"(.*)\">Unfavorite</a>");
+        matcher = pattern.matcher(response);
+        if (matcher.find())
+            return matcher.group(1);
+
+        return "";
+    }
+
     private static String getFavUrlStringFromResponse(String response) {
         Pattern pattern = Pattern.compile("<a href=\"(.*)\">加入收藏</a>");
         Matcher matcher = pattern.matcher(response);
@@ -769,6 +775,10 @@ public class V2EXManager {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseBody) {
                 String favUrl = getFavUrlStringFromResponse(responseBody);
+                if (favUrl.isEmpty()) {
+                    favUrl = getFavUrlStringFromEnResponse(responseBody);
+                }
+
                 if (favUrl.isEmpty()) {
                     SafeHandler.onFailure(handler, context.getString(R.string.error_unknown));
                     return;
