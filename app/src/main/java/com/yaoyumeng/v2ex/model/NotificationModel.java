@@ -52,7 +52,7 @@ public class NotificationModel extends V2EXModel {
 
         Elements aNodes = second.getElementsByTag("a");
         for (Element aNode : aNodes) {
-            if (aNode.toString().indexOf("reply") >= 0) {
+            if (aNode.toString().contains("reply")) {
                 notificationTopic.title = aNode.html();
 
                 String topicURLString = aNode.attr("href");
@@ -63,7 +63,7 @@ public class NotificationModel extends V2EXModel {
                     notificationTopic.id = Integer.parseInt(ss[0]);
                     notificationTopic.replies = Integer.parseInt(ss[1].substring(5));
                     break;
-                } catch (Exception e){
+                } catch (Exception e) {
                     continue;
                 }
             }
@@ -77,27 +77,27 @@ public class NotificationModel extends V2EXModel {
         notificationTopic.content = contentNodes.text();
         notificationTopic.contentRendered = ContentUtils.formatContent(contentNodes.html());
 
-        if (rawContents.indexOf("里提到了你") >= 0) {
+        if (rawContents.contains("里提到了你")) {
             notificationDescriptionBefore = " 在 ";
             notificationDescriptionAfter = " 里提到了你";
         }
-        if (rawContents.indexOf("里回复了你") >= 0) {
+        if (rawContents.contains("里回复了你")) {
             notificationDescriptionBefore = " 在 ";
             notificationDescriptionAfter = " 里回复了你";
         }
-        if (rawContents.indexOf("时提到了你") >= 0) {
+        if (rawContents.contains("时提到了你")) {
             notificationDescriptionBefore = " 在回复 ";
             notificationDescriptionAfter = " 时提到了你";
         }
-        if (rawContents.indexOf("感谢了你发布的主题") >= 0) {
+        if (rawContents.contains("感谢了你发布的主题")) {
             notificationDescriptionBefore = " 感谢了你发布的主题 ";
             notificationDescriptionAfter = "";
         }
-        if (rawContents.indexOf("感谢了你在主题") >= 0) {
+        if (rawContents.contains("感谢了你在主题")) {
             notificationDescriptionBefore = " 感谢了你在主题 ";
             notificationDescriptionAfter = " 里的回复";
         }
-        if (rawContents.indexOf("收藏了你发布的主题") >= 0) {
+        if (rawContents.contains("收藏了你发布的主题")) {
             notificationDescriptionBefore = " 收藏了你发布的主题 ";
             notificationDescriptionAfter = "";
         }

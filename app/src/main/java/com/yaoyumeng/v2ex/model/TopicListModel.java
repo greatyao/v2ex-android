@@ -91,7 +91,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
         if (parseNode) node = new NodeModel();
         for (Element tdNode : tdNodes) {
             String content = tdNode.toString();
-            if (content.indexOf("class=\"avatar\"") >= 0) {
+            if (content.contains("class=\"avatar\"") ) {
                 Elements userIdNode = tdNode.getElementsByTag("a");
                 if (userIdNode != null) {
                     String idUrlString = userIdNode.attr("href");
@@ -106,7 +106,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
                     }
                     member.avatar = avatarString;
                 }
-            } else if (content.indexOf("class=\"item_title\"") >= 0) {
+            } else if (content.contains("class=\"item_title\"") ) {
                 Elements aNodes = tdNode.getElementsByTag("a");
                 for (Element aNode : aNodes) {
                     if (parseNode && aNode.attr("class").equals("node")) {
@@ -114,7 +114,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
                         node.name = nodeUrlString.replace("/go/", "");
                         node.title = aNode.text();
                     } else {
-                        if (aNode.toString().indexOf("reply") >= 0) {
+                        if (aNode.toString().contains("reply") ) {
                             topic.title = aNode.text();
                             String topicIdString = aNode.attr("href");
                             String[] subArray = topicIdString.split("#");
@@ -127,9 +127,9 @@ public class TopicListModel extends ArrayList<TopicModel> {
                 Elements spanNodes = tdNode.getElementsByTag("span");
                 for (Element spanNode : spanNodes) {
                     String contentString = spanNode.text();
-                    if (contentString.indexOf("最后回复") >= 0
-                            || contentString.indexOf("前") >= 0
-                            || contentString.indexOf("  •  ") >= 0) {
+                    if (contentString.contains("最后回复")
+                            || contentString.contains("前")
+                            || contentString.contains("  •  ") ) {
                         String[] components = contentString.split("  •  ");
                         if (parseNode && components.length <= 2) continue;
                         else if (!parseNode && components.length <= 1) continue;

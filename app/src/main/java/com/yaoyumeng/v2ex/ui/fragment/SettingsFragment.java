@@ -131,7 +131,7 @@ public class SettingsFragment extends PreferenceFragment {
         });
 
         // 清除缓存
-        mCache = (Preference) findPreference("pref_cache");
+        mCache = findPreference("pref_cache");
         mCache.setSummary(FileUtils.getFileSize(FileUtils.getCacheSize(getActivity())));
         mCache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
@@ -142,7 +142,7 @@ public class SettingsFragment extends PreferenceFragment {
         });
 
         // 关于我们
-        mAbout = (Preference) findPreference("pref_about");
+        mAbout = findPreference("pref_about");
         mAbout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 showAboutMe();

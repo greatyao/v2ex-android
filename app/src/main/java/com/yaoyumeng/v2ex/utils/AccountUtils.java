@@ -12,7 +12,6 @@ import com.yaoyumeng.v2ex.model.ProfileModel;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 
 /**
  * 登录帐号管理Created by yw on 2015/5/5.
@@ -73,9 +72,7 @@ public class AccountUtils {
         PersistenceHelper.saveModel(cxt, profile, key_login_member);
 
         //通知所有页面,登录成功,更新用户信息
-        Iterator<OnAccountListener> iterator = listeners.iterator();
-        while (iterator.hasNext()) {
-            OnAccountListener listener = iterator.next();
+        for (OnAccountListener listener : listeners) {
             listener.onLogin(profile);
         }
     }
@@ -144,9 +141,7 @@ public class AccountUtils {
         removeFavNodes(cxt);
 
         //通知所有页面退出登录了,清除登录痕迹
-        Iterator<OnAccountListener> iterator = listeners.iterator();
-        while (iterator.hasNext()) {
-            OnAccountListener listener = iterator.next();
+        for (OnAccountListener listener : listeners) {
             listener.onLogout();
         }
     }

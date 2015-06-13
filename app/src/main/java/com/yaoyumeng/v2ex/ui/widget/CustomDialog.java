@@ -16,11 +16,11 @@ public final class CustomDialog {
                 "android:id/titleDividerTop", "android:id/titleDivider"
         };
 
-        for (int i = 0; i < dividers.length; ++i) {
-            int divierId = context.getResources().getIdentifier(dividers[i], null, null);
-            View divider = dialog.findViewById(divierId);
-            if (divider != null) {
-                divider.setBackgroundColor(color);
+        for (String divider : dividers) {
+            int dividerId = context.getResources().getIdentifier(divider, null, null);
+            View dividerView = dialog.findViewById(dividerId);
+            if (dividerView != null) {
+                dividerView.setBackgroundColor(color);
             }
         }
     }
