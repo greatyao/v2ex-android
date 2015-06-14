@@ -59,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:gravity="center_vertical"
+            android:background="@drawable/common_item_click_selector"
             android:paddingLeft="15sp"
             android:paddingRight="15sp">
 
@@ -88,6 +89,7 @@
             android:id="@+id/github_layout"
             android:layout_width="match_parent"
             android:layout_height="36dp"
+            android:background="@drawable/common_item_click_selector"
             android:gravity="center_vertical"
             android:paddingLeft="15sp"
             android:paddingRight="15sp">
@@ -118,6 +120,7 @@
             android:id="@+id/homepage_layout"
             android:layout_width="match_parent"
             android:layout_height="36dp"
+            android:background="@drawable/common_item_click_selector"
             android:gravity="center_vertical"
             android:paddingLeft="15sp"
             android:paddingRight="15sp">
@@ -149,6 +152,7 @@
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:gravity="center_vertical"
+            android:background="@drawable/common_item_click_selector"
             android:paddingLeft="15sp"
             android:paddingRight="15sp">
 
