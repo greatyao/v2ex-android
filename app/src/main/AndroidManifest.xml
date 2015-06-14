@@ -99,11 +99,15 @@
         </activity>
         <activity
             android:name=".ui.TopicAddActivity"
-            android:label="@string/title_activity_topic_add">
+            android:label="@string/title_activity_topic_add"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize">
         </activity>
         <activity
             android:name=".ui.TopicCommentActivity"
-            android:label="@string/title_activity_topic_comment">
+            android:label="@string/title_activity_topic_comment"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize">
         </activity>
         <activity
             android:name=".ui.SettingsActivity"

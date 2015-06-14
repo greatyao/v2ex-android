@@ -12,7 +12,7 @@
         android:paddingBottom="14dp"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        android:gravity="top|left"
+        android:gravity="center_vertical"
         android:textSize="16sp"
         android:singleLine="true" />
 
@@ -25,7 +25,7 @@
         android:paddingBottom="14dp"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        android:gravity="top|left"
+        android:gravity="top"
         android:textSize="16sp" />
 
 </LinearLayout>
