@@ -18,6 +18,7 @@ public class EnterLayout {
     private View mRootView;
     public ImageButton send;
     public EditText content;
+    private String hint;
 
     public EnterLayout(Context context, View rootView, View.OnClickListener sendTextOnClick) {
         mRootView = rootView;
@@ -31,17 +32,18 @@ public class EnterLayout {
         content.addTextChangedListener(new SimpleTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                updateSendButtonStyle();
+                updateSendButtonStyleAndHint();
             }
         });
         content.setText("");
     }
 
-    public void updateSendButtonStyle() {
+    public void updateSendButtonStyleAndHint() {
         if (sendButtonEnable()) {
             send.setEnabled(true);
         } else {
             send.setEnabled(false);
+            content.setHint(hint);
         }
     }
 
@@ -74,6 +76,10 @@ public class EnterLayout {
         editable.insert(0, s);
     }
 
+    public void setDefaultHint(String hint) {
+        this.hint = hint;
+    }
+
     public void deleteOneChar() {
         KeyEvent event = new KeyEvent(0, 0, 0, KeyEvent.KEYCODE_DEL, 0, 0, 0, 0, KeyEvent.KEYCODE_ENDCALL);
         content.dispatchKeyEvent(event);
@@ -81,6 +87,7 @@ public class EnterLayout {
 
     public void clearContent() {
         content.setText("");
+        content.setHint(hint);
     }
 
     public String getContent() {

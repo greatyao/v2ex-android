@@ -110,6 +110,7 @@ public class TopicFragment extends BaseFragment
         mHeader = inflater.inflate(R.layout.item_topic_more, container, false);
 
         mEnterLayout = new EnterLayout(getActivity(), rootView, onClickSend);
+        mEnterLayout.setDefaultHint(getString(R.string.topic_comment_default_hint));
         mEnterLayout.hide();
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_replies);
@@ -235,7 +236,6 @@ public class TopicFragment extends BaseFragment
             return false;
         else {
             mEnterLayout.clearContent();
-            mEnterLayout.content.setHint("评论话题");
             return true;
         }
     }
@@ -287,10 +287,7 @@ public class TopicFragment extends BaseFragment
         final EditText content = mEnterLayout.content;
         String replyToWho = "";
         mEnterLayout.clearContent();
-        if (data instanceof TopicModel) {
-            TopicModel topicObj = (TopicModel) data;
-            content.setHint("评论话题");
-        } else if (data instanceof ReplyModel) {
+        if (data instanceof ReplyModel) {
             final ReplyModel replyObj = (ReplyModel) data;
             content.setHint("回复 " + replyObj.member.username);
             replyToWho = "@" + replyObj.member.username + " ";

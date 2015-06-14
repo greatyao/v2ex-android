@@ -91,6 +91,7 @@
     <string name="title_fragment_comment_hint">这里输入你的回复内容</string>
     <string name="title_fragment_comment_yes">回复</string>
     <string name="title_fragment_comment_cancel">取消</string>
+    <string name="topic_comment_default_hint">评论主题</string>
 
     <string name="topic_add_title_hint">输入标题</string>
     <string name="topic_add_content_hint">来，写点内容吧</string>
