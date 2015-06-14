@@ -1,5 +1,7 @@
 package com.yaoyumeng.v2ex.ui.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,12 +27,9 @@ import com.yaoyumeng.v2ex.utils.FileUtils;
  * Created by yw on 2015/5/13.
  */
 public class SettingsFragment extends PreferenceFragment {
-
-    public static final String GITGUB_PROJECT = "https://github.com/greatyao/v2ex-android";
     SharedPreferences mPreferences;
     Preference mCache;
     Preference mAbout;
-    Preference mCheckIn;
     CheckBoxPreference mHttps;
     CheckBoxPreference mEffect;
     CheckBoxPreference mLoadimage;
@@ -73,9 +72,18 @@ public class SettingsFragment extends PreferenceFragment {
         mLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                V2EXManager.logout(getActivity());
-                AccountUtils.removeAll(getActivity());
-                getActivity().finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.settings_dialog_hint)
+                        .setMessage(R.string.settings_logout_or_not)
+                        .setPositiveButton(R.string.title_confirm_yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                V2EXManager.logout(getActivity());
+                                AccountUtils.removeAll(getActivity());
+                                getActivity().finish();
+                            }
+                        })
+                        .setNegativeButton(R.string.title_confirm_cancel, null).show();
             }
         });
 
@@ -135,8 +143,17 @@ public class SettingsFragment extends PreferenceFragment {
         mCache.setSummary(FileUtils.getFileSize(FileUtils.getCacheSize(getActivity())));
         mCache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                FileUtils.clearAppCache(getActivity());
-                mCache.setSummary("0KB");
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.settings_dialog_hint)
+                        .setMessage(R.string.settings_clear_cache_or_not)
+                        .setPositiveButton(R.string.title_confirm_yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                FileUtils.clearAppCache(getActivity());
+                                mCache.setSummary("0KB");
+                            }
+                        })
+                        .setNegativeButton(R.string.title_confirm_cancel, null).show();
                 return true;
             }
         });

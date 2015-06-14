@@ -79,6 +79,9 @@
     <string name="settings_check_update">检查更新</string>
     <string name="settings_feedback">给个好评</string>
     <string name="settings_about">关于我们</string>
+    <string name="settings_dialog_hint">提示</string>
+    <string name="settings_logout_or_not">确定退出登录？</string>
+    <string name="settings_clear_cache_or_not">确定清除缓存？</string>
 
     <string name="notification_message">没有任何提醒消息</string>
     <string name="notification_empty">无法显示提醒消息,请登录</string>
