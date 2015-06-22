@@ -14,6 +14,7 @@
     <string name="title_activity_login">登录</string>
     <string name="title_activity_myinfo_topicsfav">主题收藏</string>
     <string name="title_activity_myinfo_nodesfav">节点收藏</string>
+    <string name="title_activity_myinfo_following">特别关注</string>
     <string name="title_activity_settings">偏好设置</string>
     <string name="title_activity_myinfo_notification">提醒系统</string>
     <string name="title_activity_topic">主题详情</string>
@@ -62,6 +63,7 @@
     <string name="myinfo_check_in">每日签到</string>
     <string name="myinfo_nodes">节点收藏</string>
     <string name="myinfo_topics">主题收藏</string>
+    <string name="myinfo_followings">特别关注</string>
     <string name="myinfo_notifications">未读提醒</string>
     <string name="myinfo_settings">设置</string>
 
@@ -132,6 +134,7 @@
         <item>最热</item>
         <item>全部</item>
         <item>R2</item>
+        <item>关注</item>
     </string-array>
 
     <string-array name="v2ex_favorite_tab_paths">
@@ -146,6 +149,7 @@
         <item>hot</item>
         <item>all</item>
         <item>r2</item>
+        <item>members</item>
     </string-array>
 
 </resources>

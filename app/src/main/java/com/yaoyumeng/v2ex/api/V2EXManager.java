@@ -171,6 +171,18 @@ public class V2EXManager {
     }
 
     /**
+     * 获取我的关注者的主题列表
+     * @param ctx
+     * @param page
+     * @param refresh
+     * @param handler
+     */
+    public static void getTopicsOfMyFollowers(Context ctx, int page, boolean refresh,
+                                              final HttpRequestHandler<ArrayList<TopicModel>> handler){
+        getCategoryTopics(ctx, getBaseUrl() + "/my/following?p=" + page, refresh, handler);
+    }
+
+    /**
      * 获取首页分类话题列表 (包括技术,创意,好玩,Apple,酷工作,交易,城市,问与答,R2)
      *
      * @param ctx

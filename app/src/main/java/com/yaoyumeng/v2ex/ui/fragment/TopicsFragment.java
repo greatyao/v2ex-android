@@ -44,8 +44,9 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
     public static final int LatestTopics = 0;
     public static final int HotTopics = -1;
     public static final int MyFavoriteTopics = -2;
-    public static final int InvalidTopics = -3;
-    int mNodeId = InvalidTopics;   //0表示最新话题,-1表示最热话题,-2表示收藏的话题,其他表示节点下的话题
+    public static final int MyFollowerTopics = -3;
+    public static final int InvalidTopics = -4;
+    int mNodeId = InvalidTopics;   //0表示最新话题,-1表示最热话题,-2表示收藏的话题,-3表示我的特别关注,其他表示节点下的话题
     int mPage = 1;
     boolean mNoMore = true;
     HeaderViewRecyclerAdapter mHeaderAdapter;
@@ -266,6 +267,8 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
         mIsLoading = true;
         if (mNodeId == MyFavoriteTopics)
             V2EXManager.getMyFavoriteTopics(getActivity(), mPage + 1, true, this);
+        else if(mNodeId == MyFollowerTopics)
+            V2EXManager.getTopicsOfMyFollowers(getActivity(), mPage + 1, true, this);
         else
             V2EXManager.getTopicsByNodeName(getActivity(), mNodeName, mPage + 1, true, this);
     }
@@ -281,12 +284,17 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
             V2EXManager.getHotTopics(getActivity(), refresh, this);
         else if (mNodeId == MyFavoriteTopics)
             V2EXManager.getMyFavoriteTopics(getActivity(), mPage, true, this);
+        else if(mNodeId == MyFollowerTopics)
+            V2EXManager.getTopicsOfMyFollowers(getActivity(), mPage, true, this);
         else if (mNodeId > 0)
             V2EXManager.getTopicsByNodeId(getActivity(), mNodeId, refresh, this);
     }
 
     private void requestTopicsByTab(boolean refresh) {
-        V2EXManager.getTopicsByTab(getActivity(), mTabName, refresh, this);
+        if(mTabName.equals("members") && !mIsLogin)
+            onSuccess(new ArrayList<TopicModel>());
+        else
+            V2EXManager.getTopicsByTab(getActivity(), mTabName, refresh, this);
     }
 
     private void requestTopics(boolean refresh) {

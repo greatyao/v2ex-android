@@ -30,6 +30,7 @@ public class MyInfoFragment extends BaseFragment implements View.OnClickListener
     private BadgeView mNotifyCount;
     private TextView mTopicCount;
     private TextView mNodeCount;
+    private TextView mFollowingCount;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,8 @@ public class MyInfoFragment extends BaseFragment implements View.OnClickListener
         mNodeCount = (TextView) rootView.findViewById(R.id.countOfNodes);
         View topicsFavorite = rootView.findViewById(R.id.topicsFavorite);
         mTopicCount = (TextView) rootView.findViewById(R.id.countOfTopics);
+        View myFollowing = rootView.findViewById(R.id.myFollowing);
+        mFollowingCount = (TextView) rootView.findViewById(R.id.countOfFollowing);
         View notifyLayout = rootView.findViewById(R.id.notificationLayout);
         mNotifyCount = (BadgeView) rootView.findViewById(R.id.badgeOfNotification);
         View settings = rootView.findViewById(R.id.settings);
@@ -55,10 +58,12 @@ public class MyInfoFragment extends BaseFragment implements View.OnClickListener
 
         mNodeCount.setVisibility(View.INVISIBLE);
         mTopicCount.setVisibility(View.INVISIBLE);
+        mFollowingCount.setVisibility(View.INVISIBLE);
         mNotifyCount.setVisibility(View.INVISIBLE);
         userLayout.setOnClickListener(this);
         nodesFavorite.setOnClickListener(this);
         topicsFavorite.setOnClickListener(this);
+        myFollowing.setOnClickListener(this);
         notifyLayout.setOnClickListener(this);
         settings.setOnClickListener(this);
         checkIn.setOnClickListener(this);
@@ -94,6 +99,7 @@ public class MyInfoFragment extends BaseFragment implements View.OnClickListener
         mNotifyCount.setVisibility(View.INVISIBLE);
         mNodeCount.setVisibility(View.INVISIBLE);
         mTopicCount.setVisibility(View.INVISIBLE);
+        mFollowingCount.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -117,6 +123,13 @@ public class MyInfoFragment extends BaseFragment implements View.OnClickListener
                 if (!willLaunchLoginActivity()) {
                     Intent intent = new Intent(getActivity(), MyInfoActivity.class);
                     intent.putExtra("type", MyInfoActivity.TypeMyTopicsFavorite);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.myFollowing:
+                if (!willLaunchLoginActivity()) {
+                    Intent intent = new Intent(getActivity(), MyInfoActivity.class);
+                    intent.putExtra("type", MyInfoActivity.TypeMyFollowings);
                     startActivity(intent);
                 }
                 break;
@@ -173,6 +186,8 @@ public class MyInfoFragment extends BaseFragment implements View.OnClickListener
         mTopicCount.setText(String.format("%d", profile.topics));
         mTopicCount.setVisibility(View.VISIBLE);
 
+        mFollowingCount.setText(String.format("%d", profile.followings));
+        mFollowingCount.setVisibility(View.VISIBLE);
     }
 
     //刷新用户资料:包括节点收藏,话题收藏等

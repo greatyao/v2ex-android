@@ -28,6 +28,7 @@ public class MyInfoActivity extends SwipeBackActivity {
     public static final int TypeMyNodesFavorite = 1;
     public static final int TypeMyTopicsFavorite = 2;
     public static final int TypeMyNotifications = 3;
+    public static final int TypeMyFollowings = 4;
 
     private int mType;
 
@@ -64,6 +65,16 @@ public class MyInfoActivity extends SwipeBackActivity {
             fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
             setTitle(getString(R.string.title_activity_myinfo_topicsfav));
+        } else if(mType == TypeMyFollowings){
+            //我的特别关注
+            TopicsFragment fragment = new TopicsFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("node_id", TopicsFragment.MyFollowerTopics);
+            bundle.putBoolean("attach_main", false);
+            bundle.putBoolean("show_menu", false);
+            fragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
+            setTitle(getString(R.string.title_activity_myinfo_following));
         } /*else  if (mType == TypeMyNodesFavorite) {
             ViewPagerFragment fragment = new ViewPagerFragment();
             Bundle bundle = new Bundle();

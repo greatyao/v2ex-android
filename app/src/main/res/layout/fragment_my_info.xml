@@ -99,6 +99,37 @@
 
     <include layout="@layout/divide_1_12" />
 
+    <RelativeLayout
+        android:id="@+id/myFollowing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/common_item_click_selector"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/myinfo_followings"
+            android:textColor="@color/gray_22"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/countOfFollowing"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:gravity="center"
+            android:text="10"
+            android:textColor="@color/gray_b2"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <include layout="@layout/divide_1_12" />
+
     <include layout="@layout/divide_15_top_bottom" />
 
     <!--LinearLayout
