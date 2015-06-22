@@ -144,7 +144,10 @@ public class UserFragment extends BaseFragment
             @Override
             public void onRefresh() {
                 mPage = 1;
-                getTopicsData(true);
+                if(mMember == null)
+                    V2EXManager.getMemberInfoByUsername(getActivity(), mUserName, true, UserFragment.this);
+                else
+                    getTopicsData(true);
             }
         });
         mSwipeLayout.setColorScheme(android.R.color.holo_blue_bright,
