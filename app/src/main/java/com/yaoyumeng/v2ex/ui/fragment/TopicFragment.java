@@ -320,7 +320,11 @@ public class TopicFragment extends BaseFragment
 
     //回复话题作者
     private void replyToAuthor() {
-        reply(mTopic.member.username);
+        try {
+            reply(mTopic.member.username);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void reply(String username) {
