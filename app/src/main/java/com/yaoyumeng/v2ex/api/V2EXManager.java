@@ -144,6 +144,19 @@ public class V2EXManager {
         getCategoryTopics(ctx, getBaseUrl() + "/?tab=" + tab, refresh, handler);
     }
 
+    /**
+     * 获取用户创建的主题列表
+     * @param ctx
+     * @param username
+     * @param page
+     * @param handler
+     */
+    public static void getTopicsByUsernameThroughBrowser(Context ctx, String username, int page,
+                                                         HttpRequestHandler<ArrayList<TopicModel>> handler){
+        String url = String.format("%s/member/%s/topics?p=%d", getBaseUrl(), username, page);
+        getCategoryTopics(ctx, url, true, handler);
+    }
+
 
     /**
      * 获取我的收藏的话题

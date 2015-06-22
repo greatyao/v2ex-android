@@ -25,11 +25,14 @@ import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.TopicsAdapter;
+import com.yaoyumeng.v2ex.ui.widget.FootUpdate;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
+import com.yaoyumeng.v2ex.utils.OnScrollToBottomListener;
 
 import java.util.ArrayList;
 
-public class UserFragment extends BaseFragment implements HttpRequestHandler<ArrayList<MemberModel>> {
+public class UserFragment extends BaseFragment
+        implements HttpRequestHandler<ArrayList<MemberModel>>, OnScrollToBottomListener {
 
     private static final String FIELD_UNSET = "未设置";
     private View mHeader;
@@ -51,9 +54,12 @@ public class UserFragment extends BaseFragment implements HttpRequestHandler<Arr
     private LinearLayout mGithubLayout;
     private LinearLayout mLocationLayout;
     private MemberModel mMember;
-    private ArrayList<TopicModel> mTopics;
     private String mUserName;
-    private String TAG = "UserFragment";
+    private int mPage = 1;
+    private boolean mNoMore = true;
+    private Application mApp = Application.getInstance();
+
+
     private View.OnClickListener layoutClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -109,12 +115,19 @@ public class UserFragment extends BaseFragment implements HttpRequestHandler<Arr
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new TopicsAdapter(getActivity(), null);
+        mAdapter = new TopicsAdapter(getActivity(), this);
         mHeaderAdapter = new HeaderViewRecyclerAdapter(mAdapter);
         mHeaderAdapter.addHeaderView(mHeader);
         mRecyclerView.setAdapter(mHeaderAdapter);
 
-        if (Application.getInstance().isShowEffectFromCache()) {
+        mFootUpdate.init(mHeaderAdapter, LayoutInflater.from(getActivity()), new FootUpdate.LoadMore() {
+            @Override
+            public void loadMore() {
+                getTopicsOfNextPage();
+            }
+        });
+
+        if (mApp.isShowEffectFromCache()) {
             JazzyRecyclerViewScrollListener scrollListener = new JazzyRecyclerViewScrollListener();
             mRecyclerView.setOnScrollListener(scrollListener);
             scrollListener.setTransitionEffect(new FadeEffect());
@@ -130,6 +143,7 @@ public class UserFragment extends BaseFragment implements HttpRequestHandler<Arr
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mPage = 1;
                 getTopicsData(true);
             }
         });
@@ -172,6 +186,13 @@ public class UserFragment extends BaseFragment implements HttpRequestHandler<Arr
         MessageUtils.showErrorMessage(getActivity(), error);
     }
 
+    @Override
+    public void onLoadMore() {
+        if (!mNoMore && !mApp.isJsonAPIFromCache()) {
+            getTopicsOfNextPage();
+        }
+    }
+
     private void showData() {
         mName.setText(mMember.username);
         mTagline.setText(mMember.tagline);
@@ -185,28 +206,53 @@ public class UserFragment extends BaseFragment implements HttpRequestHandler<Arr
         getTopicsData(true);
     }
 
+    private void getTopicsOfNextPage() {
+        V2EXManager.getTopicsByUsernameThroughBrowser(getActivity(), mUserName, mPage + 1, new RequestTopicHelper());
+    }
+
     private void getTopicsData(boolean refresh) {
-        V2EXManager.getTopicsByUsername(getActivity(), mUserName, refresh, new RequestTopicHelper());
+        if(mApp.isJsonAPIFromCache())
+            V2EXManager.getTopicsByUsername(getActivity(), mUserName, refresh, new RequestTopicHelper());
+        else
+            V2EXManager.getTopicsByUsernameThroughBrowser(getActivity(), mUserName, 1, new RequestTopicHelper());
     }
 
     class RequestTopicHelper implements HttpRequestHandler<ArrayList<TopicModel>> {
         @Override
         public void onSuccess(ArrayList<TopicModel> data) {
-            mTopics = data;
-            mAdapter.update(data, false);
-            mSwipeLayout.setRefreshing(false);
+            onSuccess(data, 1, 1);
         }
 
         @Override
         public void onSuccess(ArrayList<TopicModel> data, int totalPages, int currentPage) {
+            mPage = currentPage;
+            mNoMore = totalPages == currentPage;
+            mSwipeLayout.setRefreshing(false);
+
+            if(!mApp.isJsonAPIFromCache()){
+                for(TopicModel topic : data)
+                    topic.member = mMember;
+            }
+
+            mAdapter.insertAtBack(data, currentPage != 1);
+
+            if (mNoMore) {
+                mFootUpdate.dismiss();
+            } else {
+                mFootUpdate.showLoading();
+            }
         }
 
         @Override
         public void onFailure(String error) {
             mSwipeLayout.setRefreshing(false);
             MessageUtils.showErrorMessage(getActivity(), error);
+
+            if (mAdapter.getItemCount() > 0 && !mNoMore) {
+                mFootUpdate.showFail();
+            } else {
+                mFootUpdate.dismiss();
+            }
         }
-
     }
-
 }

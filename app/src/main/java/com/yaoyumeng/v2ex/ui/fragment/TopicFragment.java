@@ -262,7 +262,7 @@ public class TopicFragment extends BaseFragment
     //获取该话题下的所有回复
     private void getReplyData(final boolean refresh) {
         //prepareAddComment(mTopic, false);
-        if (Application.getInstance().isJsonAPIFromCache())
+        if (mApp.isJsonAPIFromCache())
             V2EXManager.getRepliesByTopicId(getActivity(), mTopicId, refresh, this);
         else
             V2EXManager.getTopicAndRepliesByTopicId(getActivity(), mTopicId, mPage, refresh, new RequestTopicAndReplyListHelper(refresh));
