@@ -65,11 +65,11 @@ public class UserFragment extends BaseFragment
         public void onClick(View v) {
             int id = v.getId();
             String url = "";
-            if (id == R.id.github_layout && !mMember.github.isEmpty()) {
+            if (id == R.id.github_layout && mMember.github != null && !mMember.github.isEmpty()) {
                 url = "https://github.com/" + mMember.github;
-            } else if (id == R.id.twitter_layout && !mMember.twitter.isEmpty()) {
+            } else if (id == R.id.twitter_layout && mMember.twitter != null && !mMember.twitter.isEmpty()) {
                 url = "https://twitter.com/" + mMember.twitter;
-            } else if (id == R.id.homepage_layout && !mMember.website.isEmpty()) {
+            } else if (id == R.id.homepage_layout && mMember.website != null && !mMember.website.isEmpty()) {
                 url = mMember.website;
             }
 
@@ -144,7 +144,7 @@ public class UserFragment extends BaseFragment
             @Override
             public void onRefresh() {
                 mPage = 1;
-                if(mMember == null)
+                if (mMember == null)
                     V2EXManager.getMemberInfoByUsername(getActivity(), mUserName, true, UserFragment.this);
                 else
                     getTopicsData(true);
@@ -214,7 +214,7 @@ public class UserFragment extends BaseFragment
     }
 
     private void getTopicsData(boolean refresh) {
-        if(mApp.isJsonAPIFromCache())
+        if (mApp.isJsonAPIFromCache())
             V2EXManager.getTopicsByUsername(getActivity(), mUserName, refresh, new RequestTopicHelper());
         else
             V2EXManager.getTopicsByUsernameThroughBrowser(getActivity(), mUserName, 1, new RequestTopicHelper());
@@ -232,8 +232,8 @@ public class UserFragment extends BaseFragment
             mNoMore = totalPages == currentPage;
             mSwipeLayout.setRefreshing(false);
 
-            if(!mApp.isJsonAPIFromCache()){
-                for(TopicModel topic : data)
+            if (!mApp.isJsonAPIFromCache()) {
+                for (TopicModel topic : data)
                     topic.member = mMember;
             }
 
