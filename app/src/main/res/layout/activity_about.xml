@@ -49,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:background="@drawable/common_item_click_selector"
             android:minHeight="48dp"
             android:padding="12dp">
 
@@ -69,6 +70,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:minHeight="48dp"
+            android:background="@drawable/common_item_click_selector"
             android:padding="12dp">
 
             <TextView
