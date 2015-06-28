@@ -117,6 +117,10 @@
             android:name=".ui.AboutActivity"
             android:label="@string/settings_about">
         </activity>
+        <activity
+            android:name=".ui.PhotoViewActivity"
+            android:launchMode="singleTask">
+        </activity>
 
         <service
             android:name="com.umeng.update.net.DownloadingService"

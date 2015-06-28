@@ -46,6 +46,12 @@ public class Application extends android.app.Application {
         initAppConfig();
     }
 
+    public int getMemorySize(){
+        final ActivityManager mgr = (ActivityManager) getApplicationContext().
+                getSystemService(Activity.ACTIVITY_SERVICE);
+        return mgr.getMemoryClass();
+    }
+
     private void initAppConfig() {
         mHttps = isHttps();
         mJsonAPI = isJsonAPI();
