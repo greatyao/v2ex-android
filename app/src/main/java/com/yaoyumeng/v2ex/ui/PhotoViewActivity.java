@@ -48,10 +48,6 @@ public class PhotoViewActivity extends BaseActivity implements ViewPager.OnPageC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_view);
 
-        setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
         final Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_PHOTO_DATAS)) {
             mPhohoUrls = (ArrayList<String>) getIntent().getSerializableExtra(EXTRA_PHOTO_DATAS);
@@ -68,6 +64,10 @@ public class PhotoViewActivity extends BaseActivity implements ViewPager.OnPageC
         mViewPager.setOnInterceptTouchListener(this);
         mViewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.photo_page_margin));
         mViewPager.setCurrentItem(mCurrentPhotoIndex);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        setTitle();
     }
 
     @Override
@@ -87,6 +87,7 @@ public class PhotoViewActivity extends BaseActivity implements ViewPager.OnPageC
     @Override
     public void onPageSelected(int position) {
         mCurrentPhotoIndex = position;
+        setTitle();
     }
 
     @Override
@@ -134,5 +135,9 @@ public class PhotoViewActivity extends BaseActivity implements ViewPager.OnPageC
             return false;
         }
         return mViewPager.getCurrentItem() == mAdapter.getItemPosition(fragment);
+    }
+
+    private void setTitle(){
+        super.setTitle(String.format("%d / %d", mCurrentPhotoIndex+1, mPhohoUrls.size()));
     }
 }
