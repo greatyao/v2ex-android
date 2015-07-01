@@ -63,6 +63,7 @@ public class UserFragment extends BaseFragment
     private View.OnClickListener layoutClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (mMember == null) return;
             int id = v.getId();
             String url = "";
             if (id == R.id.github_layout && mMember.github != null && !mMember.github.isEmpty()) {
