@@ -36,7 +36,7 @@ public class TopicActivity extends SwipeBackActivity {
             String host = data != null ? data.getHost() : ""; // "www.v2ex.com"
             List<String> params = data != null ? data.getPathSegments() : null;
             if ((scheme.equals("http") || scheme.equals("https"))
-                    && host.equals("www.v2ex.com")
+                    && (host.equals("www.v2ex.com") || host.equals("v2ex.com"))
                     && params != null && params.size() == 2) {
                 String topicId = params.get(1);
                 mTopicId = Integer.parseInt(topicId);
