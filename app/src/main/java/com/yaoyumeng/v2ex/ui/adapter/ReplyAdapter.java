@@ -76,6 +76,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
         viewHolder.avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (reply.member == null) return;
                 Intent intent = new Intent(mContext, UserActivity.class);
                 intent.putExtra("model", (Parcelable) reply.member);
                 mContext.startActivity(intent);

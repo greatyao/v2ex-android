@@ -72,6 +72,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ViewHolder
         viewHolder.avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (member == null) return;
                 Intent intent = new Intent(mContext, UserActivity.class);
                 intent.putExtra("model", (Parcelable) member);
                 mContext.startActivity(intent);
@@ -93,6 +94,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ViewHolder
         viewHolder.nodeTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (node == null) return;
                 Intent intent = new Intent(mContext, NodeActivity.class);
                 intent.putExtra("model", (Parcelable) node);
                 mContext.startActivity(intent);

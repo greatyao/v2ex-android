@@ -322,7 +322,7 @@ public class TopicFragment extends BaseFragment
     private void replyToAuthor() {
         try {
             reply(mTopic.member.username);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -357,17 +357,20 @@ public class TopicFragment extends BaseFragment
         TextView nodeTextView = (TextView) mHeader.findViewById(R.id.text_node);
 
         titleTextView.setText(mTopic.title);
-        authorTextView.setText(mTopic.member.username);
-        String imageURL = mTopic.member.avatar;
-        ImageLoader.getInstance().displayImage(imageURL, avatar);
-        avatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), UserActivity.class);
-                intent.putExtra("model", (Parcelable) mTopic.member);
-                startActivity(intent);
-            }
-        });
+
+        if (mTopic.member != null) {
+            authorTextView.setText(mTopic.member.username);
+            String imageURL = mTopic.member.avatar;
+            ImageLoader.getInstance().displayImage(imageURL, avatar);
+            avatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), UserActivity.class);
+                    intent.putExtra("model", (Parcelable) mTopic.member);
+                    startActivity(intent);
+                }
+            });
+        }
 
         String content = mTopic.contentRendered;
         contentTextView.setRichText(content);
