@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
 
+import com.umeng.update.UmengUpdateAgent;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.ui.fragment.AllNodesFragment;
 import com.yaoyumeng.v2ex.ui.fragment.MyInfoFragment;
