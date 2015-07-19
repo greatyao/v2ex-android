@@ -68,19 +68,21 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ViewHolder
             }
         });
 
-        ImageLoader.getInstance().displayImage(topic.member.avatar, viewHolder.avatar);
-        viewHolder.avatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (member == null) return;
-                Intent intent = new Intent(mContext, UserActivity.class);
-                intent.putExtra("model", (Parcelable) member);
-                mContext.startActivity(intent);
-            }
-        });
+        if (member != null) {
+            ImageLoader.getInstance().displayImage(member.avatar, viewHolder.avatar);
+            viewHolder.avatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, UserActivity.class);
+                    intent.putExtra("model", (Parcelable) member);
+                    mContext.startActivity(intent);
+                }
+            });
+
+            viewHolder.name.setText(member.username);
+        }
 
         viewHolder.title.setText(topic.title);
-        viewHolder.name.setText(topic.member.username);
 
         //这里设置已读未读颜色
         viewHolder.title.setTextColor(Application.getDataSource().isTopicRead(topic.id) ?
