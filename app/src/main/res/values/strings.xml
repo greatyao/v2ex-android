@@ -98,8 +98,10 @@
     <string name="title_fragment_comment_cancel">取消</string>
     <string name="topic_comment_default_hint">评论主题</string>
 
-    <string name="topic_add_title_hint">输入标题</string>
-    <string name="topic_add_content_hint">来，写点内容吧</string>
+    <string name="topic_add_get_all_nodes">获取节点信息...</string>
+    <string name="topic_add_title_hint">请输入主题标题</string>
+    <string name="topic_add_node_hint">请选择一个节点</string>
+    <string name="topic_add_content_hint">如果标题能够表达完整内容，则正文可以为空</string>
     <string name="topic_add_quit_or_not">放弃此次创建主题机会？</string>
     <string name="topic_add_working">创建主题中...</string>
 

@@ -104,4 +104,8 @@ public class NodeModel extends V2EXModel implements Parcelable{
             return new NodeModel[size];
         }
     };
+
+    public String toString(){
+        return String.format("%s / %s", title, name);
+    }
 }

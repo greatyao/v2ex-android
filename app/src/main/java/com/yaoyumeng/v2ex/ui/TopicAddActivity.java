@@ -9,18 +9,27 @@ import android.os.Parcelable;
 import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
+import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.NodeModel;
+import com.yaoyumeng.v2ex.model.PersistenceHelper;
 import com.yaoyumeng.v2ex.model.TopicModel;
+import com.yaoyumeng.v2ex.ui.fragment.AllNodesFragment;
 import com.yaoyumeng.v2ex.ui.widget.CustomDialog;
+import com.yaoyumeng.v2ex.ui.widget.CustomSpinner;
 import com.yaoyumeng.v2ex.utils.InputUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.SimpleTextWatcher;
+
+import java.util.ArrayList;
 
 public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHandler<Integer> {
 
@@ -29,6 +38,7 @@ public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHa
     MenuItem mMenuAdd;
     NodeModel mNode;
     String mNodeName;
+    CustomSpinner mNodeSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +47,7 @@ public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHa
 
         mTitle = (EditText) findViewById(R.id.topic_add_title);
         mContent = (EditText) findViewById(R.id.topic_add_content);
+        mNodeSpinner = (CustomSpinner) findViewById(R.id.topic_add_node);
 
         mTitle.addTextChangedListener(textWatcher);
         mContent.addTextChangedListener(textWatcher);
@@ -44,10 +55,16 @@ public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHa
         Intent intent = getIntent();
         if (intent.hasExtra("model")) {
             mNode = intent.getParcelableExtra("model");
-            mNodeName = mNode.name;
+            if(mNode != null) {
+                mNodeName = mNode.name;
+                mNodeSpinner.setText(mNode.title);
+            }
         } else {
             mNodeName = intent.getStringExtra("node_name");
         }
+
+        showProgressBar(true, getString(R.string.topic_add_get_all_nodes));
+        V2EXManager.getAllNodes(this, false, nodesRequester);
     }
 
     @Override
@@ -102,7 +119,9 @@ public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHa
 
     @Override
     public void onBackPressed() {
-        if (mTitle.getText().toString().isEmpty() &&
+        if (mNodeSpinner.isShowPopup()){
+            mNodeSpinner.dismiss();
+        } else if (mTitle.getText().toString().isEmpty() &&
                 mContent.getText().toString().isEmpty()) {
             finish();
         } else {
@@ -127,6 +146,42 @@ public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHa
         }
     };
 
+    private HttpRequestHandler<ArrayList<NodeModel>> nodesRequester = new HttpRequestHandler<ArrayList<NodeModel>>(){
+        @Override
+        public void onSuccess(ArrayList<NodeModel> data) {
+            showProgressBar(false);
+            ArrayAdapter<NodeModel> adapter = new ArrayAdapter(TopicAddActivity.this,
+                    android.R.layout.select_dialog_item, data);
+            mNodeSpinner.setAdapter(adapter);
+            mNodeSpinner.setOnItemSelectedListener(new CustomSpinner.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    mNode = (NodeModel)parent.getItemAtPosition(position);
+                    mNodeName = mNode.name;
+                    mNodeSpinner.setText(mNode.title);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent){
+                    mNodeSpinner.setText("");
+                    mNode = null;
+                    mNodeName = "";
+                }
+            });
+        }
+
+        @Override
+        public void onSuccess(ArrayList<NodeModel> data, int totalPages, int currentPage) {
+            onSuccess(data);
+        }
+
+        @Override
+        public void onFailure(String error) {
+            showProgressBar(false);
+            MessageUtils.showErrorMessage(TopicAddActivity.this, error);
+        }
+    };
+
     private void createTopic() {
         InputUtils.popSoftkeyboard(this, mContent, false);
         showProgressBar(R.string.topic_add_working);
@@ -136,7 +191,7 @@ public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHa
     }
 
     private void updateAddButton() {
-        enableSendButton(!mTitle.getText().toString().isEmpty());
+        enableSendButton(!mTitle.getText().toString().isEmpty() && !mNodeName.isEmpty());
     }
 
     private void enableSendButton(boolean enable) {

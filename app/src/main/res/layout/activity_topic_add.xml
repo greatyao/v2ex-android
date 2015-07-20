@@ -3,6 +3,18 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.yaoyumeng.v2ex.ui.widget.CustomSpinner
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/topic_add_node"
+        android:hint="@string/topic_add_node_hint"
+        android:textSize="16sp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:gravity="left|center_vertical" />
+
+    <include layout="@layout/divide_1_12"  />
+
     <EditText
         android:id="@+id/topic_add_title"
         android:layout_width="match_parent"
