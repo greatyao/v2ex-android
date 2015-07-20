@@ -199,7 +199,7 @@ public class CustomSpinner extends TextView {
         protected Drawable getDrawable() {
             Canvas canvas = new Canvas();
             shape.draw(canvas);
-            this.onDraw(canvas);
+            this.draw(canvas);
             return shape;
         }
 
