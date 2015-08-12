@@ -51,7 +51,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/title"
-                android:background="#eee"
+                android:background="#f5f5f5"
                 android:text="V2ex"
                 android:textSize="12sp"/>
 

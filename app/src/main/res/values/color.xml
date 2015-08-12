@@ -17,6 +17,9 @@
     <color name="list_item_unread">#ff222222</color>
     <color name="list_item_read">#ffb7b7b7</color>
 
+    <color name="topic_count_unread">#aab0c6</color>
+    <color name="topic_count_read">#e5e5e5</color>
+
     <color name="drawer_arrow_second_color">#303f9f</color>
     <color name="colorPrimary">#3bbd79</color>
     <color name="colorPrimaryLight">#09b058</color>

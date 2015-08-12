@@ -44,7 +44,7 @@
             android:layout_toRightOf="@+id/avatar"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:background="#eee"
+            android:background="#f5f5f5"
             android:text="赞同你的看法" />
 
         <TextView
