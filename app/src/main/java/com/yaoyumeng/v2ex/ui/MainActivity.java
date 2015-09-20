@@ -58,6 +58,7 @@ public class MainActivity extends BaseActivity implements OnTabChangeListener {
         mLayoutInflater = LayoutInflater.from(this);
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.tab_content);
+        mTabHost.getTabWidget().setDividerDrawable(null);
 
         TabHost.TabSpec [] tabSpecs = new TabHost.TabSpec[3];
         String [] texts = new String[3];
