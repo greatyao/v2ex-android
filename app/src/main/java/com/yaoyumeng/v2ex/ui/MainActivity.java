@@ -1,13 +1,11 @@
 package com.yaoyumeng.v2ex.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.View;
-import android.view.View.OnClickListener;
+import android.support.v4.app.FragmentTabHost;
+import android.view.LayoutInflater;
 import android.view.ViewConfiguration;
+import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 
 import com.umeng.update.UmengUpdateAgent;
 import com.yaoyumeng.v2ex.R;
@@ -22,27 +20,21 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements OnClickListener,
-        OnPageChangeListener {
-    private ViewPager mViewPager;
-    private List<Fragment> mTabs = new ArrayList<Fragment>();
-    private FragmentPagerAdapter mAdapter;
-
+public class MainActivity extends BaseActivity implements OnTabChangeListener {
+    private FragmentTabHost mTabHost;
+    private LayoutInflater mLayoutInflater;
     private List<ChangeColorIconWithText> mTabIndicators = new ArrayList<ChangeColorIconWithText>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         UmengUpdateAgent.setDefault();
         UmengUpdateAgent.update(this);
 
         setOverflowButtonAlways();
-
-        initView();
-        initFragment();
-        initEvent();
+        initTabHost();
 
         if (mIsLogin) {
             AccountUtils.refreshProfile(this);
@@ -62,55 +54,53 @@ public class MainActivity extends BaseActivity implements OnClickListener,
         }
     }
 
-    private void initView() {
-        mViewPager = (ViewPager) findViewById(R.id.id_viewpager);
+    private void initTabHost() {
+        mLayoutInflater = LayoutInflater.from(this);
+        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+        mTabHost.setup(this, getSupportFragmentManager(), R.id.tab_content);
 
-        ChangeColorIconWithText discovery = (ChangeColorIconWithText) findViewById(R.id.id_indicator_discovery);
-        mTabIndicators.add(discovery);
-        ChangeColorIconWithText nodes = (ChangeColorIconWithText) findViewById(R.id.id_indicator_nodes);
-        mTabIndicators.add(nodes);
-        ChangeColorIconWithText my = (ChangeColorIconWithText) findViewById(R.id.id_indicator_my);
-        mTabIndicators.add(my);
+        TabHost.TabSpec [] tabSpecs = new TabHost.TabSpec[3];
+        String [] texts = new String[3];
+        ChangeColorIconWithText [] tabviews = new ChangeColorIconWithText[3];
 
-        discovery.setOnClickListener(this);
-        nodes.setOnClickListener(this);
-        my.setOnClickListener(this);
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", ViewPagerFragment.TypeViewPager_Aggregation);
+        texts[0] = getString(R.string.title_activity_main_discovery);
+        tabviews[0] = getTabView(R.layout.item_tab_discovery);
+        tabSpecs[0] = mTabHost.newTabSpec(texts[0]).setIndicator(tabviews[0]);
+        mTabHost.addTab(tabSpecs[0], ViewPagerFragment.class, bundle);
+        mTabIndicators.add(tabviews[0]);
 
-        discovery.setIconAlpha(1.0f);
+        texts[1] = getString(R.string.title_activity_main_nodes);
+        tabviews[1] = getTabView(R.layout.item_tab_allnodes);
+        tabSpecs[1] = mTabHost.newTabSpec(texts[1]).setIndicator(tabviews[1]);
+        mTabHost.addTab(tabSpecs[1], AllNodesFragment.class, null);
+        mTabIndicators.add(tabviews[1]);
+
+        texts[2] = getString(R.string.title_activity_main_myinfo);
+        tabviews[2] = getTabView(R.layout.item_tab_myinfo);
+        tabSpecs[2] = mTabHost.newTabSpec(texts[2]).setIndicator(tabviews[2]);
+        mTabHost.addTab(tabSpecs[2], MyInfoFragment.class, null);
+        mTabIndicators.add(tabviews[2]);
+
+        mTabHost.setOnTabChangedListener(this);
+        tabviews[0].setIconAlpha(1.0f);
+        setTitle(texts[0]);
     }
 
-    private void initFragment() {
-
-        {
-            ViewPagerFragment aggregateFragment = new ViewPagerFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt("type", ViewPagerFragment.TypeViewPager_Aggregation);
-            aggregateFragment.setArguments(bundle);
-            mTabs.add(aggregateFragment);
-        }
-
-        mTabs.add(new AllNodesFragment());
-
-        mTabs.add(new MyInfoFragment());
-
-        mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-
-            @Override
-            public int getCount() {
-                return mTabs.size();
-            }
-
-            @Override
-            public Fragment getItem(int position) {
-                return mTabs.get(position);
-            }
-        };
-        mViewPager.setAdapter(mAdapter);
+    private ChangeColorIconWithText getTabView(int layoutId) {
+        ChangeColorIconWithText tab = (ChangeColorIconWithText) mLayoutInflater.inflate(layoutId, null);
+        return tab;
     }
 
+    @Override
+    public void onTabChanged(String tabId) {
+        setTitle(tabId);
 
-    private void initEvent() {
-        mViewPager.setOnPageChangeListener(this);
+        resetOtherTabs();
+        ChangeColorIconWithText tabview = (ChangeColorIconWithText) mTabHost.getCurrentTabView();
+        if (tabview != null)
+            tabview.setIconAlpha(1.0f);
     }
 
     /**
@@ -126,60 +116,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
             menuKey.setBoolean(config, false);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int arg0) {
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        if (positionOffset > 0) {
-            ChangeColorIconWithText left = mTabIndicators.get(position);
-            ChangeColorIconWithText right = mTabIndicators.get(position + 1);
-            left.setIconAlpha(1 - positionOffset);
-            right.setIconAlpha(positionOffset);
-        }
-
-        if (position == 0)
-            setTitle(getString(R.string.title_activity_main_discovery));
-        else if (position == 1)
-            setTitle(getString(R.string.title_activity_main_nodes));
-        else if (position == 2)
-            setTitle(getString(R.string.title_activity_main_myinfo));
-    }
-
-    @Override
-    public void onPageSelected(int arg0) {
-    }
-
-    @Override
-    public void onClick(View v) {
-        clickTab(v);
-    }
-
-    /**
-     * 点击Tab按钮
-     *
-     * @param v
-     */
-    private void clickTab(View v) {
-        resetOtherTabs();
-
-        switch (v.getId()) {
-            case R.id.id_indicator_discovery:
-                mTabIndicators.get(0).setIconAlpha(1.0f);
-                mViewPager.setCurrentItem(0, false);
-                break;
-            case R.id.id_indicator_nodes:
-                mTabIndicators.get(1).setIconAlpha(1.0f);
-                mViewPager.setCurrentItem(1, false);
-                break;
-            case R.id.id_indicator_my:
-                mTabIndicators.get(2).setIconAlpha(1.0f);
-                mViewPager.setCurrentItem(2, false);
-                break;
         }
     }
 

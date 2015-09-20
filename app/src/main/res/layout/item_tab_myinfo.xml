@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yaoyumeng.v2ex.ui.widget.ChangeColorIconWithText
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_indicator_my"
+    android:layout_width="0dp"
+    android:layout_height="fill_parent"
+    android:padding="8dp"
+    app:tx_icon="@drawable/ic_tab_my_normal"
+    app:tx_text="@string/title_activity_main_myinfo"
+    app:tx_text_size="12sp"
+    app:tx_color="@color/colorPrimary" />
