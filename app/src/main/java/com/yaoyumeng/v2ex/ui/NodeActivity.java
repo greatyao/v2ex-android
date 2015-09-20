@@ -42,6 +42,7 @@ public class NodeActivity extends SwipeBackActivity {
                 bundle.putString("node_name", mNodeName);
             } else {
                 mNode = intent.getParcelableExtra("model");
+                if (mNode == null) finish();
                 setTitle(mNode.title);
                 mNodeId = mNode.id;
                 mNodeName = mNode.name;
