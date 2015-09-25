@@ -69,7 +69,8 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
             viewHolder.comment.setVisibility(View.GONE);
         }
 
-        viewHolder.content.setRichText(reply.contentRendered);
+        if (reply.contentRendered != null)
+            viewHolder.content.setRichText(reply.contentRendered);
 
         String imageURL = reply.member.avatar;
         ImageLoader.getInstance().displayImage(imageURL, viewHolder.avatar);
