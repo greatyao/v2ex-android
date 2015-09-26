@@ -11,6 +11,6 @@ public class SettingsActivity extends SwipeBackActivity {
         super.onCreate(savedInstanceState);
         setSwipeContentView(R.layout.activity_container);
 
-        getFragmentManager().beginTransaction().add(R.id.container, new SettingsFragment()).commit();
+        getFragmentManager().beginTransaction().add(R.id.container, new SettingsFragment()).commitAllowingStateLoss();
     }
 }

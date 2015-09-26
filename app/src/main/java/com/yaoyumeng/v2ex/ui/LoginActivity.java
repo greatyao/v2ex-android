@@ -15,9 +15,6 @@ import com.yaoyumeng.v2ex.model.ProfileModel;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 
-/**
- * Created by yugy on 14-2-26.
- */
 public class LoginActivity extends SwipeBackActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";

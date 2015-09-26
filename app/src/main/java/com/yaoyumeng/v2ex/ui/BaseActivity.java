@@ -10,9 +10,6 @@ import com.yaoyumeng.v2ex.model.ProfileModel;
 import com.yaoyumeng.v2ex.ui.fragment.BaseFragment;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 
-/**
- * Created by yugy on 14-1-29.
- */
 public class BaseActivity extends ActionBarActivity
         implements AccountUtils.OnAccountListener, BaseFragment.BackHandledInterface {
 
