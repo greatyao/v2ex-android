@@ -92,11 +92,15 @@
     <string name="menu_title_star">收藏</string>
     <string name="menu_title_unstar">取消收藏</string>
     <string name="menu_title_reply">回复</string>
+    <string name="menu_title_search">搜索</string>
+    <string name="menu_title_publish">发表</string>
 
     <string name="title_fragment_comment_hint">这里输入你的回复内容</string>
     <string name="title_fragment_comment_yes">回复</string>
     <string name="title_fragment_comment_cancel">取消</string>
     <string name="topic_comment_default_hint">评论主题</string>
+
+    <string name="search_nodes_hint">节点搜索</string>
 
     <string name="topic_add_get_all_nodes">获取节点信息...</string>
     <string name="topic_add_title_hint">请输入主题标题</string>
