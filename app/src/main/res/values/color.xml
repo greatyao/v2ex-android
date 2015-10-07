@@ -37,6 +37,7 @@
     <color name="white">#ffffffff</color>
     <drawable name="white">#ffffffff</drawable>
     <color name="black">#ff000000</color>
+    <color name="tabTextColor">#ffb7b7b7</color>
 
     <color name="photo_crop_dim_color">#cc000000</color>
     <color name="photo_crop_highlight_color">#fff</color>
