@@ -27,7 +27,6 @@ dependencies {
     compile 'com.android.support:cardview-v7:21.0.3'
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
-    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.loopj.android:android-async-http:1.4.6'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
@@ -35,4 +34,5 @@ dependencies {
     compile 'com.hannesdorfmann:swipeback:1.0.0'
 
     compile project(':jazzylistview')
+    compile project(':pagerslidingtabstrip')
 }

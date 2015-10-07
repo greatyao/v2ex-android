@@ -1,2 +1,3 @@
 include ':jazzylistview'
+include ':pagerslidingtabstrip'
 include ':app'
