@@ -7,9 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.HttpRequestHandler;
@@ -31,6 +35,12 @@ public class AllNodesFragment extends BaseFragment
     RecyclerView.LayoutManager mLayoutManager;
     AllNodesAdapter mNodeAdapter;
     SwipeRefreshLayout mSwipeLayout;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +77,29 @@ public class AllNodesFragment extends BaseFragment
         super.onActivityCreated(savedInstanceState);
         mSwipeLayout.setRefreshing(true);
         requestNode(false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_nodes, menu);
+        MenuItem searchItem = menu.findItem(R.id.menu_nodes_search);
+
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint(getString(R.string.search_nodes_hint));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mNodeAdapter.filterText(newText);
+                return true;
+            }
+        });
     }
 
     @Override

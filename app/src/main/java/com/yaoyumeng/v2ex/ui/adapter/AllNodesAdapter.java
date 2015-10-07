@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import java.util.TreeMap;
 public class AllNodesAdapter extends RecyclerView.Adapter<AllNodesAdapter.ViewHolder> implements SectionIndexer {
     Context mContext;
     List<NodeModel> mNodes = new ArrayList<NodeModel>();
+    List<NodeModel> mAllNodes = new ArrayList<NodeModel>();
     HashMap<String, Integer> mAlphaPosition = new HashMap<String, Integer>();
     String mSections = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -106,6 +108,7 @@ public class AllNodesAdapter extends RecyclerView.Adapter<AllNodesAdapter.ViewHo
             offset += val.size();
         }
 
+        mAllNodes = mNodes;
         notifyDataSetChanged();
     }
 
@@ -128,6 +131,24 @@ public class AllNodesAdapter extends RecyclerView.Adapter<AllNodesAdapter.ViewHo
         return chars;
     }
 
+    public void filterText(CharSequence query) {
+        if (TextUtils.isEmpty(query)) {
+            mNodes = mAllNodes;
+            notifyDataSetChanged();
+            return;
+        }
+
+        List<NodeModel> result = new ArrayList<NodeModel>();
+        for (NodeModel node : mAllNodes) {
+            if (node.name.contains(query) ||
+                    node.title.contains(query) ||
+                    (node.titleAlternative != null && node.titleAlternative.contains(query)))
+                result.add(node);
+        }
+
+        mNodes = result;
+        notifyDataSetChanged();
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
