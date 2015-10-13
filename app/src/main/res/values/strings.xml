@@ -75,6 +75,7 @@
     <string name="settings_use_browser_summary">模拟浏览器访问，访问次数无限制</string>
     <string name="settings_clear_cache">清除缓存</string>
     <string name="settings_noimage_nowifi">无图模式</string>
+    <string name="settings_message_push">消息推送</string>
     <string name="settings_noimage_nowifi_summary">2G/3G网络下不显示图片</string>
     <string name="settings_image_nowifi_summary">2G/3G网络下显示图片</string>
     <string name="settings_use_effect">列表滚动显示动画效果</string>

@@ -23,6 +23,7 @@ public class AppConfig {
     public final static String CONF_USE_HTTPS = "perf_https";
     public final static String CONF_EFFECT = "perf_list_effect";
     public final static String CONF_JSONAPI = "perf_jsonapi";
+    public final static String CONF_MESSAGE = "perf_message_push";
 
     private Context mContext;
     private static AppConfig appConfig;

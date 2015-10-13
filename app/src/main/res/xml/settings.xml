@@ -25,6 +25,11 @@
 
         <CheckBoxPreference
             android:defaultValue="true"
+            android:key="pref_message_push"
+            android:title="@string/settings_message_push" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="pref_effect"
             android:title="@string/settings_use_effect"/>
 

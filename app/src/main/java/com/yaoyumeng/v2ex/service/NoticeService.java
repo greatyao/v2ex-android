@@ -118,7 +118,8 @@ public class NoticeService extends Service {
             public void onSuccess(ProfileModel data) {
                 int count = data.notifications;
                 sendBroadCast(NoticeService.this, count);
-                notification(count);
+                if(Application.getInstance().isMessagePushFromCache())
+                    notification(count);
             }
 
             @Override

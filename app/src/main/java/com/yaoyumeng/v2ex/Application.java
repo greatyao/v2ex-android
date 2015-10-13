@@ -31,6 +31,7 @@ public class Application extends android.app.Application {
     private boolean mHttps;
     private boolean mShowEffect;
     private boolean mLoadImage;
+    private boolean mPushMessage;
 
     @Override
     public void onCreate() {
@@ -57,6 +58,7 @@ public class Application extends android.app.Application {
         mJsonAPI = isJsonAPI();
         mShowEffect = isShowEffect();
         mLoadImage = isLoadImageInMobileNetwork();
+        mPushMessage = isMessagePush();
     }
 
     private void initDatabase() {
@@ -157,6 +159,39 @@ public class Application extends android.app.Application {
     public void setConfigEffect(boolean b) {
         setProperty(AppConfig.CONF_EFFECT, String.valueOf(b));
         mShowEffect = b;
+    }
+
+
+    /**
+     * 是否消息推送
+     *
+     * @return
+     */
+    public boolean isMessagePushFromCache() {
+        return mPushMessage;
+    }
+
+    /**
+     * 是否消息推送
+     *
+     * @return
+     */
+    public boolean isMessagePush() {
+        String perf_message = getProperty(AppConfig.CONF_MESSAGE);
+        if (perf_message == null || perf_message.isEmpty())
+            return true;
+        else
+            return Boolean.parseBoolean(perf_message);
+    }
+
+    /**
+     * 设置消息推送
+     *
+     * @param b
+     */
+    public void setMessagePush(boolean b) {
+        setProperty(AppConfig.CONF_MESSAGE, String.valueOf(b));
+        mPushMessage = b;
     }
 
     /**
