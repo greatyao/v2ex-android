@@ -187,6 +187,13 @@
             android:exported="true"
             android:screenOrientation="portrait" >
         </activity>
+
+        <receiver android:name=".broadcast.AlarmReceiver" />
+
+        <service
+            android:name=".service.NoticeService"
+            android:process=":notice">
+        </service>
     </application>
 
 </manifest>

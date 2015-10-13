@@ -21,6 +21,7 @@ import com.yaoyumeng.v2ex.model.ProfileModel;
 import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.NotificationsAdapter;
 import com.yaoyumeng.v2ex.ui.widget.FootUpdate;
+import com.yaoyumeng.v2ex.utils.AccountUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.OnScrollToBottomListener;
 
@@ -135,6 +136,11 @@ public class NotificationFragment extends BaseFragment implements HttpRequestHan
         if (data.size() == 0) {
             MessageUtils.showMiddleToast(getActivity(), getString(R.string.notification_message));
             return;
+        }
+
+        if(currentPage == 1) {
+            mLoginProfile.notifications = 0;
+            AccountUtils.writeLoginMember(getActivity(), mLoginProfile, false);
         }
 
         mAdapter.update(data, currentPage != 1);

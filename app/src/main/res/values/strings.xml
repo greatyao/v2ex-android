@@ -101,6 +101,7 @@
     <string name="topic_comment_default_hint">评论主题</string>
 
     <string name="search_nodes_hint">节点搜索</string>
+    <string name="you_have_notifications">你有%s条未读消息</string>
 
     <string name="topic_add_get_all_nodes">获取节点信息...</string>
     <string name="topic_add_title_hint">请输入主题标题</string>

@@ -1,6 +1,11 @@
 package com.yaoyumeng.v2ex.ui;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.ViewConfiguration;
@@ -9,6 +14,9 @@ import android.widget.TabHost.OnTabChangeListener;
 
 import com.umeng.update.UmengUpdateAgent;
 import com.yaoyumeng.v2ex.R;
+import com.yaoyumeng.v2ex.model.ProfileModel;
+import com.yaoyumeng.v2ex.service.INoticeService;
+import com.yaoyumeng.v2ex.service.NoticeService;
 import com.yaoyumeng.v2ex.ui.fragment.AllNodesFragment;
 import com.yaoyumeng.v2ex.ui.fragment.MyInfoFragment;
 import com.yaoyumeng.v2ex.ui.fragment.ViewPagerFragment;
@@ -24,6 +32,19 @@ public class MainActivity extends BaseActivity implements OnTabChangeListener {
     private FragmentTabHost mTabHost;
     private LayoutInflater mLayoutInflater;
     private List<ChangeColorIconWithText> mTabIndicators = new ArrayList<ChangeColorIconWithText>();
+    private INoticeService mService = null;
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mService = INoticeService.Stub.asInterface(service);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mService = null;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +56,31 @@ public class MainActivity extends BaseActivity implements OnTabChangeListener {
 
         setOverflowButtonAlways();
         initTabHost();
+        handleIntent(getIntent());
 
         if (mIsLogin) {
             AccountUtils.refreshProfile(this);
             AccountUtils.refreshFavoriteNodes(this, null);
+            startNoticeService();
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    @Override
+    public void onLogout() {
+        super.onLogout();
+        stopNoticeService();
+    }
+
+    @Override
+    public void onLogin(ProfileModel member) {
+        super.onLogin(member);
+        startNoticeService();
     }
 
     private long exitTime = 0;
@@ -50,6 +91,7 @@ public class MainActivity extends BaseActivity implements OnTabChangeListener {
             MessageUtils.showMiddleToast(this, getString(R.string.main_exitapp_hint));
             exitTime = System.currentTimeMillis();
         } else {
+            stopNoticeService();
             finish();
         }
     }
@@ -60,9 +102,9 @@ public class MainActivity extends BaseActivity implements OnTabChangeListener {
         mTabHost.setup(this, getSupportFragmentManager(), R.id.tab_content);
         mTabHost.getTabWidget().setDividerDrawable(null);
 
-        TabHost.TabSpec [] tabSpecs = new TabHost.TabSpec[3];
-        String [] texts = new String[3];
-        ChangeColorIconWithText [] tabviews = new ChangeColorIconWithText[3];
+        TabHost.TabSpec[] tabSpecs = new TabHost.TabSpec[3];
+        String[] texts = new String[3];
+        ChangeColorIconWithText[] tabviews = new ChangeColorIconWithText[3];
 
         Bundle bundle = new Bundle();
         bundle.putInt("type", ViewPagerFragment.TypeViewPager_Aggregation);
@@ -87,6 +129,43 @@ public class MainActivity extends BaseActivity implements OnTabChangeListener {
         mTabHost.setOnTabChangedListener(this);
         tabviews[0].setIconAlpha(1.0f);
         setTitle(texts[0]);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (intent == null) return;
+        String action = intent.getAction();
+        if (action != null && action.equals(Intent.ACTION_VIEW)) {
+            ;
+        } else if (intent.getBooleanExtra("NOTICE", false)) {
+            showNotification(intent);
+        }
+    }
+
+    private void showNotification(Intent fromWhich) {
+        if (fromWhich != null) {
+            boolean fromNoticeBar = fromWhich.getBooleanExtra("NOTICE", false);
+            if (fromNoticeBar) {
+                Intent intent = new Intent(this, MyInfoActivity.class);
+                intent.putExtra("type", MyInfoActivity.TypeMyNotifications);
+                startActivity(intent);
+            }
+        }
+    }
+
+    private void startNoticeService() {
+        if (mService == null) {
+            Intent intent = new Intent(this, NoticeService.class);
+            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+            startService(intent);
+        }
+    }
+
+    private void stopNoticeService() {
+        if (mService != null) {
+            mService = null;
+            unbindService(mConnection);
+        }
+        sendBroadcast(new Intent(NoticeService.INTENT_ACTION_SHUTDOWN));
     }
 
     private ChangeColorIconWithText getTabView(int layoutId) {
