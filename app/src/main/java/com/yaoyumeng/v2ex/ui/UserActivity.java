@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.ui.fragment.UserFragment;
+import com.yaoyumeng.v2ex.ui.swipeback.SwipeBackActivity;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class UserActivity extends SwipeBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSwipeContentView(R.layout.activity_container);
+        setContentView(R.layout.activity_container);
 
         if (savedInstanceState == null) {
             /**

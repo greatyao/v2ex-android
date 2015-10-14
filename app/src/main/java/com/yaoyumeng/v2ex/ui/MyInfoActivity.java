@@ -2,21 +2,12 @@ package com.yaoyumeng.v2ex.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.widget.TextView;
 
-import com.astuetz.PagerSlidingTabStrip;
-import com.hannesdorfmann.swipeback.SwipeBack;
 import com.yaoyumeng.v2ex.R;
-import com.yaoyumeng.v2ex.model.NodeModel;
-import com.yaoyumeng.v2ex.ui.adapter.FavNodesAdapter;
 import com.yaoyumeng.v2ex.ui.fragment.NotificationFragment;
 import com.yaoyumeng.v2ex.ui.fragment.TopicsFragment;
 import com.yaoyumeng.v2ex.ui.fragment.ViewPagerFragment;
-import com.yaoyumeng.v2ex.utils.AccountUtils;
-
-import java.util.ArrayList;
+import com.yaoyumeng.v2ex.ui.swipeback.SwipeBackActivity;
 
 /**
  * 我的节点收藏/主题收藏/未读消息
@@ -43,13 +34,14 @@ public class MyInfoActivity extends SwipeBackActivity {
             mType = savedInstanceState.getInt("type");
         }
 
+        /*
         if (mType == TypeMyNodesFavorite) {
             //特别处理我的节点收藏
             initForFavoriteNodes();
             return;
-        }
+        }*/
 
-        setSwipeContentView(R.layout.activity_container);
+        setContentView(R.layout.activity_container);
 
         if (mType == TypeMyNotifications) {
             //我的未读消息
@@ -65,7 +57,7 @@ public class MyInfoActivity extends SwipeBackActivity {
             fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commitAllowingStateLoss();
             setTitle(getString(R.string.title_activity_myinfo_topicsfav));
-        } else if(mType == TypeMyFollowings){
+        } else if (mType == TypeMyFollowings) {
             //我的特别关注
             TopicsFragment fragment = new TopicsFragment();
             Bundle bundle = new Bundle();
@@ -75,14 +67,14 @@ public class MyInfoActivity extends SwipeBackActivity {
             fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commitAllowingStateLoss();
             setTitle(getString(R.string.title_activity_myinfo_following));
-        } /*else  if (mType == TypeMyNodesFavorite) {
+        } else if (mType == TypeMyNodesFavorite) {
             ViewPagerFragment fragment = new ViewPagerFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("type", ViewPagerFragment.TypeViewPager_Favorite);
             fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
             setTitle(getString(R.string.title_activity_myinfo_nodesfav));
-        } */
+        }
     }
 
     @Override
@@ -91,6 +83,7 @@ public class MyInfoActivity extends SwipeBackActivity {
         super.onSaveInstanceState(outState);
     }
 
+    /*
     private PagerSlidingTabStrip mPagerSlidingTabStrip;
     private ViewPager mViewPager;
     private TextView mEmptyText;
@@ -98,7 +91,7 @@ public class MyInfoActivity extends SwipeBackActivity {
     private int mPagerOffsetPixels;
 
     private void initForFavoriteNodes() {
-        setSwipeContentViewForViewPager(R.layout.fragment_viewpager);
+        //setSwipeContentViewForViewPager(R.layout.fragment_viewpager);
         setTitle(getString(R.string.title_activity_myinfo_nodesfav));
 
         mSwipeBack.setOnInterceptMoveEventListener(
@@ -136,4 +129,5 @@ public class MyInfoActivity extends SwipeBackActivity {
 
         });
     }
+    */
 }

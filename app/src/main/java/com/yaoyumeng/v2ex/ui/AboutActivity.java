@@ -12,6 +12,7 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 import com.yaoyumeng.v2ex.R;
+import com.yaoyumeng.v2ex.ui.swipeback.SwipeBackActivity;
 import com.yaoyumeng.v2ex.ui.widget.RichTextView;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.PhoneUtils;
@@ -21,7 +22,7 @@ public class AboutActivity extends SwipeBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSwipeContentView(R.layout.activity_about);
+        setContentView(R.layout.activity_about);
 
         TextView version = (TextView) findViewById(R.id.version);
         version.setText("版本: " + PhoneUtils.getPackageInfo(this).versionName);

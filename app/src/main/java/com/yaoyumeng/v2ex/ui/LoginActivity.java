@@ -12,6 +12,7 @@ import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.ProfileModel;
+import com.yaoyumeng.v2ex.ui.swipeback.SwipeBackActivity;
 import com.yaoyumeng.v2ex.utils.AccountUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 
@@ -25,7 +26,7 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSwipeContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login);
 
         mUsername = (EditText) findViewById(R.id.login_username_edit);
         mPassword = (EditText) findViewById(R.id.login_password_edit);

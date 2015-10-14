@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.ui.fragment.TopicsFragment;
+import com.yaoyumeng.v2ex.ui.swipeback.SwipeBackActivity;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class NodeActivity extends SwipeBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSwipeContentView(R.layout.activity_container);
+        setContentView(R.layout.activity_container);
 
         TopicsFragment fragment = new TopicsFragment();
         Bundle bundle = new Bundle();

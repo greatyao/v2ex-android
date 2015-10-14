@@ -23,6 +23,7 @@ import com.yaoyumeng.v2ex.model.NodeModel;
 import com.yaoyumeng.v2ex.model.PersistenceHelper;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.fragment.AllNodesFragment;
+import com.yaoyumeng.v2ex.ui.swipeback.SwipeBackActivity;
 import com.yaoyumeng.v2ex.ui.widget.CustomDialog;
 import com.yaoyumeng.v2ex.ui.widget.CustomSpinner;
 import com.yaoyumeng.v2ex.utils.InputUtils;
@@ -43,7 +44,7 @@ public class TopicAddActivity extends SwipeBackActivity implements HttpRequestHa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSwipeContentView(R.layout.activity_topic_add);
+        setContentView(R.layout.activity_topic_add);
 
         mTitle = (EditText) findViewById(R.id.topic_add_title);
         mContent = (EditText) findViewById(R.id.topic_add_content);

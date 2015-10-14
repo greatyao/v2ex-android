@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import com.yaoyumeng.v2ex.R;
 import com.yaoyumeng.v2ex.model.TopicModel;
 import com.yaoyumeng.v2ex.ui.fragment.TopicFragment;
+import com.yaoyumeng.v2ex.ui.swipeback.SwipeBackActivity;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class TopicActivity extends SwipeBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSwipeContentView(R.layout.activity_container);
+        setContentView(R.layout.activity_container);
 
         TopicFragment fragment = new TopicFragment();
         Bundle bundle = new Bundle();

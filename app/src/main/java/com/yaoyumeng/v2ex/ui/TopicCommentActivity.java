@@ -14,6 +14,7 @@ import com.yaoyumeng.v2ex.api.HttpRequestHandler;
 import com.yaoyumeng.v2ex.api.V2EXManager;
 import com.yaoyumeng.v2ex.model.MemberModel;
 import com.yaoyumeng.v2ex.model.ReplyModel;
+import com.yaoyumeng.v2ex.ui.swipeback.SwipeBackActivity;
 import com.yaoyumeng.v2ex.utils.InputUtils;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.SimpleTextWatcher;
@@ -29,7 +30,7 @@ public class TopicCommentActivity extends SwipeBackActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSwipeContentView(R.layout.activity_topic_comment);
+        setContentView(R.layout.activity_topic_comment);
 
         mContent = (EditText) findViewById(R.id.topic_add_content);
         mContent.addTextChangedListener(textWatcher);

@@ -45,6 +45,7 @@
         <item name="android:itemTextAppearance">@style/myCustomMenuTextApearance</item>
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="colorPrimary">@drawable/gray_drawable</item>
+        <item name= "android:windowIsTranslucent" >true </item>
     </style>
 
     <style name="myCustomMenuTextApearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
