@@ -199,7 +199,7 @@ public class MyInfoFragment extends BaseFragment implements View.OnClickListener
         V2EXManager.dailyCheckIn(getActivity(), new HttpRequestHandler<Integer>() {
             @Override
             public void onSuccess(Integer data) {
-                MessageUtils.showMiddleToast(getActivity(), "签到成功");
+                MessageUtils.showToast(getActivity(), "签到成功");
             }
 
             @Override
@@ -209,7 +209,7 @@ public class MyInfoFragment extends BaseFragment implements View.OnClickListener
 
             @Override
             public void onFailure(String error) {
-                MessageUtils.showMiddleToast(getActivity(), error);
+                MessageUtils.showToast(getActivity(), error);
             }
         });
     }

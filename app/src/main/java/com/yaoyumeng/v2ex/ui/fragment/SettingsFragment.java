@@ -34,6 +34,7 @@ public class SettingsFragment extends PreferenceFragment {
     CheckBoxPreference mEffect;
     CheckBoxPreference mLoadimage;
     CheckBoxPreference mJsonAPI;
+    CheckBoxPreference mMessagePush;
     Button mLogout;
     Application mApp = Application.getInstance();
 
@@ -124,6 +125,16 @@ public class SettingsFragment extends PreferenceFragment {
                 mJsonAPI.setSummary(getActivity().getString(mJsonAPI.isChecked()
                         ? R.string.settings_use_jsonapi_summary
                         : R.string.settings_use_browser_summary));
+                return true;
+            }
+        });
+
+        // 消息推送
+        mMessagePush = (CheckBoxPreference) findPreference("pref_message_push");
+        mMessagePush.setChecked(mApp.isMessagePush());
+        mMessagePush.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                mApp.setMessagePush(mMessagePush.isChecked());
                 return true;
             }
         });

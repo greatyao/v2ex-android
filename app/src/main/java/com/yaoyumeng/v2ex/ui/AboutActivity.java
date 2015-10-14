@@ -53,7 +53,7 @@ public class AboutActivity extends SwipeBackActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } catch (Exception e) {
-            MessageUtils.showMiddleToast(this, "软件市场里暂时没有找到V2EX");
+            MessageUtils.showToast(this, "软件市场里暂时没有找到V2EX");
         }
     }
 
@@ -67,13 +67,13 @@ public class AboutActivity extends SwipeBackActivity {
                         UmengUpdateAgent.showUpdateDialog(AboutActivity.this, updateInfo);
                         break;
                     case UpdateStatus.No: // has no update
-                        MessageUtils.showMiddleToast(AboutActivity.this, "已经是最新版本");
+                        MessageUtils.showToast(AboutActivity.this, "已经是最新版本");
                         break;
                     case UpdateStatus.NoneWifi: // none wifi
-                        MessageUtils.showMiddleToast(AboutActivity.this, "没有wifi连接， 只在wifi下更新");
+                        MessageUtils.showToast(AboutActivity.this, "没有wifi连接， 只在wifi下更新");
                         break;
                     case UpdateStatus.Timeout: // time out
-                        MessageUtils.showMiddleToast(AboutActivity.this, "超时");
+                        MessageUtils.showToast(AboutActivity.this, "超时");
                         break;
                 }
             }

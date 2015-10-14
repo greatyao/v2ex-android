@@ -20,11 +20,10 @@ public class MessageUtils {
             Toast.makeText(cxt, errorString, Toast.LENGTH_LONG).show();
     }
 
-    public static void showMiddleToast(Context cxt, String msg) {
+    public static void showToast(Context cxt, String msg) {
         if(cxt == null)
             cxt = Application.getContext();
         Toast toast = Toast.makeText(cxt, msg, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 }

@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity implements OnTabChangeListener {
     @Override
     public void onBackPressed() {
         if ((System.currentTimeMillis() - exitTime) > 2000) {
-            MessageUtils.showMiddleToast(this, getString(R.string.main_exitapp_hint));
+            MessageUtils.showToast(this, getString(R.string.main_exitapp_hint));
             exitTime = System.currentTimeMillis();
         } else {
             stopNoticeService();

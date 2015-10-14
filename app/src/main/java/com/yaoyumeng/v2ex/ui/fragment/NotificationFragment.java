@@ -134,7 +134,7 @@ public class NotificationFragment extends BaseFragment implements HttpRequestHan
         mSwipeLayout.setRefreshing(false);
         mIsLoading = false;
         if (data.size() == 0) {
-            MessageUtils.showMiddleToast(getActivity(), getString(R.string.notification_message));
+            MessageUtils.showToast(getActivity(), getString(R.string.notification_message));
             return;
         }
 

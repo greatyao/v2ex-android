@@ -319,7 +319,7 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
             mStarItem.setVisible(!mIsStarred);
             mUnStarItem.setVisible(mIsStarred);
             mDataSource.favoriteNode(mNodeName, mIsStarred);
-            MessageUtils.showMiddleToast(getActivity(),
+            MessageUtils.showToast(getActivity(),
                     getString(mIsStarred ? R.string.fav_nodes_ok : R.string.unfav_nodes_ok));
         }
 

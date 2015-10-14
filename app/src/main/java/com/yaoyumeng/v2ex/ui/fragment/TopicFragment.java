@@ -77,7 +77,7 @@ public class TopicFragment extends BaseFragment
         public void onClick(View v) {
             String content = mEnterLayout.getContent();
             if (content.isEmpty()) {
-                MessageUtils.showMiddleToast(getActivity(), getString(R.string.topic_comment_not_empty));
+                MessageUtils.showToast(getActivity(), getString(R.string.topic_comment_not_empty));
                 return;
             }
             InputUtils.popSoftkeyboard(getActivity(), mEnterLayout.content, false);
@@ -251,7 +251,7 @@ public class TopicFragment extends BaseFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_COMMENT) {
             if (resultCode == Activity.RESULT_OK || data != null) {
-                MessageUtils.showMiddleToast(getActivity(),
+                MessageUtils.showToast(getActivity(),
                         getActivity().getString(R.string.topic_comment_succeed));
                 ReplyModel reply = data.getParcelableExtra("reply_result");
                 mAdapter.insert(reply);
@@ -530,7 +530,7 @@ public class TopicFragment extends BaseFragment
             mStarItem.setVisible(!mIsStarred);
             mUnStarItem.setVisible(mIsStarred);
             mDataSource.favoriteTopic(mTopic, mIsStarred);
-            MessageUtils.showMiddleToast(getActivity(),
+            MessageUtils.showToast(getActivity(),
                     getString(mIsStarred ? R.string.fav_topic_ok : R.string.unfav_topic_ok));
         }
 
