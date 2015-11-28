@@ -19,6 +19,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
+import com.melnykov.fab.ScrollDirectionListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twotoasters.jazzylistview.effects.FadeEffect;
 import com.twotoasters.jazzylistview.recyclerview.JazzyRecyclerViewScrollListener;
@@ -60,6 +62,7 @@ public class TopicFragment extends BaseFragment
     HeaderViewRecyclerAdapter mHeaderAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     SwipeRefreshLayout mSwipeLayout;
+    FloatingActionButton mScrollTopButton;
     TopicModel mTopic;
     int mTopicId;
     MenuItem mStarItem;
@@ -113,6 +116,7 @@ public class TopicFragment extends BaseFragment
         mEnterLayout.setDefaultHint(getString(R.string.topic_comment_default_hint));
         mEnterLayout.hide();
 
+        mScrollTopButton = (FloatingActionButton)rootView.findViewById(R.id.scroll_top_button);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_replies);
         mAdapter = new ReplyAdapter(getActivity(), onItemCommentClick, this);
 
@@ -124,6 +128,26 @@ public class TopicFragment extends BaseFragment
         mHeaderAdapter = new HeaderViewRecyclerAdapter(mAdapter);
         mHeaderAdapter.addHeaderView(mHeader);
         mRecyclerView.setAdapter(mHeaderAdapter);
+
+        mScrollTopButton.hide();
+        mScrollTopButton.attachToRecyclerView(mRecyclerView, new ScrollDirectionListener() {
+            @Override
+            public void onScrollDown() {
+                mScrollTopButton.hide();
+            }
+
+            @Override
+            public void onScrollUp() {
+                mScrollTopButton.show();
+            }
+        });
+        mScrollTopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRecyclerView.smoothScrollToPosition(0);
+                mScrollTopButton.hide();
+            }
+        });
 
         if (mApp.isShowEffectFromCache()) {
             JazzyRecyclerViewScrollListener scrollListener = new JazzyRecyclerViewScrollListener();
