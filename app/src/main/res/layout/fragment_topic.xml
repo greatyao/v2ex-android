@@ -35,6 +35,7 @@
         android:layout_gravity="right|bottom"
         android:layout_marginBottom="64dp"
         android:layout_marginRight="16dp"
+        android:visibility="invisible"
         android:src="@drawable/ic_action_top"
         fab:fab_colorNormal="@color/gray_b2"
         fab:fab_type="mini"/>

@@ -117,6 +117,7 @@ public class TopicFragment extends BaseFragment
         mEnterLayout.hide();
 
         mScrollTopButton = (FloatingActionButton)rootView.findViewById(R.id.scroll_top_button);
+
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_replies);
         mAdapter = new ReplyAdapter(getActivity(), onItemCommentClick, this);
 
@@ -129,7 +130,6 @@ public class TopicFragment extends BaseFragment
         mHeaderAdapter.addHeaderView(mHeader);
         mRecyclerView.setAdapter(mHeaderAdapter);
 
-        mScrollTopButton.hide();
         mScrollTopButton.attachToRecyclerView(mRecyclerView, new ScrollDirectionListener() {
             @Override
             public void onScrollDown() {
@@ -138,6 +138,8 @@ public class TopicFragment extends BaseFragment
 
             @Override
             public void onScrollUp() {
+                if (mScrollTopButton.getVisibility() != View.VISIBLE)
+                    mScrollTopButton.setVisibility(View.VISIBLE);
                 mScrollTopButton.show();
             }
         });
