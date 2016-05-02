@@ -26,6 +26,7 @@ import com.yaoyumeng.v2ex.model.TopicWithReplyListModel;
 import org.apache.http.Header;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -457,24 +458,31 @@ public class V2EXManager {
      */
     public static void loginWithUsername(final Context cxt, final String username, final String password,
                                          final HttpRequestHandler<Integer> handler) {
-        requestOnceWithURLString(cxt, SIGN_IN_URL, new HttpRequestHandler<String>() {
+        getClient(cxt).get(SIGN_IN_URL, new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(String data, int totalPages, int currentPage) {
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String content = new String(responseBody);
+                Element body = Jsoup.parse(content);
+                Elements boxes = body.getElementsByClass("box");
+                RequestParams params = new RequestParams();
+                for (Element el : boxes) {
+                    Elements cell = el.getElementsByClass("cell");
+                    for (Element c : cell) {
+                        String nameVal = c.getElementsByAttributeValue("type", "text").attr("name");
+                        String passwordVal = c.getElementsByAttributeValue("type", "password").attr("name");
+                        String once = c.getElementsByAttributeValue("name", "once").attr("value");
+                        if (nameVal.isEmpty() || passwordVal.isEmpty()) continue;
+                        params.put(nameVal, username);
+                        params.put("once", once);
+                        params.put(passwordVal, password);
+                        break;
+                    }
+                }
 
-            }
-
-            @Override
-            public void onSuccess(String data) {
-                final String once = data;
                 AsyncHttpClient client = getClient(cxt);
                 client.addHeader("Origin", HTTPS_BASE_URL);
                 client.addHeader("Referer", SIGN_IN_URL);
                 client.addHeader("Content-Type", "application/x-www-form-urlencoded");
-                RequestParams params = new RequestParams();
-                params.put("next", "/");
-                params.put("u", username);
-                params.put("once", once);
-                params.put("p", password);
                 client.post(SIGN_IN_URL, params, new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -494,8 +502,8 @@ public class V2EXManager {
             }
 
             @Override
-            public void onFailure(String error) {
-                SafeHandler.onFailure(handler, error);
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                SafeHandler.onFailure(handler, V2EXErrorType.errorMessage(cxt, V2EXErrorType.ErrorLoginFailure));
             }
         });
     }
