@@ -1,5 +1,7 @@
 package com.yaoyumeng.v2ex.model;
 
+import com.yaoyumeng.v2ex.utils.ContentUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,21 +29,8 @@ public class NotificationListModel extends ArrayList<NotificationModel> {
                 add(notification);
         }
 
-        elements = body.getElementsByAttributeValue("class", "inner");
-        for (Element el : elements) {
-            Elements tds = el.getElementsByTag("td");
-            if (tds.size() != 3) continue;
-
-            String pageString = el.getElementsByAttributeValue("align", "center").text();
-            String[] arrayString = pageString.split("/");
-            if (arrayString.length != 2) continue;
-
-            try {
-                totalPage = Integer.parseInt(arrayString[1]);
-                currentPage = Integer.parseInt(arrayString[0]);
-            } catch (Exception e) {
-            }
-            break;
-        }
+        int[] pages = ContentUtils.parsePage(body);
+        currentPage = pages[0];
+        totalPage = pages[1];
     }
 }

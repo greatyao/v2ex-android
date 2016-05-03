@@ -53,32 +53,9 @@ public class TopicWithReplyListModel extends V2EXModel {
             }
         }
 
-        totalPage = currentPage = 1;
-        Elements pageNodes = body.getElementsByClass("page_current");
-        if (pageNodes != null) {
-            android.util.Log.d("page_current", pageNodes.text());
-            try {
-                currentPage = Integer.parseInt(pageNodes.text());
-                totalPage = currentPage;
-            } catch (Exception e) {
-
-            }
-        }
-
-        pageNodes = body.getElementsByClass("page_normal");
-        for (Element pageNode : pageNodes) {
-            String page = pageNode.attr("href");
-            String[] stringArray = page.split("p=");
-            if (stringArray.length == 2) {
-                try {
-                    int p = Integer.parseInt(stringArray[1]);
-                    if (totalPage < p)
-                        totalPage = p;
-                } catch (Exception e) {
-
-                }
-            }
-        }
+        int[] pages = ContentUtils.parsePage(body);
+        currentPage = pages[0];
+        totalPage = pages[1];
         android.util.Log.d("page", String.format("%d/%d", currentPage, totalPage));
     }
 

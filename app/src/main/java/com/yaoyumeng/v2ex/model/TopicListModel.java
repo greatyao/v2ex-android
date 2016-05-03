@@ -2,6 +2,8 @@ package com.yaoyumeng.v2ex.model;
 
 import android.util.Log;
 
+import com.yaoyumeng.v2ex.utils.ContentUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -35,7 +37,9 @@ public class TopicListModel extends ArrayList<TopicModel> {
             }
         }
 
-        parsePage(body);
+        int[] pages = ContentUtils.parsePage(body);
+        mCurrentPage = pages[0];
+        mTotalPage = pages[1];
     }
 
     public void parseFromNodeEntry(String responseBody, String nodeName) throws Exception {
@@ -60,28 +64,9 @@ public class TopicListModel extends ArrayList<TopicModel> {
             }
         }
 
-        parsePage(body);
-    }
-
-    private void parsePage(Element body){
-        Elements elements = body.getElementsByAttributeValue("class", "inner");
-        mCurrentPage = mTotalPage = 1;
-        for (Element el : elements) {
-            Elements tds = el.getElementsByTag("td");
-            if (tds.size() != 3) continue;
-
-            String pageString = el.getElementsByAttributeValue("align", "center").text();
-            pageString = pageString.split(" · ")[0];
-            String[] arrayString = pageString.split("/");
-            if (arrayString.length != 2) continue;
-
-            try {
-                mTotalPage = Integer.parseInt(arrayString[1]);
-                mCurrentPage = Integer.parseInt(arrayString[0]);
-            } catch (Exception e) {
-            }
-            break;
-        }
+        int[] pages = ContentUtils.parsePage(body);
+        mCurrentPage = pages[0];
+        mTotalPage = pages[1];
     }
 
     private TopicModel parseTopicModel(Element el, boolean parseNode, NodeModel node) throws Exception {

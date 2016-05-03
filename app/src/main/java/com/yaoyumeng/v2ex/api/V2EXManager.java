@@ -253,7 +253,8 @@ public class V2EXManager {
                                                 boolean refresh, final HttpRequestHandler<ArrayList<TopicModel>> handler) {
         String urlString = String.format("%s/go/%s?p=%d", getBaseUrl(), nodeName, page);
         final AsyncHttpClient client = getClient(ctx, false);
-        client.addHeader("Referer", getBaseUrl());
+        String refer = page == 1 ? getBaseUrl() : String.format("%s/go/%s?p=%d", getBaseUrl(), nodeName, page-1);
+        client.addHeader("Referer", refer);
         client.addHeader("Content-Type", "application/x-www-form-urlencoded");
         client.get(urlString, new TextHttpResponseHandler() {
             @Override
