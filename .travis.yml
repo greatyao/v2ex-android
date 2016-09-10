@@ -1,0 +1,36 @@
+language: android
+jdk:
+  - oraclejdk8
+
+# Turning off caching to avoid caching Issues
+# cache: false
+# Using the new Container-Based Infrastructure
+sudo: false
+
+env:
+  global:
+    # Initiating clean Gradle output
+    - TERM=dumb
+    # Amount of memory granted to Gradle JVM
+    - GRADLE_OPTS="-Xmx512m -XX:MaxPermSize=512m"
+    # General Android settings used in builds
+    - ANDROID_TARGET=android-21
+
+before_install:
+    # Making sure gradlew has executable permissions
+    - chmod a+x gradlew
+
+android:
+  components:
+    # We are using the latest revision of Android SDK Tools
+    - tools
+    - platform-tools
+    - android-21
+    - build-tools-21.1.2
+
+  licenses:
+     - 'android-sdk-license-.+'
+
+script:
+
+  ./gradlew build
