@@ -23,18 +23,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:21.+'
-    compile 'com.android.support:support-v13:21.+'
-    compile 'com.android.support:appcompat-v7:21.0.0'
-    compile 'com.android.support:cardview-v7:21.0.3'
-    compile 'com.android.support:recyclerview-v7:21.0.3'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:design:22.2.0'
+    compile 'com.android.support:recyclerview-v7:22.+'
+    compile 'com.android.support:cardview-v7:22.+'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.loopj.android:android-async-http:1.4.6'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
-	compile 'de.hdodenhof:circleimageview:1.3.0'
-
+    compile 'de.hdodenhof:circleimageview:1.3.0'
     compile project(':jazzylistview')
     compile project(':pagerslidingtabstrip')
 }
