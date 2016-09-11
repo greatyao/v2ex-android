@@ -1,103 +1,85 @@
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="4dp"
-    android:background="#fff"
-    android:foreground="?android:selectableItemBackground"
     android:orientation="horizontal"
-    card_view:cardCornerRadius="2dp">
+    android:padding="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_avatar" />
 
     <RelativeLayout
-        android:id="@+id/info"
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/replies_layout"
+        android:layout_toRightOf="@+id/avatar">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/avatar"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_avatar" />
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
+        <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@+id/replies_layout"
-            android:layout_toRightOf="@+id/avatar">
+            android:layout_marginBottom="12dp"
+            android:text="标题1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:textColor="#de000000"
+            android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:text="标题"
-                android:textColor="#de000000"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/node_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/title"
-                android:background="#f5f5f5"
-                android:text="V2ex"
-                android:textSize="12sp"/>
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/node_title"
-                android:layout_alignTop="@+id/node_title"
-                android:layout_marginLeft="16dp"
-                android:text="author"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/name"
-                android:layout_gravity="center_vertical"
-                android:paddingRight="8dp"
-                android:text="2010年1月1日"
-                android:textSize="12sp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/replies_layout"
-            android:layout_width="40dp"
+        <TextView
+            android:id="@+id/node_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="2dp"
-            android:layout_marginStart="2dp">
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/title"
+            android:background="#e5e5e5"
+            android:text="V2ex"
+            android:textSize="12sp" />
 
-            <com.readystatesoftware.viewbadger.BadgeView
-                android:id="@+id/txt_replies"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="0" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/node_title"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/node_title"
+            android:text="author"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/name"
+            android:layout_gravity="center_vertical"
+            android:paddingRight="8dp"
+            android:text="2010年1月1日"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+    <RelativeLayout
+        android:id="@+id/replies_layout"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true">
+
+        <com.readystatesoftware.viewbadger.BadgeView
+            android:id="@+id/txt_replies"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="0" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -376,11 +376,12 @@ public class TopicFragment extends BaseFragment
 
         ImageView avatar = (ImageView) mHeader.findViewById(R.id.avatar);
         TextView titleTextView = (TextView) mHeader.findViewById(R.id.text_title);
-        RichTextView contentTextView = (RichTextView) mHeader.findViewById(R.id.text_content);
         TextView authorTextView = (TextView) mHeader.findViewById(R.id.text_author);
         TextView timeTextView = (TextView) mHeader.findViewById(R.id.text_timeline);
         TextView repliesTextView = (TextView) mHeader.findViewById(R.id.text_replies);
         TextView nodeTextView = (TextView) mHeader.findViewById(R.id.text_node);
+        RichTextView contentTextView = (RichTextView) mHeader.findViewById(R.id.text_content);
+        View divideView = mHeader.findViewById(R.id.divide_line);
 
         titleTextView.setText(mTopic.title);
 
@@ -399,7 +400,13 @@ public class TopicFragment extends BaseFragment
         }
 
         String content = mTopic.contentRendered;
-        contentTextView.setRichText(content);
+        if (content != "")
+            contentTextView.setRichText(content);
+        else
+        {
+            divideView.setVisibility(View.GONE);
+            contentTextView.setVisibility(View.GONE);
+        }
 
         repliesTextView.setText(mTopic.replies + "个回复");
 

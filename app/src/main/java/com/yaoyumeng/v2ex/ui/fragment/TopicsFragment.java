@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.FloatingActionButton;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,7 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.melnykov.fab.FloatingActionButton;
+//import com.melnykov.fab.FloatingActionButton;
 import com.twotoasters.jazzylistview.effects.FadeEffect;
 import com.twotoasters.jazzylistview.recyclerview.JazzyRecyclerViewScrollListener;
 import com.yaoyumeng.v2ex.Application;
@@ -29,6 +30,7 @@ import com.yaoyumeng.v2ex.ui.BaseActivity;
 import com.yaoyumeng.v2ex.ui.TopicAddActivity;
 import com.yaoyumeng.v2ex.ui.adapter.HeaderViewRecyclerAdapter;
 import com.yaoyumeng.v2ex.ui.adapter.TopicsAdapter;
+import com.yaoyumeng.v2ex.ui.widget.DividerItemDecoration;
 import com.yaoyumeng.v2ex.ui.widget.FootUpdate;
 import com.yaoyumeng.v2ex.utils.MessageUtils;
 import com.yaoyumeng.v2ex.utils.OnScrollToBottomListener;
@@ -93,6 +95,7 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_topics);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
         if (Application.getInstance().isShowEffectFromCache()) {
             JazzyRecyclerViewScrollListener scrollListener = new JazzyRecyclerViewScrollListener();
@@ -102,9 +105,10 @@ public class TopicsFragment extends BaseFragment implements HttpRequestHandler<A
 
         if ((mNodeId > 0 || !mNodeName.isEmpty()) && mIsLogin) {
             mAddButton.setVisibility(View.VISIBLE);
-            mAddButton.attachToRecyclerView(mRecyclerView);
+            //mAddButton.attachToRecyclerView(mRecyclerView);
         } else {
-            mAddButton.hide(false);
+            //mAddButton.hide(false);
+            mAddButton.setVisibility(View.GONE);
         }
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override

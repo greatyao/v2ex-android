@@ -168,7 +168,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ViewHolder
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        public CardView card;
+        public View card;
         public ImageView avatar;
         public TextView title;
         public TextView nodeTitle;
@@ -179,7 +179,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.ViewHolder
         public ViewHolder(View view) {
             super(view);
 
-            card = (CardView) view.findViewById(R.id.card_container);
+            card = (View) view.findViewById(R.id.card_container);
             avatar = (ImageView) view.findViewById(R.id.avatar);
             title = (TextView) view.findViewById(R.id.title);
             nodeTitle = (TextView) view.findViewById(R.id.node_title);

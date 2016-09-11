@@ -1,103 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#fff"
-    android:foreground="?android:selectableItemBackground">
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="8dp">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/avatar_normal_size"
+        android:layout_height="@dimen/avatar_normal_size"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_avatar" />
+
+    <RelativeLayout
+        android:id="@+id/replier_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp">
+        android:layout_alignTop="@+id/avatar"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/avatar"
+        android:maxHeight="30dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/avatar"
-            android:layout_width="@dimen/avatar_normal_size"
-            android:layout_height="@dimen/avatar_normal_size"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/ic_avatar" />
-
-        <RelativeLayout
-            android:id="@+id/replier_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/avatar"
-            android:layout_toRightOf="@+id/avatar"
-            android:layout_marginRight="16dp"
-            android:maxHeight="30dp">
-
-            <TextView
-                android:id="@+id/replier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:gravity="center_vertical"
-                android:text="author"
-                android:textColor="#3bbd79"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_toEndOf="@+id/replier"
-                android:layout_toRightOf="@+id/replier"
-                android:gravity="center_vertical"
-                android:text="1分钟前"
-                android:textColor="#aaa"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/which_floor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:text="第1楼"
-                android:textColor="#aaa"
-                android:textSize="12sp" />
-
-        </RelativeLayout>
-
-        <com.yaoyumeng.v2ex.ui.widget.RichTextView
-            android:id="@+id/content"
+        <TextView
+            android:id="@+id/replier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/replier_layout"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@+id/avatar"
-            android:text="@string/topic" />
+            android:gravity="center_vertical"
+            android:text="author"
+            android:textColor="#3bbd79"
+            android:textSize="12sp" />
 
-        <RelativeLayout
-            android:id="@+id/comment_layout"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/content"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:layout_toRightOf="@+id/avatar">
+            android:layout_marginLeft="8dp"
+            android:layout_toEndOf="@+id/replier"
+            android:layout_toRightOf="@+id/replier"
+            android:gravity="center_vertical"
+            android:text="1分钟前"
+            android:textColor="#aaa"
+            android:textSize="12sp" />
 
-            <CheckBox
-                android:id="@+id/commentBtn"
-                android:layout_width="50dp"
-                android:layout_height="25dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:button="@drawable/checkbox_comment" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/which_floor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="第1楼"
+            android:textColor="#aaa"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+    <com.yaoyumeng.v2ex.ui.widget.RichTextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/replier_layout"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/avatar"
+        android:text="@string/topic" />
+
+    <RelativeLayout
+        android:id="@+id/comment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/content"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/avatar">
+
+        <CheckBox
+            android:id="@+id/commentBtn"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:button="@drawable/checkbox_comment" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -3,7 +3,6 @@ package com.yaoyumeng.v2ex.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -123,7 +122,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        CardView card;
+        View card;
         ImageView avatar;
         RichTextView content;
         TextView replier;
@@ -135,7 +134,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> 
         public ViewHolder(View view) {
             super(view);
 
-            card = (CardView) view.findViewById(R.id.card_container);
+            card = (View) view.findViewById(R.id.card_container);
             avatar = (ImageView) view.findViewById(R.id.avatar);
             content = (RichTextView) view.findViewById(R.id.content);
             time = (TextView) view.findViewById(R.id.time);

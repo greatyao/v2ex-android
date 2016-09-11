@@ -11,6 +11,8 @@
 
     <dimen name="global_dialog_padding">15.0dip</dimen>
 
+    <dimen name="tab_layout_padding">8dp</dimen>
+
     <dimen name="photo_crop_width">280dip</dimen>
     <dimen name="photo_crop_stroke_width">1dip</dimen>
     <dimen name="photo_page_margin">10dip</dimen>

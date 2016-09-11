@@ -127,8 +127,8 @@ public class MainActivity extends BaseActivity implements OnTabChangeListener {
         mTabIndicators.add(tabviews[2]);
 
         mTabHost.setOnTabChangedListener(this);
-        tabviews[0].setIconAlpha(1.0f);
-        setTitle(texts[0]);
+        mTabHost.setCurrentTab(0);
+        onTabChanged(mTabHost.getCurrentTabTag());
     }
 
     private void handleIntent(Intent intent) {

@@ -2,7 +2,6 @@ package com.yaoyumeng.v2ex.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -108,7 +107,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        public CardView card;
+        public View card;
         ImageView avatar;
         TextView content;
         TextView title;
@@ -118,7 +117,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             // super这个参数一定要注意,必须为Item的根节点.否则会出现莫名的FC.
             super(view);
 
-            card = (CardView) view.findViewById(R.id.card_container);
+            card = (View) view.findViewById(R.id.card_container);
             avatar = (ImageView) view.findViewById(R.id.avatar);
             content = (TextView) view.findViewById(R.id.content);
             title = (TextView) view.findViewById(R.id.title);
