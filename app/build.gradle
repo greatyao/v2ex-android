@@ -34,6 +34,7 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'de.hdodenhof:circleimageview:1.3.0'
+    compile 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
     compile project(':jazzylistview')
     compile project(':pagerslidingtabstrip')
 }

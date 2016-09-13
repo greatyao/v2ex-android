@@ -39,6 +39,7 @@ public class V2EXDateModel {
     }
 
     public static String toString(long ts) {
+        if(ts == -1) return "";
         long created = ts * 1000;
         long now = System.currentTimeMillis();
         long difference = now - created;

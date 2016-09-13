@@ -149,6 +149,8 @@ public class TopicListModel extends ArrayList<TopicModel> {
                             dateString = "刚刚";
                         }
                         topic.created = created;
+                    } else {
+                        topic.created = -1;
                     }
                 }
             }

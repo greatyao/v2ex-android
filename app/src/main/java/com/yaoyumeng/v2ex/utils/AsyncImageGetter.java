@@ -5,12 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
 import com.yaoyumeng.v2ex.R;
-import com.yaoyumeng.v2ex.utils.ScreenUtils;
+import com.yaoyumeng.v2ex.utils.Html;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 

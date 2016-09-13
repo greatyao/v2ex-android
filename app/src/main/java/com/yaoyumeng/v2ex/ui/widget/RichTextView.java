@@ -1,7 +1,6 @@
 package com.yaoyumeng.v2ex.ui.widget;
 
 import android.content.Context;
-import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -11,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import com.yaoyumeng.v2ex.utils.Html;
 import com.yaoyumeng.v2ex.Application;
 import com.yaoyumeng.v2ex.ui.PhotoViewActivity;
 import com.yaoyumeng.v2ex.utils.AsyncImageGetter;
@@ -37,6 +37,8 @@ public class RichTextView extends TextView {
 
     public void setRichText(String text) {
 
+        setTextIsSelectable(true);
+
         //移动网络情况下如果设置了不显示图片,则遵命
         if (NetWorkHelper.isMobile(getContext()) && !Application.getInstance().isLoadImageInMobileNetworkFromCache()) {
             super.setText(Html.fromHtml(text));
@@ -44,7 +46,7 @@ public class RichTextView extends TextView {
             return;
         }
 
-        Spanned spanned = Html.fromHtml(text, new AsyncImageGetter(getContext(), this), null);
+        Spanned spanned = Html.fromHtml(text, new AsyncImageGetter(getContext(), this));
         SpannableStringBuilder htmlSpannable;
         if (spanned instanceof SpannableStringBuilder) {
             htmlSpannable = (SpannableStringBuilder) spanned;
@@ -85,7 +87,7 @@ public class RichTextView extends TextView {
             htmlSpannable.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
-        super.setText(spanned);
+        super.setText(htmlSpannable);
         setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
