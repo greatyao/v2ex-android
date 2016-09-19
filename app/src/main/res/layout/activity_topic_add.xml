@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.yaoyumeng.v2ex.ui.widget.CustomSpinner
+    <com.yaoyumeng.v2ex2.ui.widget.CustomSpinner
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:id="@+id/topic_add_node"

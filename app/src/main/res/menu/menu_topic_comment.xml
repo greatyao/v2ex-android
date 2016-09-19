@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.yaoyumeng.v2ex.ui.TopicCommentActivity">
+    tools:context="com.yaoyumeng.v2ex2.ui.TopicCommentActivity">
     <item android:id="@+id/action_add"
         android:title="@string/menu_title_publish"
         android:icon="@drawable/menu_add_selector"

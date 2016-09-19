@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yaoyumeng.v2ex" >
+    package="com.yaoyumeng.v2ex2" >
     /** permission **/
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,7 +16,7 @@
         android:theme="@style/Coding.AppTheme" >
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5538403067e58e38e6001af9" />
+            android:value="5600ba3de0f55a7e06003d7b" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="play" />

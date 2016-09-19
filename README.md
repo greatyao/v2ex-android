@@ -3,11 +3,7 @@
 V2EX社区客户端，非官方。
 
 #### Google Play下载
-[![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.yaoyumeng.v2ex)
-
-#### 其他下载链接
-
-[**Github**](https://github.com/greatyao/v2ex-android/releases/download/1.2.5/v2ex-android-v1.2.5.apk)
+[![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.yaoyumeng.v2ex2)
 
 
 ### 支持功能
@@ -22,31 +18,13 @@ V2EX社区客户端，非官方。
  * 节点下的话题翻页
  * 话题回复翻页
  * 滑动手势返回
-
-### 其他功能
-
- * 实现了节点、话题、用户三个Scheme,通过话题、节点、用户链接直接打开客户端进行相关信息浏览
- * 对用户已经浏览过的话题作记忆处理并在界面上进行展示
- * 话题、帖子等采用了卡片式布局
+ 
 
 ### 编译需求
 
 * JDK 1.7+
 * Android Studio 1.0+
 * Android SDK r21+
-
-
-### 屏幕截图
-
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/latest.png" width="200" height="350"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/hot.png" width="200" height="350"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/nodes.png" width="200" height="350"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/favor.png" width="200" height="350"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/topic_details.png" width="200" height="350"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/user_details.png" width="200" height="350"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/topic_add.png" width="200" height="350"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/topic_reply.png" width="200" height="350"/>
-<img src="https://raw.github.com/greatyao/v2ex-android/master/snapshots/drawer.png" width="200" height="350"/>
 
 
 ### LICENSE

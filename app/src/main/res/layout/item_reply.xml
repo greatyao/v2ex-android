@@ -58,7 +58,7 @@
 
     </RelativeLayout>
 
-    <com.yaoyumeng.v2ex.ui.widget.RichTextView
+    <com.yaoyumeng.v2ex2.ui.widget.RichTextView
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -88,5 +88,15 @@
             android:layout_alignParentTop="true"
             android:button="@drawable/checkbox_comment" />
     </RelativeLayout>
+
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/divide_reply"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/avatar"
+        android:background="#ffe4e4e4"
+        android:layout_below="@+id/comment_layout" />
 
 </RelativeLayout>

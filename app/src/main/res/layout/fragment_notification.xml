@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.yaoyumeng.v2ex.ui.fragment.NotificationFragment">
+    tools:context="com.yaoyumeng.v2ex2.ui.fragment.NotificationFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"

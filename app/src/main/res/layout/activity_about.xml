@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffe4e4e4"
-    tools:context="com.yaoyumeng.v2ex.ui.AboutActivity">
+    tools:context="com.yaoyumeng.v2ex2.ui.AboutActivity">
 
     <ImageView
         android:id="@+id/icon"
@@ -21,7 +21,7 @@
         android:layout_below="@id/icon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:text="掌上V2EX -- 发掘你的潜能"
+        android:text="爱V2EX -- 发掘你的潜能"
         android:textColor="#000000"
         android:textSize="18sp" />
 
@@ -105,7 +105,7 @@
             android:textSize="14sp"
             android:autoLink="web" />
 
-        <com.yaoyumeng.v2ex.ui.widget.RichTextView
+        <com.yaoyumeng.v2ex2.ui.widget.RichTextView
             android:id="@+id/v2ex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

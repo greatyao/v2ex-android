@@ -5,10 +5,10 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.yaoyumeng.v2ex"
+        applicationId "com.yaoyumeng.v2ex2"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 63
+        versionCode 64
         versionName "2.9.0"
     }
     buildTypes {

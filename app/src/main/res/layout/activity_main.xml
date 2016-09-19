@@ -37,7 +37,7 @@
         android:background="@drawable/tab_bg"
         android:orientation="horizontal" >
 
-        <com.yaoyumeng.v2ex.ui.widget.ChangeColorIconWithText
+        <com.yaoyumeng.v2ex2.ui.widget.ChangeColorIconWithText
             android:id="@+id/id_indicator_discovery"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
@@ -48,7 +48,7 @@
             app:tx_text_size="12sp"
             app:tx_color="@color/colorPrimary" />
 
-        <com.yaoyumeng.v2ex.ui.widget.ChangeColorIconWithText
+        <com.yaoyumeng.v2ex2.ui.widget.ChangeColorIconWithText
             android:id="@+id/id_indicator_nodes"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
@@ -59,7 +59,7 @@
             app:tx_text_size="12sp"
             app:tx_color="@color/colorPrimary" />
 
-        <com.yaoyumeng.v2ex.ui.widget.ChangeColorIconWithText
+        <com.yaoyumeng.v2ex2.ui.widget.ChangeColorIconWithText
             android:id="@+id/id_indicator_my"
             android:layout_width="0dp"
             android:layout_height="fill_parent"

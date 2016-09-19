@@ -84,7 +84,7 @@
             android:layout_marginTop="8dp"
             android:background="#ffe4e4e4" />
 
-        <com.yaoyumeng.v2ex.ui.widget.RichTextView
+        <com.yaoyumeng.v2ex2.ui.widget.RichTextView
             android:id="@+id/text_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,6 +95,14 @@
             android:layout_marginTop="8dp"
             android:lineSpacingExtra="1.25dp"
             android:text="帖子内容" />
+
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/divide_line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/text_content"
+            android:layout_marginTop="8dp"
+            android:background="#ffe4e4e4" />
 
     </RelativeLayout>
 
