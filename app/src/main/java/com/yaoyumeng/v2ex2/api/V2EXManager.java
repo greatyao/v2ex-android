@@ -13,6 +13,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import com.yaoyumeng.v2ex2.Application;
 import com.yaoyumeng.v2ex2.R;
 import com.yaoyumeng.v2ex2.model.MemberModel;
+import com.yaoyumeng.v2ex2.model.NodeListModel;
 import com.yaoyumeng.v2ex2.model.NodeModel;
 import com.yaoyumeng.v2ex2.model.NotificationListModel;
 import com.yaoyumeng.v2ex2.model.NotificationModel;
@@ -510,19 +511,11 @@ public class V2EXManager {
     }
 
     private static ArrayList<NodeModel> getNodeModelsFromResponse(String content) {
-        Pattern pattern = Pattern.compile("<a class=\"grid_item\" href=\"/go/([^\"]+)\" id=([^>]+)><div([^>]+)><img src=\"([^\"]+)([^>]+)><([^>]+)></div>([^<]+)");
-        Matcher matcher = pattern.matcher(content);
-        ArrayList<NodeModel> collections = new ArrayList<NodeModel>();
-        while (matcher.find()) {
-            NodeModel node = new NodeModel();
-            node.name = matcher.group(1);
-            node.title = matcher.group(7);
-            node.url = matcher.group(4);
-            if (node.url.startsWith("//"))
-                node.url = "http:" + node.url;
-            else
-                node.url = HTTP_BASE_URL + node.url;
-            collections.add(node);
+        NodeListModel collections = new NodeListModel();
+        try{
+            collections.parse(content);
+        } catch (Exception e){
+
         }
         return collections;
     }
