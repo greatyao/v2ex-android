@@ -65,9 +65,8 @@ public class TopicWithReplyListModel extends V2EXModel {
 
         Elements tdNodes = element.getElementsByTag("td");
         for (Element tdNode : tdNodes) {
-            String content = tdNode.toString();
-
-            if (content.contains("class=\"avatar\"")) {
+            Elements avatars = tdNode.getElementsByClass("avatar");
+            if (avatars.size() > 0) {
                 Elements avatarNode = tdNode.getElementsByTag("img");
                 if (avatarNode != null) {
                     String avatarString = avatarNode.attr("src");
@@ -75,29 +74,25 @@ public class TopicWithReplyListModel extends V2EXModel {
                         avatarString = "http:" + avatarString;
                     }
                     reply.member.avatar = avatarString;
-                    //android.util.Log.i("reply_avatar", avatarString);
                 }
-            } else if (content.contains("reply_content")) {
-                Elements aNodes = tdNode.getElementsByTag("a");
-                for (Element aNode : aNodes) {
-                    if (aNode.toString().contains("/member/")) {
-                        reply.member.username = aNode.attr("href").replace("/member/", "");
-                        //android.util.Log.i("reply_user", reply.member.username);
-                        break;
-                    }
-                }
+            }
 
-                Elements replyElements = tdNode.getElementsByClass("reply_content");
+            Elements replyElements = tdNode.getElementsByClass("reply_content");
+            if(replyElements.size() > 0) {
                 reply.content = replyElements.text();
                 reply.contentRendered = ContentUtils.formatContent(replyElements.html());
-                //android.util.Log.i("reply_content",  reply.content);
+            }
 
-                Elements spanNodes = tdNode.getElementsByTag("span");
-                for (Element spanNode : spanNodes) {
-                    if (spanNode.toString().contains("class=\"fade small\"")) {
-                        reply.created = V2EXDateModel.toLong(spanNode.text());
-                        break;
-                    }
+            Elements agos = tdNode.getElementsByClass("ago");
+            if(agos.size() > 0) {
+                reply.created = V2EXDateModel.toLong(agos.text());
+            }
+
+            Elements aNodes = tdNode.getElementsByTag("a");
+            for (Element aNode : aNodes) {
+                if (aNode.toString().contains("/member/")) {
+                    reply.member.username = aNode.attr("href").replace("/member/", "");
+                    break;
                 }
             }
         }
@@ -110,7 +105,6 @@ public class TopicWithReplyListModel extends V2EXModel {
         if (title.endsWith("- V2EX"))
             title = title.substring(0, title.length() - 6).trim();
         topic.title = title;
-        //android.util.Log.i("title", topic.title);
 
         Elements header = body.getElementsByClass("header");
         if (header.size() == 0) throw new Exception("fail to parse topic");
@@ -124,7 +118,6 @@ public class TopicWithReplyListModel extends V2EXModel {
                 String member = aNode.attr("href");
                 member = member.replace("/member/", "");
                 topic.member.username = member;
-                //android.util.Log.i("member", member);
 
                 Elements avatarNode = aNode.getElementsByTag("img");
                 if (avatarNode != null &&
@@ -133,13 +126,11 @@ public class TopicWithReplyListModel extends V2EXModel {
                     if (avatar.startsWith("//"))
                         avatar = "http:" + avatar;
                     topic.member.avatar = avatar;
-                    //android.util.Log.i("avatar", avatar);
                 }
             } else if (content.contains("/go/")) {
                 String node = aNode.attr("href");
                 topic.node.name = node.replace("/go/", "");
                 topic.node.title = aNode.text();
-                //android.util.Log.i("node", node + " " + aNode.text());
             }
         }
 
@@ -147,21 +138,18 @@ public class TopicWithReplyListModel extends V2EXModel {
         String[] components = dateString.split("·");
         if (components.length >= 2) {
             dateString = components[1].trim();
-            //android.util.Log.i("time", dateString);
             topic.created = V2EXDateModel.toLong(dateString);
         }
 
         Elements hNodes = header.get(0).getElementsByTag("h1");
         if (hNodes != null) {
             topic.title = hNodes.text();
-            //android.util.Log.i("title", topic.title);
         }
 
         Elements contentNodes = body.getElementsByClass("topic_content");
         if (contentNodes != null && contentNodes.size() > 0) {
             topic.content = contentNodes.get(0).text();
             topic.contentRendered = ContentUtils.formatContent(contentNodes.get(0).html());
-            //android.util.Log.i("content", topic.contentRendered);
         } else {
             topic.content = topic.contentRendered = "";
         }
@@ -177,7 +165,6 @@ public class TopicWithReplyListModel extends V2EXModel {
                     if (!spanString.contains("回复"))
                         continue;
                     String[] components2 = spanString.split("  \\|  ");
-                    //android.util.Log.i("reply", components2[0]);
                     if (components2.length < 2) {
                         topic.replies = 0;
                     } else {
@@ -185,7 +172,6 @@ public class TopicWithReplyListModel extends V2EXModel {
                         replyCount = replyCount.trim();
                         topic.replies = Integer.parseInt(replyCount);
                     }
-                    //android.util.Log.i("reply", "replies=" + topic.replies);
                     got = true;
                     break;
                 }
